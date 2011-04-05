@@ -3,8 +3,8 @@
  */
 package com.blockz.logic;
 
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import junit.framework.Assert;
 import android.content.Context;
@@ -20,16 +20,16 @@ import com.blockz.graphics.Scene;
  */
 public class Level 
 {
-	private List<Item> _itemList;
-	private Queue<Item> _renderQueue;
+	private LinkedList<Item> _itemList;
+	private ConcurrentLinkedQueue<Item> _renderQueue;
 	private Scene _scene;
 	private Bitmap _levelImage;
 	private Context _context;
 	
 	public Level(Context context)
 	{
-		_itemList = new List<Item>();
-		_renderQueue = new Queue<Item>();
+		_itemList = new LinkedList<Item>();
+		_renderQueue = new ConcurrentLinkedQueue<Item>();
 		_context = context;
 	}
 	
