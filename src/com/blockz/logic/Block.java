@@ -4,14 +4,20 @@ import com.blockz.logic.Item;
 
 public abstract class Block extends Item 
 {
+	public Block(Coordinate c, int t)
+	{
+		super(c, t);
+	}
 	
 	public boolean _movable;
 	
 	
 	public class FixedBlock extends Block
 	{
-		public FixedBlock()
+		
+		public FixedBlock(Coordinate c, int t)
 		{
+			super(c, t);
 			_movable = false;
 		}
 		
@@ -30,8 +36,9 @@ public abstract class Block extends Item
 		private static final int DOWN = 2;
 		private static final int LEFT = 3;
 		
-		public MovableBlock()
+		public MovableBlock(Coordinate c, int t)
 		{
+			super(c,t);
 			_movable = true;
 		}
 		
