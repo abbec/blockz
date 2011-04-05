@@ -11,7 +11,6 @@ public class MovableBlock extends Block
 	public MovableBlock(Coordinate c, int t)
 	{
 		super(c,t);
-		_movable = true;
 	}
 	
 	public void move(int dir)
@@ -21,6 +20,9 @@ public class MovableBlock extends Block
 		 *Måste räkna ut slutpositionen för blocket på något sätt. Startposition har man i _position, 
 		 *riktning i _direction. Kolla level för att se var blocket tar vägen. 
 		 */
-	}	
+		
+		//anropa setposition från Item.
+	}
+
 }
 	

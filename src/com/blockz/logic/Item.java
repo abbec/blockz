@@ -3,7 +3,7 @@ package com.blockz.logic;
 public abstract class Item 
 {
 	private Coordinate _position;
-	private int _type;
+	private int _typeID;
 	/*private String _type;*/
 	
 	
@@ -11,16 +11,14 @@ public abstract class Item
 	public Item()
 	{
 		_position = new Coordinate(0,0);
-		_type = 0;
+		_typeID = 0;
 	}
 	
 	public Item(Coordinate c, int t)
 	{
 		_position = c;
-		_type = t;
+		_typeID = t;
 	}
-	
-	
 	
 	public Coordinate getPosition()
 	{
@@ -29,7 +27,7 @@ public abstract class Item
 
 	public int getType()
 	{
-		return _type;
+		return _typeID;
 	}
 	
 	public void setPosition(Coordinate c)
@@ -39,6 +37,6 @@ public abstract class Item
 	
 	public void setType(int t)
 	{
-		_type = t;
+		_typeID = t;
 	}
 }
