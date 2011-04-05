@@ -3,8 +3,11 @@
  */
 package com.blockz;
 
-import com.blockz.graphics.*;
-import com.blockz.logic.*;
+import com.blockz.graphics.Scene;
+import com.blockz.graphics.Sprite;
+import com.blockz.graphics.StaticSprite;
+import com.blockz.graphics.testView;
+import com.blockz.logic.Level;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -39,8 +42,6 @@ public class Game extends Activity
 		
 		// Start the main game loop
 	}
-	
-	
 	
 	
 }
