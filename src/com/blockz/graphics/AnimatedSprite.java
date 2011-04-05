@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-public class AnimatedSprites extends Sprite
+public class AnimatedSprite extends Sprite
 {
 	
 	private Bitmap _sprite;
@@ -22,7 +22,7 @@ public class AnimatedSprites extends Sprite
     private int _theFrameCount = 4;
     private Context _context;
     
-    public AnimatedSprites(int typeID, Context context)
+    public AnimatedSprite(int typeID, Context context)
     {
     	this._context = context;
 		_sprite = BitmapFactory.decodeResource(_context.getResources(), typeID);
