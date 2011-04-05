@@ -12,7 +12,7 @@ public final class R {
     }
     public static final class drawable {
         public static final int arrow=0x7f020000;
-        public static final int defaultlevel=0x7f020001;
+        public static final int dl=0x7f020001;
         public static final int goal=0x7f020002;
         public static final int grass=0x7f020003;
         public static final int grasshole=0x7f020004;

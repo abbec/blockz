@@ -35,7 +35,7 @@ public class Game extends Activity
 		_level = new Level(this, _scene);
 		_level.readLevel(R.drawable.dl);
 		
-		setContentView(s);
+		setContentView(_scene);
 		
 		// Start the main game loop
 	}
