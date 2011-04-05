@@ -5,6 +5,8 @@ package com.blockz.graphics;
 
 import java.util.*;
 
+import com.blockz.logic.Item;
+
 import junit.framework.Assert;
 
 import android.content.Context;
@@ -62,11 +64,11 @@ public class Scene extends SurfaceView
     	// Lock the canvas to begin editing its pixels
     	Canvas c = _surfHolder.lockCanvas();
     	
-    	while(!renderList.empty())
-    	{
-    		Item it = renderList.pop();
+    	while(!renderList.isEmpty())
+    	{   		
+    		Item it = renderList.poll();
     		Sprite s = _spriteTable.get(it.getSpriteName() + ".png");
-    		s.draw(c, it.getX(), it.getY());
+    		s.draw(c, it.getPosition().x , it.getPosition().y);
     	}
     	
     	// Unlock the canvas to show the screen
