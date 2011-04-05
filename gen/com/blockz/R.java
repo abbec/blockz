@@ -18,9 +18,10 @@ public final class R {
         public static final int grasshole=0x7f020004;
         public static final int gubbe=0x7f020005;
         public static final int icon=0x7f020006;
-        public static final int sprites=0x7f020007;
-        public static final int stone=0x7f020008;
-        public static final int water=0x7f020009;
+        public static final int level6=0x7f020007;
+        public static final int sprites=0x7f020008;
+        public static final int stone=0x7f020009;
+        public static final int water=0x7f02000a;
     }
     public static final class layout {
         public static final int main=0x7f030000;
