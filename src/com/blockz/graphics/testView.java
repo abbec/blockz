@@ -1,6 +1,7 @@
 package com.blockz.graphics;
 
 import com.blockz.R;
+import com.blockz.logic.Player;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -34,6 +35,7 @@ public class testView extends SurfaceView implements SurfaceHolder.Callback
 	    canvas.drawColor(Color.WHITE);
 	    _sprite.draw(canvas, 10, 10);
 	    _animation.draw(canvas,10,10);
+	    
 	}
 	
     @Override

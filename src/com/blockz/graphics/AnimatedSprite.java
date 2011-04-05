@@ -21,7 +21,13 @@ public class AnimatedSprite extends Sprite
     private int _spriteWidth = 41;
     private int _theFrameCount = 4;
     private Context _context;
-    
+    /**
+     * 
+     * @param typeID - type
+     * @param context - Context!
+     * 
+     * Animated sprite that animates a block, for example a character.
+     */
     public AnimatedSprite(int typeID, Context context)
     {
     	this._context = context;

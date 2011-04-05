@@ -7,7 +7,13 @@ public class MovableBlock extends Block
 	private static final int RIGHT = 1;
 	private static final int DOWN = 2;
 	private static final int LEFT = 3;
-	
+	/**
+	 * 
+	 * @param c - position
+	 * @param t - type
+	 * 
+	 * Blocks that moves, the green blocks in the prototype.
+	 */
 	public MovableBlock(Coordinate c, int t)
 	{
 		super(c,t);
