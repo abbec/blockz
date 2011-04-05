@@ -54,6 +54,7 @@ public class Level
 	{
 		if(_scene==null)
 			Assert.assertTrue("Level Class: No scene is set", false);
+		
 		_scene.draw(_renderQueue);
 	}
     /**

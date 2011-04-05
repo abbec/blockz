@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 
 public class AnimatedSprite extends Sprite
@@ -21,6 +22,7 @@ public class AnimatedSprite extends Sprite
     private int _spriteWidth = 41;
     private int _theFrameCount = 4;
     private Context _context;
+    
     /**
      * 
      * @param typeID - type
@@ -28,10 +30,9 @@ public class AnimatedSprite extends Sprite
      * 
      * Animated sprite that animates a block, for example a character.
      */
-    public AnimatedSprite(int typeID, Context context)
+    public AnimatedSprite(int typeID, Context context, int width, int height)
     {
     	this._context = context;
-		_sprite = BitmapFactory.decodeResource(_context.getResources(), typeID);
     	_sRectangle = new Rect(0,0,0,0);
         _frameTimer =0;
         _currentFrame =0;
@@ -43,6 +44,20 @@ public class AnimatedSprite extends Sprite
         _sRectangle.right = _spriteWidth;
         _FPS = 1000 /_FPS;
         _noOfFrames = _theFrameCount;
+        
+        Bitmap origSprite = BitmapFactory.decodeResource(context.getResources(), typeID);
+		
+		// Calculate the scale
+        float scaleWidth = ((float) width) / _sprite.getWidth();
+        float scaleHeight = ((float) height) / _sprite.getHeight();
+        
+        // Create a matrix for the manipulation
+        Matrix matrix = new Matrix();
+        // Resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight);
+ 
+        // Recreate the new Bitmap
+        _sprite = Bitmap.createBitmap(origSprite, 0, 0, width, height, matrix, true);
     	
     }
     
