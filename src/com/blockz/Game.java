@@ -3,9 +3,8 @@
  */
 package com.blockz;
 
-import com.blockz.graphics.Scene;
-import com.blockz.graphics.Sprite;
-import com.blockz.graphics.StaticSprite;
+import com.blockz.graphics.*;
+import com.blockz.logic.*;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -20,15 +19,25 @@ import android.view.*;
  */
 public class Game extends Activity 
 {
+	
+	Level _level;
+	Scene _scene;
+	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		
-		requestWindowFeature(Window.FEATURE_NO_TITLE);		
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
-		setContentView(new Scene(this));
+		_scene = new Scene(this);
+		
+		_level = new Level(this, _scene);
+		_level.readLevel(R.drawable.dl);
+		
+		setContentView(s);
+		
+		// Start the main game loop
 	}
 	
 	
