@@ -13,9 +13,6 @@ import android.graphics.BitmapFactory;
 
 import com.blockz.R;
 import com.blockz.graphics.Scene;
-import com.blockz.logic.Block.FixedBlock;
-import com.blockz.logic.Block.MovableBlock;
-import com.blockz.logic.Item.Coordinate;
 
 /**
  * @author 
@@ -59,9 +56,9 @@ public class Level
 	 * readLevel() uses the LevelReader to set _itemList
 	 * @param 
 	 */
-	public void readLevel(/* GET LVL NR FROM GAME*/)
+	public void readLevel(int resourceNumber)
 	{
-		_levelImage = BitmapFactory.decodeResource(_context, R.drawable.grass);
+		_levelImage = BitmapFactory.decodeResource(_context.getResources(), resourceNumber);
 		for(int row = 0; row<_levelImage.getHeight(); row++)
 		{
 			for(int col = 0; col<_levelImage.getWidth(); row++)
