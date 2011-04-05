@@ -8,26 +8,21 @@ import android.graphics.Canvas;
 
 import com.blockz.R;
 
-public class StaticSprite extends Sprite {
+public class StaticSprite extends Sprite 
+{
 
 	private Context _context;
-	private Bitmap _sprite;
-	public StaticSprite()
-	{
 	
-	}
-	
-	public StaticSprite(String type, Context context)
+	public StaticSprite(int typeID, Context context)
 	{
 		this._context = context;
-		_sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.icon);
-		
+		_sprite = BitmapFactory.decodeResource(context.getResources(), typeID);
 	}
 	@Override
-	public void draw(Canvas c,int x, int y) {
+	public void draw(Canvas canvas,int x, int y) 
+	{
 		// TODO Auto-generated method stub
-		//google it!
-		//c.drawBitmap(_sprite,)
+		canvas.drawBitmap(_sprite,0,0,null);
 	}
 
 }

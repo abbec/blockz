@@ -6,6 +6,7 @@ package com.blockz.graphics;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 
 import com.blockz.R;
 
@@ -16,8 +17,9 @@ import com.blockz.R;
  *
  */
 
-public abstract class Sprite 
+public abstract class Sprite
 {
-	public abstract void draw(int x, int y);	
+	protected Bitmap _sprite;
+	public abstract void draw(Canvas c, int x, int y);	
 		
 }
