@@ -5,7 +5,7 @@ public abstract class Item
 	private Coordinate _position;
 	private String _type;
 	
-	private class Coordinate {
+	public class Coordinate {
         public int x;
         public int y;
 
@@ -30,6 +30,18 @@ public abstract class Item
             return "Coordinate: [" + x + "," + y + "]";
         }
     }
+	
+	public Item()
+	{
+		_position = new Coordinate(0,0);
+		_type = "";
+	}
+	
+	public Item(Coordinate c, String t)
+	{
+		_position = c;
+		_type = t;
+	}
 	
 	public void move(Coordinate c) 
 	{
