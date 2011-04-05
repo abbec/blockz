@@ -10,13 +10,6 @@ import android.graphics.Canvas;
 
 import com.blockz.R;
 
-
-
-/**
- * @author 
- *
- */
-
 public abstract class Sprite
 {
 	protected Bitmap _sprite;

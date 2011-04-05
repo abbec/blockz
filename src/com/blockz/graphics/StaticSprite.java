@@ -12,7 +12,11 @@ public class StaticSprite extends Sprite
 {
 
 	private Context _context;
-	
+	/**
+	 * 
+	 * @param typeID - type of Sprite.
+	 * @param context - send in the beloved Context.
+	 */
 	public StaticSprite(int typeID, Context context)
 	{
 		this._context = context;

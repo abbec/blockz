@@ -16,10 +16,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.*;
 
-/**
- * @author
- *
- */
+
 public class Game extends Activity 
 {
 	

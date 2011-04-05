@@ -1,9 +1,19 @@
 package com.blockz.logic;
 
+import com.blockz.R;
+
 public class WallBlock extends Block {
-	public WallBlock(Coordinate c, int t)
+	/**
+	 * 
+	 * @param c - position, a Coordinate.
+	 * @param t -  Type 
+	 * 
+	 * Wallblock that will not move. The orange block in the prototype.
+	 * 
+	 */
+	public WallBlock(Coordinate c)
 	{
-		super(c, t);
+		super(c, R.drawable.stone);
 	}
 		
 }
