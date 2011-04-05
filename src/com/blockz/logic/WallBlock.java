@@ -11,9 +11,9 @@ public class WallBlock extends Block {
 	 * Wallblock that will not move. The orange block in the prototype.
 	 * 
 	 */
-	public WallBlock(Coordinate c)
+	public WallBlock(Coordinate c, int spriteID)
 	{
-		super(c, R.drawable.stone);
+		super(c, spriteID);
 	}
 		
 }

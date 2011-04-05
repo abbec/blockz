@@ -3,11 +3,8 @@
  */
 package com.blockz;
 
-import com.blockz.graphics.Scene;
-import com.blockz.graphics.Sprite;
-import com.blockz.graphics.StaticSprite;
-import com.blockz.graphics.testView;
-import com.blockz.logic.Level;
+import com.blockz.graphics.*;
+import com.blockz.logic.*;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -16,12 +13,16 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.*;
 
-
-public class Game extends Activity 
+/**
+ * @author
+ *
+ */
+public class Game extends Activity
 {
 	
-	Level _level;
-	Scene _scene;
+	private Level _level;
+	private Scene _scene;
+	private GameThread _mainThread;
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -30,15 +31,78 @@ public class Game extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
-		_scene = new Scene(this);
+		// Get screen size
+		Display display = getWindowManager().getDefaultDisplay(); 
+		// WARNING: DO NOT CHANGE, IT IS CORRECT!
+		int width = display.getHeight();
+		int height = display.getWidth();
 		
-		_level = new Level(this, _scene);
+		_scene = new Scene(this, width, height);
+		
+		_level = new Level(this, _scene, width, height);
 		_level.readLevel(R.drawable.dl);
 		
 		setContentView(_scene);
 		
 		// Start the main game loop
+		_mainThread = new GameThread(this);
+		_mainThread.setRunning(true);
+		_mainThread.run();
 	}
+	
+	public boolean dispatchTouchEvent(MotionEvent ev)
+	{
+		System.out.println("Touch intercepted!" + ev.toString());
+		
+		return true;
+	}
+	
+	public void onDestroy()
+	{
+		_mainThread.setRunning(false);
+	}
+	
+	public class GameThread extends Thread 
+    {
+        private Game _game;
+        private boolean _run = false;
+        
+        public static final int UPDATE_RATE = 30;
+     
+        public GameThread(Game game) 
+        {
+            _game = game;
+        }
+     
+        public void setRunning(boolean run) 
+        {
+            _run = run;
+        }
+     
+        @Override
+        public void run() 
+        {
+        	long frameTime = 0;
+        	int min_frame_time = 1000/UPDATE_RATE;
+        	
+            while (_run) 
+            {
+            	frameTime = System.currentTimeMillis();
+            	
+            	if (frameTime > min_frame_time)
+            	{
+            		// Uppdatera leveln
+            		
+            	}
+            	
+            	// Render each frame so that we get cool FPS
+            	_game._level.render();
+            	
+            	frameTime = System.currentTimeMillis() - frameTime;      	
+            }
+        }
+        
+    }
 	
 	
 }
