@@ -10,6 +10,7 @@ import junit.framework.Assert;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 
 import com.blockz.R;
 import com.blockz.graphics.Scene;
@@ -26,11 +27,13 @@ public class Level
 	private Bitmap _levelImage;
 	private Context _context;
 	
-	public Level(Context context)
+	public Level(Context context, Scene theScene)
 	{
 		_itemList = new LinkedList<Item>();
 		_renderQueue = new ConcurrentLinkedQueue<Item>();
 		_context = context;
+		_scene = theScene;
+
 	}
 	
     /**
@@ -42,16 +45,6 @@ public class Level
 			Assert.assertTrue("Level Class: No scene is set", false);
 		_scene.draw(_renderQueue);
 	}
-	
-    /**
-	 * setScene() initiates the _scene
-	 * @param theScene of type Scene
-	 */		
-	public void setScene(Scene theScene)
-	{
-		_scene = theScene;
-	}
-
     /**
 	 * readLevel() uses the LevelReader to set _itemList
 	 * @param 
@@ -59,15 +52,17 @@ public class Level
 	public void readLevel(int resourceNumber)
 	{
 		_levelImage = BitmapFactory.decodeResource(_context.getResources(), resourceNumber);
-		for(int row = 0; row<_levelImage.getHeight(); row++)
+		 System.out.println("Width: " + _levelImage.getWidth());
+		 System.out.println("Height: " + _levelImage.getHeight());
+		for(int col = 0; col<_levelImage.getHeight(); col++)
 		{
-			for(int col = 0; col<_levelImage.getWidth(); row++)
+			for(int row = 0; row<_levelImage.getWidth(); row++)
 			{
-				 int pixelValue =_levelImage.getPixel(row,col);
-				 int drawableValue =-1;
+				 int pixelValue =_levelImage.getPixel(row,col);			 
+				 /*int drawableValue =-1;
 				 int staticInt =-1; 
 				 switch (pixelValue) {
-		            case 1:  drawableValue =  R.drawable.grass; 	staticInt =	Scene.STATIC_SPRITE;		break;
+		            case -3355444:  drawableValue =  R.drawable.grass; 	staticInt =	Scene.STATIC_SPRITE;	break;
 		            case 2:  drawableValue =  R.drawable.grasshole; staticInt =	Scene.STATIC_SPRITE;		break;
 		            case 3:  drawableValue =  R.drawable.stone; 	staticInt =	Scene.STATIC_SPRITE;		break;
 		            case 4:  drawableValue =  R.drawable.gubbe; 	staticInt =	Scene.ANIMATED_SPRITE;		break;
@@ -87,7 +82,7 @@ public class Level
 				else
 				{
 					Assert.assertTrue("Level Class: Wrong Movable constant",false);
-				}
+				}*/
 			}
 		}
 		
