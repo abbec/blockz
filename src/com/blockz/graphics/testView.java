@@ -13,9 +13,8 @@ import android.view.SurfaceView;
 
 public class testView extends SurfaceView implements SurfaceHolder.Callback
 {
-	Bitmap _bitmap;
 	Sprite _sprite;
-	AnimatedSprites _animation;
+	AnimatedSprite _animation;
 	private ViewThread _thread;
 	private long _timer;
 
@@ -23,8 +22,7 @@ public class testView extends SurfaceView implements SurfaceHolder.Callback
 	{
         super(context);
         _sprite = new StaticSprite(R.drawable.grass,context);
-        _animation = new AnimatedSprites(R.drawable.sprites,context);
-        _bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.grass);
+        _animation = new AnimatedSprite(R.drawable.sprites,context);
         getHolder().addCallback(this);
         _thread = new ViewThread(this);
 
