@@ -77,28 +77,37 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	 * 
 	 * @param renderList of type ConcurrentLinkedQueue<Item> 
 	 */
-    public void draw(ConcurrentLinkedQueue<Item> renderList)
-    {
- 
-    	Assert.assertTrue("Trying to render with an empty list!", !renderList.isEmpty());
-    	
+    public void draw(LinkedList<Item> constRenderList, ConcurrentLinkedQueue<Item> renderList)
+    {	
     	// Lock the canvas to begin editing its pixels
-    	Canvas c = _surfHolder.lockCanvas();
-    
-    	while(!renderList.isEmpty())
-    	{   		
-    		Item it = renderList.poll();
-    		Sprite s = _spriteTable.get(it.getType());
-    		s.draw(c, it.getPosition().x , it.getPosition().y);
-    	}
+    	synchronized (_surfHolder)
+    	{
     	
-    	// Unlock the canvas to show the screen
-    	_surfHolder.unlockCanvasAndPost(c);
+	    	Canvas c = _surfHolder.lockCanvas();
+	    
+	    	while(!renderList.isEmpty())
+	    	{   		
+	    		Item it = renderList.poll();
+	    		Sprite s = _spriteTable.get(it.getType());
+	    		s.draw(c, it.getPosition().x , it.getPosition().y);
+	    	}
+	    	
+	    	for (int i=0; i < constRenderList.size(); i++)
+	    	{
+	    		Item it = constRenderList.get(i);
+	    		Sprite s = _spriteTable.get(it.getType());
+	    		s.draw(c, it.getPosition().x, it.getPosition().y);
+	    	}
+	    	
+	    	// Unlock the canvas to show the screen
+	    	_surfHolder.unlockCanvasAndPost(c);
+    	}
     }
     
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        // TODO Auto-generated method stub
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) 
+    {
+    	
     }
  
     @Override

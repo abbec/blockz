@@ -32,8 +32,8 @@ public class Game extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		// Get screen size
 		Display display = getWindowManager().getDefaultDisplay(); 
@@ -66,51 +66,90 @@ public class Game extends Activity
 	
 	public void startThread()
 	{
-		_mainThread.setRunning(true);
-	
-		_gameStart = System.currentTimeMillis();
-		_mainThread.run();
+		if (!_mainThread.isRunning())
+		{
+			_mainThread.setRunning(true);
+		
+			_gameStart = System.currentTimeMillis();
+			_mainThread.start();
+		}
+		else
+			_mainThread.run();
 	}
 	
 	public void stopThread()
 	{
-		_mainThread.setRunning(false);
+		boolean retry = true;
+        _mainThread.setRunning(false);
+        while (retry) {
+            try {
+                _mainThread.join();
+                retry = false;
+            } catch (InterruptedException e) {
+            }
+        }
 	}
 	
-	/*public void onPause()
+	public void onPause()
 	{
 		super.onPause();
-		_mainThread.setRunning(false);
+		_mainThread.pause();
 	}
 	
 	public void onResume()
 	{
 		super.onResume();
-		_mainThread.setRunning(true);
-	}*/
-	
-	public void onDestroy()
-	{
-		_mainThread.setRunning(false);
+		
+		if (_mainThread.state() == GameThread.PAUSED)
+			_mainThread.setRunning(true);
+		
+		_mainThread.unPause();
 	}
 	
 	public class GameThread extends Thread 
     {
+		public final static int RUNNING = 0;
+		public final static int PAUSED = 1;
+		
         private Game _game;
-        private boolean _run = false;
+        private boolean _run;
+        
+        private int _state;
         
         public static final int UPDATE_RATE = 30;
      
         public GameThread(Game game) 
         {
             _game = game;
+            _run = false;
+            _state = RUNNING;
         }
      
         public void setRunning(boolean run) 
         {
             _run = run;
         }
+        
+        public void pause()
+        {
+        	_state = PAUSED;
+        }
      
+        public void unPause()
+        {
+        	_state = RUNNING;
+        }
+        
+        public int state()
+        {
+        	return _state;
+        }
+        
+        public boolean isRunning()
+        {
+        	return _run;
+        }
+        
         @Override
         public void run() 
         {
@@ -123,20 +162,20 @@ public class Game extends Activity
         	
             while (_run) 
             {
-            	
-            	if ((_game.gameTime() - frameTime) > min_frame_time)
+            	if (_state == RUNNING)
             	{
-            		// Uppdatera leveln
-            		_game._level.update();
-            		_game._level.render();
-            		
-            		
-            		frameTime = _game.gameTime();
+	            	if ((_game.gameTime() - frameTime) > min_frame_time)
+	            	{
+	            		// Uppdatera leveln
+	            		_game._level.update();
+	            		
+	            		frameTime = _game.gameTime();
+	            	}
+	            	
+	            	// Render each frame so that we get cool FPS
+	           		_game._level.render();
+	            	
             	}
-            	
-            	// Render each frame so that we get cool FPS
-            	
-            	
             	   	
             }
         }

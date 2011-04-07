@@ -32,6 +32,7 @@ public class Level
 	
 	
 	private LinkedList<Item> _itemList;
+	private LinkedList<Item> _constRenderList;
 	private ConcurrentLinkedQueue<Item> _renderQueue;
 	private Scene _scene;
 	private Bitmap _levelImage;
@@ -42,6 +43,8 @@ public class Level
 	{
 		_itemList = new LinkedList<Item>();
 		_renderQueue = new ConcurrentLinkedQueue<Item>();
+		_constRenderList = new LinkedList<Item>();
+		
 		_context = context;
 		_scene = theScene;
 		this._width = width / 12;
@@ -66,8 +69,7 @@ public class Level
 	{	
 		Assert.assertTrue("Level Class: No scene is set", _scene!=null);
 		
-		if (!_renderQueue.isEmpty())
-			_scene.draw(_renderQueue);
+		_scene.draw(_constRenderList, _renderQueue);
 	}
     /**
 	 * readLevel() reads a level as resource and populates the _itemList and _renderQueue.
@@ -147,7 +149,7 @@ public class Level
 				{
 					MovableBlock m = new MovableBlock(new Coordinate(row * _height, col *  _width), drawableValue);
 					_itemList.add(m);
-					_renderQueue.add(m);
+					_constRenderList.add(m);
 					 //Log.d("B_INFO", "MOVABLE BLOCK ADDED" );
 				}
 				else
