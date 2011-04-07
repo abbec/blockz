@@ -4,16 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.util.Log;
-
-
-import com.blockz.R;
 
 public class StaticSprite extends Sprite 
 {
 
 	private Context _context;
+	
 	/**
 	 * 
 	 * @param typeID - type of Sprite.
@@ -21,8 +17,9 @@ public class StaticSprite extends Sprite
 	 */
 	public StaticSprite(int typeID, Context context, int width, int height)
 	{
-		this._context = context;
-		_sprite = BitmapFactory.decodeResource(context.getResources(), typeID);
+		_context = context;
+		Bitmap _origSprite = BitmapFactory.decodeResource(_context.getResources(), typeID);
+		_sprite = _origSprite;
 		
 //		// Calculate the scale
 //        float scaleWidth = ((float) width) / _sprite.getWidth();
@@ -37,7 +34,7 @@ public class StaticSprite extends Sprite
 //        _sprite = Bitmap.createBitmap(_origSprite, 0, 0, width, height, matrix, true); 
 	}
 	@Override
-	public void draw(Canvas canvas,int x, int y) 
+	public void draw(Canvas canvas,int x, int y, long gameTime) 
 	{
 		// TODO Auto-generated method stub
 

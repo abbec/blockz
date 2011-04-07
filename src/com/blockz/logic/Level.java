@@ -10,7 +10,6 @@ import junit.framework.Assert;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -55,13 +54,14 @@ public class Level
 	/**
 	 * FIXME: Fugly implementation.
 	 */
-	public void update()
-	{
+	public void update(long gameTime)
+	{		
 		for(int i=0; i < _itemList.size(); i++)
 		{
 			_renderQueue.add(_itemList.get(i));
 		}
 	}
+	
 	public void addEvent(MotionEvent ev)
 	{
 	  int x,y;	String name;
@@ -77,15 +77,14 @@ public class Level
 	  Log.d("B_INFO","Name:" +  name);
 	}
 	
-	
     /**
 	 * render() calls the draw() function in the Scene Class with the _renderQueue as argument.
 	 */	
-	public void render()
+	public void render(long gameTime)
 	{	
 		Assert.assertTrue("Level Class: No scene is set", _scene!=null);
 		
-		_scene.draw(_constRenderList, _renderQueue);
+		_scene.draw(_constRenderList, _renderQueue, gameTime);
 	}
     /**
 	 * readLevel() reads a level as resource and populates the _itemList and _renderQueue.
@@ -138,8 +137,8 @@ public class Level
 						isBlockMovable = false;
 						break;
 					case HUD:
-						drawableValue =  R.drawable.water;
-						staticInt =	Scene.STATIC_SPRITE;
+						drawableValue =  R.drawable.anim_test;
+						staticInt =	Scene.ANIMATED_SPRITE;
 						isBlockMovable = false;
 						break;
 		            default:
@@ -151,12 +150,15 @@ public class Level
 
 				_scene.addSprite(drawableValue, staticInt);
 				
-
 				if(!isBlockMovable)
 				{
 					WallBlock f = new WallBlock(new Coordinate(row * _height, col * _width), drawableValue);
 					_itemList.add(f);
-					_renderQueue.add(f);
+					
+					if (staticInt == Scene.STATIC_SPRITE)
+						_constRenderList.add(f);
+					else
+						_renderQueue.add(f);
 					 //Log.d("B_INFO", "STATIC BLOCK ADDED" );
 				}
 				else if(isBlockMovable)
