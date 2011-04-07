@@ -4,11 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.util.Log;
-
-
-import com.blockz.R;
 
 public class StaticSprite extends Sprite 
 {

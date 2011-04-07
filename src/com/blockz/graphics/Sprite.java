@@ -3,12 +3,8 @@
  */
 package com.blockz.graphics;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-
-import com.blockz.R;
 
 public abstract class Sprite
 {

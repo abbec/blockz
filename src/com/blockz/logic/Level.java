@@ -10,9 +10,6 @@ import junit.framework.Assert;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.util.Log;
-
 import com.blockz.R;
 import com.blockz.graphics.Scene;
 
@@ -78,7 +75,6 @@ public class Level
 	public void readLevel(int resourceNumber)
 	{
 		_levelImage = BitmapFactory.decodeResource(_context.getResources(), resourceNumber);
-		int i = 0;
 		 //Log.d("B_INFO", "Width: " + _levelImage.getWidth());
 		 //Log.d("B_INFO", "Height: " + _levelImage.getHeight());
 		for(int col = 0; col<_levelImage.getHeight(); col++)
@@ -135,8 +131,6 @@ public class Level
 		        }
 
 				_scene.addSprite(drawableValue, staticInt);
-				
-				i = col*row;
 				
 				if(!isBlockMovable)
 				{
