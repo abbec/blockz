@@ -18,7 +18,10 @@ public class MovableBlock extends Block
 	{
 		super(c,t);
 	}
-	
+	public String getTypeName()
+	{
+	  return "MovableBlock";
+	}
 	public void move(int dir)
 	{
 		_direction = dir;

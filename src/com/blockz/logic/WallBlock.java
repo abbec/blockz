@@ -15,5 +15,8 @@ public class WallBlock extends Block {
 	{
 		super(c, spriteID);
 	}
-		
+	public String getTypeName()
+	{
+	  return "WallBlock";
+	}
 }

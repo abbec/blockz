@@ -4,12 +4,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.util.Log;
+
+
+import com.blockz.R;
 
 public class StaticSprite extends Sprite 
 {
 
 	private Context _context;
-	
 	/**
 	 * 
 	 * @param typeID - type of Sprite.
@@ -17,9 +21,8 @@ public class StaticSprite extends Sprite
 	 */
 	public StaticSprite(int typeID, Context context, int width, int height)
 	{
-		_context = context;
-		Bitmap _origSprite = BitmapFactory.decodeResource(_context.getResources(), typeID);
-		_sprite = _origSprite;
+		this._context = context;
+		_sprite = BitmapFactory.decodeResource(context.getResources(), typeID);
 		
 //		// Calculate the scale
 //        float scaleWidth = ((float) width) / _sprite.getWidth();

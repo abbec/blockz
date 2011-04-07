@@ -10,6 +10,10 @@ import junit.framework.Assert;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.util.Log;
+import android.view.MotionEvent;
+
 import com.blockz.R;
 import com.blockz.graphics.Scene;
 
@@ -58,6 +62,21 @@ public class Level
 			_renderQueue.add(_itemList.get(i));
 		}
 	}
+	public void addEvent(MotionEvent ev)
+	{
+	  int x,y;	String name;
+	  //GRIDCOORDINATES
+	  x = (int) Math.floor(ev.getX()/40.0);
+	  y = (int) Math.floor(ev.getY()/40.0);
+	  
+	  Log.d("B_INFO","gx:"+x);
+	  Log.d("B_INFO","gy:"+y);
+	  //Hämtar blocket som har intersektat med touchen.
+	  name = (_itemList.get(12*y+x)).getTypeName();
+	  
+	  Log.d("B_INFO","Name:" +  name);
+	}
+	
 	
     /**
 	 * render() calls the draw() function in the Scene Class with the _renderQueue as argument.
@@ -99,7 +118,7 @@ public class Level
 						isBlockMovable = false;
 						break;
 					case STONE_MOVABLE:
-						drawableValue =  R.drawable.icon;
+						drawableValue =  R.drawable.grasshole;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = true;
 						break;
@@ -132,6 +151,7 @@ public class Level
 
 				_scene.addSprite(drawableValue, staticInt);
 				
+
 				if(!isBlockMovable)
 				{
 					WallBlock f = new WallBlock(new Coordinate(row * _height, col * _width), drawableValue);
