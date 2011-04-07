@@ -11,6 +11,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.blockz.R;
 import com.blockz.graphics.Scene;
@@ -47,15 +48,26 @@ public class Level
 		this._height = height / 8;
 	}
 	
+	/**
+	 * FIXME: Fugly implementation.
+	 */
+	public void update()
+	{
+		for(int i=0; i < _itemList.size(); i++)
+		{
+			_renderQueue.add(_itemList.get(i));
+		}
+	}
+	
     /**
 	 * render() calls the draw() function in the Scene Class with the _renderQueue as argument.
 	 */	
 	public void render()
-	{
-		if(_scene==null)
-			Assert.assertTrue("Level Class: No scene is set", false);
+	{	
+		Assert.assertTrue("Level Class: No scene is set", _scene!=null);
 		
-		_scene.draw(_renderQueue);
+		if (!_renderQueue.isEmpty())
+			_scene.draw(_renderQueue);
 	}
     /**
 	 * readLevel() reads a level as resource and populates the _itemList and _renderQueue.
@@ -64,15 +76,16 @@ public class Level
 	public void readLevel(int resourceNumber)
 	{
 		_levelImage = BitmapFactory.decodeResource(_context.getResources(), resourceNumber);
-		 System.out.println("Width: " + _levelImage.getWidth());
-		 System.out.println("Height: " + _levelImage.getHeight());
+		int i = 0;
+		 //Log.d("B_INFO", "Width: " + _levelImage.getWidth());
+		 //Log.d("B_INFO", "Height: " + _levelImage.getHeight());
 		for(int col = 0; col<_levelImage.getHeight(); col++)
 		{
 			for(int row = 0; row<_levelImage.getWidth(); row++)
 			{
 				 int pixelValue =_levelImage.getPixel(row,col);
-				 String ps = java.lang.Integer.toHexString(pixelValue);
-				 System.out.println(pixelValue +" : "+ps );
+				 //String ps = java.lang.Integer.toHexString(pixelValue);
+				 //System.out.println(pixelValue +" : "+ps );
 				 int drawableValue =-1;
 				 int staticInt =-1;
 				 boolean isBlockMovable = false;
@@ -88,7 +101,7 @@ public class Level
 						isBlockMovable = false;
 						break;
 					case STONE_MOVABLE:
-						drawableValue =  R.drawable.stone;
+						drawableValue =  R.drawable.icon;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = true;
 						break;
@@ -120,27 +133,30 @@ public class Level
 		        }
 
 				_scene.addSprite(drawableValue, staticInt);
+				
+				i = col*row;
+				
 				if(!isBlockMovable)
 				{
 					WallBlock f = new WallBlock(new Coordinate(row * _height, col * _width), drawableValue);
 					_itemList.add(f);
 					_renderQueue.add(f);
-					 System.out.println("STATIC BLOCK ADDED" );
+					 //Log.d("B_INFO", "STATIC BLOCK ADDED" );
 				}
 				else if(isBlockMovable)
 				{
-					MovableBlock m = new MovableBlock(new Coordinate(row * _height, col * _width), drawableValue);
+					MovableBlock m = new MovableBlock(new Coordinate(row * _height, col *  _width), drawableValue);
 					_itemList.add(m);
 					_renderQueue.add(m);
-					 System.out.println("MOVABLE BLOCK ADDED" );
+					 //Log.d("B_INFO", "MOVABLE BLOCK ADDED" );
 				}
 				else
 				{
 					Assert.assertTrue("Level Class: Wrong Movable constant",false);
 				}
 				
-				System.out.println("Width: "+_width);
-				System.out.println("Height: "+_height);
+				//System.out.println("x: "+ row *_width);
+				//System.out.println("y: "+col *_height);
 
 			}
 		}

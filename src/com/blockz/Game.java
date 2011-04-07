@@ -3,6 +3,8 @@
  */
 package com.blockz;
 
+import junit.framework.Assert;
+
 import com.blockz.graphics.*;
 import com.blockz.logic.*;
 
@@ -11,6 +13,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 
 /**
@@ -23,6 +26,7 @@ public class Game extends Activity
 	private Level _level;
 	private Scene _scene;
 	private GameThread _mainThread;
+	private long _gameStart;
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -34,28 +38,56 @@ public class Game extends Activity
 		// Get screen size
 		Display display = getWindowManager().getDefaultDisplay(); 
 		// WARNING: DO NOT CHANGE, IT IS CORRECT!
-		int width = display.getHeight();
-		int height = display.getWidth();
+		int width = display.getWidth();
+		int height = display.getHeight();
 		
-		_scene = new Scene(this, width, height);
 		
-		_level = new Level(this, _scene, width, height);
-		_level.readLevel(R.drawable.dl);
+		Log.d("B_INFO", "Creating scene...");
+		_scene = new Scene(this, this, width, height);
 		
 		setContentView(_scene);
 		
+		_level = new Level(this, _scene, width, height);
+		
 		// Start the main game loop
-		_mainThread = new GameThread(this);
-		_mainThread.setRunning(true);
-		_mainThread.run();
+		_mainThread = new GameThread(this);	
+		
 	}
 	
 	public boolean dispatchTouchEvent(MotionEvent ev)
 	{
-		System.out.println("Touch intercepted!" + ev.toString());
-		
 		return true;
 	}
+	
+	public long gameTime()
+	{
+		return System.currentTimeMillis() - _gameStart;
+	}
+	
+	public void startThread()
+	{
+		_mainThread.setRunning(true);
+	
+		_gameStart = System.currentTimeMillis();
+		_mainThread.run();
+	}
+	
+	public void stopThread()
+	{
+		_mainThread.setRunning(false);
+	}
+	
+	/*public void onPause()
+	{
+		super.onPause();
+		_mainThread.setRunning(false);
+	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		_mainThread.setRunning(true);
+	}*/
 	
 	public void onDestroy()
 	{
@@ -82,23 +114,30 @@ public class Game extends Activity
         @Override
         public void run() 
         {
-        	long frameTime = 0;
+        	_level.readLevel(R.drawable.level10);
+        	
         	int min_frame_time = 1000/UPDATE_RATE;
+        	long frameTime = 0;
+        	
+        	Log.d("B_INFO", "Starting main loop");
         	
             while (_run) 
             {
-            	frameTime = System.currentTimeMillis();
             	
-            	if (frameTime > min_frame_time)
+            	if ((_game.gameTime() - frameTime) > min_frame_time)
             	{
             		// Uppdatera leveln
+            		_game._level.update();
+            		_game._level.render();
             		
+            		
+            		frameTime = _game.gameTime();
             	}
             	
             	// Render each frame so that we get cool FPS
-            	_game._level.render();
             	
-            	frameTime = System.currentTimeMillis() - frameTime;      	
+            	
+            	   	
             }
         }
         
