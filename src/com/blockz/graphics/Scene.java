@@ -7,7 +7,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.blockz.Game;
-import com.blockz.R;
 import com.blockz.logic.Item;
 
 import junit.framework.Assert;
