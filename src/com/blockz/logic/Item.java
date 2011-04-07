@@ -14,6 +14,7 @@ public abstract class Item
 		_typeID = 0;
 	}
 	
+	
 	public Item(Coordinate c, int t)
 	{
 		_position = c;
@@ -39,4 +40,6 @@ public abstract class Item
 	{
 		_typeID = t;
 	}
+	
+	public  abstract String getTypeName();
 }

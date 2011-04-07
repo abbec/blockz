@@ -23,5 +23,9 @@ public class Player extends Actor {
 		// TODO Auto-generated method stub
 		
 	}
+	public String getTypeName()
+	{
+	  return "Player";
+	}
    
 }
