@@ -49,9 +49,6 @@ public class Game extends Activity
 		
 		_level = new Level(this, _scene, width, height);
 		
-		// Start the main game loop
-		_mainThread = new GameThread(this);	
-		
 	}
 	
 	public boolean dispatchTouchEvent(MotionEvent ev)
@@ -66,15 +63,11 @@ public class Game extends Activity
 	
 	public void startThread()
 	{
-		if (!_mainThread.isRunning())
-		{
-			_mainThread.setRunning(true);
+		_mainThread.setRunning(true);
 		
-			_gameStart = System.currentTimeMillis();
-			_mainThread.start();
-		}
-		else
-			_mainThread.run();
+		_gameStart = System.currentTimeMillis();
+		_mainThread.start();
+		
 	}
 	
 	public void stopThread()
@@ -100,10 +93,8 @@ public class Game extends Activity
 	{
 		super.onResume();
 		
-		if (_mainThread.state() == GameThread.PAUSED)
-			_mainThread.setRunning(true);
-		
-		_mainThread.unPause();
+		// Start the main game loop
+		_mainThread = new GameThread(this);
 	}
 	
 	public class GameThread extends Thread 
