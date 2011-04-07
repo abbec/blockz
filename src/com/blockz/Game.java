@@ -48,6 +48,7 @@ public class Game extends Activity
 		setContentView(_scene);
 		
 		_level = new Level(this, _scene, width, height);
+		_level.readLevel(R.drawable.level10);
 		
 	}
 	
@@ -143,9 +144,7 @@ public class Game extends Activity
         
         @Override
         public void run() 
-        {
-        	_level.readLevel(R.drawable.level10);
-        	
+        {	
         	int min_frame_time = 1000/UPDATE_RATE;
         	long frameTime = 0;
         	
