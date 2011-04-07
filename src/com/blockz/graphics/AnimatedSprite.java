@@ -9,18 +9,17 @@ import android.graphics.Rect;
 
 public class AnimatedSprite extends Sprite
 {
+	 private final int FPS = 20;
+	 
+	private int _updateTime;
 	
 	private Bitmap _sprite;
-    private int _xPos;
-    private int _yPos;
     private Rect _sRectangle;
-    private int _FPS = 5;
-    private int _noOfFrames;
+    private int _noFrames;
     private int _currentFrame;
     private long _frameTimer;
-    private int _spriteHeight = 72;
-    private int _spriteWidth = 41;
-    private int _theFrameCount = 4;
+    private int _spriteHeight;
+    private int _spriteWidth;
     private Context _context;
     
     /**
@@ -30,24 +29,26 @@ public class AnimatedSprite extends Sprite
      * 
      * Animated sprite that animates a block, for example a character.
      */
-    public AnimatedSprite(int typeID, Context context, int width, int height)
+    public AnimatedSprite(int typeID, Context context)
     {
-    	this._context = context;
+    	_context = context;
     	_sRectangle = new Rect(0,0,0,0);
-        _frameTimer =0;
-        _currentFrame =0;
-        _xPos = 80;
-        _yPos = 200;
-        _sRectangle.top = 0;
-        _sRectangle.bottom = _spriteHeight;
-        _sRectangle.left = 0;
-        _sRectangle.right = _spriteWidth;
-        _FPS = 1000 /_FPS;
-        _noOfFrames = _theFrameCount;
+        _frameTimer = 0;
+        _currentFrame = 0;
         
-        Bitmap origSprite = BitmapFactory.decodeResource(context.getResources(), typeID);
+        _sprite = BitmapFactory.decodeResource(_context.getResources(), typeID);
+        
+        _spriteWidth = _sprite.getWidth();
+        _spriteHeight = _sprite.getHeight();
+        
+        _sRectangle.top = 0;
+        _sRectangle.bottom = 40;
+        _sRectangle.left = 0;
+        _sRectangle.right = 40;
+        _noFrames = _spriteWidth / 40;
+        _updateTime = 1000/FPS;
 		
-		// Calculate the scale
+		/*// Calculate the scale
         float scaleWidth = ((float) width) / _sprite.getWidth();
         float scaleHeight = ((float) height) / _sprite.getHeight();
         
@@ -57,30 +58,34 @@ public class AnimatedSprite extends Sprite
         matrix.postScale(scaleWidth, scaleHeight);
  
         // Recreate the new Bitmap
-        _sprite = Bitmap.createBitmap(origSprite, 0, 0, width, height, matrix, true);
+        _sprite = Bitmap.createBitmap(origSprite, 0, 0, width, height, matrix, true);*/
     	
     }
     
     
-    public void Update(long gameTime) 
+    public void update(long gameTime) 
     {
-        if(gameTime > _frameTimer + _FPS ) {
+        if(gameTime > _frameTimer + _updateTime ) 
+        {
             _frameTimer = gameTime;
-            _currentFrame +=1;
+            _currentFrame++;
      
-            if(_currentFrame >= _noOfFrames) {
+            if(_currentFrame >= _noFrames) 
+            {
                 _currentFrame = 0;
             }
         }
      
-        _sRectangle.left = _currentFrame * _spriteWidth;
-        _sRectangle.right = _sRectangle.left + _spriteWidth;
+        _sRectangle.left = _currentFrame * 40;
+        _sRectangle.right = _sRectangle.left + 40;
     }
     
-    public void draw(Canvas canvas, int x, int y) 
+    public void draw(Canvas canvas, int x, int y, long gameTime) 
     {
-        Rect dest = new Rect(_xPos, _yPos, _xPos + _spriteWidth,
-                        _yPos + _spriteHeight);
+    	// Update the sprite
+    	update(gameTime);
+    	
+        Rect dest = new Rect(x, y, x+40, y+40);
      
         canvas.drawBitmap(_sprite, _sRectangle, dest, null);
         

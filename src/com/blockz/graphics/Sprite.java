@@ -9,6 +9,6 @@ import android.graphics.Canvas;
 public abstract class Sprite
 {
 	protected Bitmap _sprite;
-	public abstract void draw(Canvas c, int x, int y);	
+	public abstract void draw(Canvas c, int x, int y, long gameTime);	
 		
 }

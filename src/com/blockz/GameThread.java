@@ -68,13 +68,13 @@ public class GameThread extends Thread
             	if ((_game.gameTime() - frameTime) > min_frame_time)
             	{
             		// Update the level
-            		_game.getLevel().update();
+            		_game.getLevel().update(_game.gameTime());
             		
             		frameTime = _game.gameTime();
             	}
             	
             	// Render each frame so that we get cool FPS
-           		_game.getLevel().render();
+           		_game.getLevel().render(_game.gameTime());
             	
         	}
         	   	

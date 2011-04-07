@@ -23,6 +23,7 @@ public class Game extends Activity
 	private GameThread _mainThread;
 	private long _gameStart;
 	private GestureDetector gd;
+	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -31,8 +32,7 @@ public class Game extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		// Get screen size
-		Display display = getWindowManager().getDefaultDisplay(); 
-		// WARNING: DO NOT CHANGE, IT IS CORRECT!
+		Display display = getWindowManager().getDefaultDisplay();
 		int width = display.getWidth();
 		int height = display.getHeight();
 		
@@ -61,8 +61,6 @@ public class Game extends Activity
 	public void startThread()
 	{
 		_mainThread.setRunning(true);
-		
-		_gameStart = System.currentTimeMillis();
 		_mainThread.start();
 		
 	}
@@ -71,12 +69,15 @@ public class Game extends Activity
 	{
 		boolean retry = true;
         _mainThread.setRunning(false);
-        while (retry) {
-            try {
+        while (retry) 
+        {
+            try 
+            {
                 _mainThread.join();
                 retry = false;
-            } catch (InterruptedException e) {
-            }
+            } 
+            catch (InterruptedException e) 
+            {}
         }
 	}
 	
@@ -92,6 +93,8 @@ public class Game extends Activity
 		
 		// Start the main game loop
 		_mainThread = new GameThread(this);
+		
+		_gameStart = System.currentTimeMillis();
 	}
 
 	/**

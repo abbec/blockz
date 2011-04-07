@@ -64,7 +64,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 			if (type == STATIC_SPRITE)
 				_spriteTable.put(spriteId, new StaticSprite(spriteId,_context, _spriteWidth, _spriteHeight));
 			else if (type == ANIMATED_SPRITE)
-				_spriteTable.put(spriteId, new AnimatedSprite(spriteId,_context, _spriteWidth, _spriteHeight));
+				_spriteTable.put(spriteId, new AnimatedSprite(spriteId,_context));
 			else
 				Assert.assertTrue("This sprite type does not exist!", false);
 		}
@@ -76,7 +76,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	 * 
 	 * @param renderList of type ConcurrentLinkedQueue<Item> 
 	 */
-    public void draw(LinkedList<Item> constRenderList, ConcurrentLinkedQueue<Item> renderList)
+    public void draw(LinkedList<Item> constRenderList, ConcurrentLinkedQueue<Item> renderList, long gameTime)
     {	
     	// Lock the canvas to begin editing its pixels
     	synchronized (_surfHolder)
@@ -88,14 +88,14 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    	{   		
 	    		Item it = renderList.poll();
 	    		Sprite s = _spriteTable.get(it.getType());
-	    		s.draw(c, it.getPosition().x , it.getPosition().y);
+	    		s.draw(c, it.getPosition().x , it.getPosition().y, gameTime);
 	    	}
 	    	
 	    	for (int i=0; i < constRenderList.size(); i++)
 	    	{
 	    		Item it = constRenderList.get(i);
 	    		Sprite s = _spriteTable.get(it.getType());
-	    		s.draw(c, it.getPosition().x, it.getPosition().y);
+	    		s.draw(c, it.getPosition().x, it.getPosition().y, gameTime);
 	    	}
 	    	
 	    	// Unlock the canvas to show the screen
