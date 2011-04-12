@@ -51,12 +51,17 @@ public class Game extends Activity
 	
 	public boolean dispatchTouchEvent(MotionEvent ev)
 	{
-		boolean result = gd.onTouchEvent(ev);
-		Log.d("B_INFO", " " + _event.getDirection());
-		
-		_level.addEvent(_event);
+		boolean result;
+		result = gd.onTouchEvent(ev);
+		if(result)
+		{
+			_level.addEvent(_event);
+		}
 		return result;
+		
 	}
+		
+	
 	
 	public long gameTime()
 	{
