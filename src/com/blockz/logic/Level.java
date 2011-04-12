@@ -74,13 +74,14 @@ public class Level
 			//Hämtar blocket som har intersektat med touchen.
 			name = (_itemList.get(12*y+x)).getTypeName();
 			Log.d("B_INFO","Name:" +  name);
-		}
-
-
-
-		for(int i=0; i < _itemList.size(); i++)
-		{
-			_renderQueue.add(_itemList.get(i));
+			
+			if(_itemList.get(12*y+x).getTypeName() == "MovableBlock" && _currentEvent.getDirection() != Constant.UNKNOWN)
+			{
+				MovableBlock movableBlock = (MovableBlock)_itemList.get(12*y+x);
+				movableBlock.move(_currentEvent.getDirection(), _itemList);
+				Log.d("B_INFO", "Flyttar");
+			}
+			_currentEvent = null;
 		}
 	}
 

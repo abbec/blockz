@@ -7,10 +7,6 @@ import android.util.Log;
 public class MovableBlock extends MovableItem
 {
 	private int _direction;
-	public static final int UP = 0;
-	public static final int RIGHT = 1;
-	public static final int DOWN = 2;
-	public static final int LEFT = 3;
 	/**
 	 * 
 	 * @param c - position
@@ -41,16 +37,16 @@ public class MovableBlock extends MovableItem
 
 			switch(_direction)
 			{
-				case MovableBlock.UP:
+				case Constant.UP:
 					newY -= 40;
 					break;
-				case MovableBlock.RIGHT:
+				case Constant.RIGHT:
 					newX += 40;
 					break;
-				case MovableBlock.DOWN:
+				case Constant.DOWN:
 					newY += 40;
 					break;
-				case MovableBlock.LEFT:
+				case Constant.LEFT:
 					newX -= 40;
 					break;
 			}
