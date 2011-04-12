@@ -14,6 +14,7 @@ public class GameThread extends Thread
 	public final static int RUNNING = 0;
 	public final static int PAUSED = 1;
 	
+	
     private Game _game;
     private boolean _run;
     

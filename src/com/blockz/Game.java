@@ -72,7 +72,6 @@ public class Game extends Activity
 	{
 		_mainThread.setRunning(true);
 		_mainThread.start();
-		
 	}
 	
 	public void stopThread()
@@ -95,12 +94,13 @@ public class Game extends Activity
 	{
 		super.onPause();
 		_mainThread.pause();
+		//spara allt, inklusive tiden som gäller.
 	}
 	
 	public void onResume()
 	{
 		super.onResume();
-		
+		//starta allt, inklusive tiden som gäller.
 		// Start the main game loop
 		_mainThread = new GameThread(this);
 		
