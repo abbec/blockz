@@ -23,6 +23,7 @@ public class Game extends Activity
 	private GameThread _mainThread;
 	private long _gameStart;
 	private GestureDetector gd;
+	private MyEvent _event;
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -39,9 +40,10 @@ public class Game extends Activity
 		
 		Log.d("B_INFO", "Creating scene...");
 		_scene = new Scene(this, this, width, height);
-		
+		_event = new MyEvent();
+		MyGestureListener mgl = new MyGestureListener(_event); 
 		setContentView(_scene);
-		gd = new GestureDetector(new MyGestureListener());
+		gd = new GestureDetector(mgl);
 		_level = new Level(this, _scene, width, height);
 		_level.readLevel(R.drawable.level10);
 		
@@ -49,8 +51,11 @@ public class Game extends Activity
 	
 	public boolean dispatchTouchEvent(MotionEvent ev)
 	{
-		_level.addEvent(ev);
-		return gd.onTouchEvent(ev);
+		boolean result = gd.onTouchEvent(ev);
+		Log.d("B_INFO", " " + _event.getDirection());
+		
+		_level.addEvent(_event);
+		return result;
 	}
 	
 	public long gameTime()
