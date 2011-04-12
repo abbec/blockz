@@ -2,28 +2,31 @@ package com.blockz.logic;
 
 public abstract class Item 
 {
-	private Coordinate _position;
 	private int _typeID;
+	private boolean _render;
+	private boolean _alwaysRender;
 	/*private String _type;*/
-	
 	
 	
 	public Item()
 	{
-		_position = new Coordinate(0,0);
+		_alwaysRender = false;
 		_typeID = 0;
+		_render = false;
 	}
 	
 	
-	public Item(Coordinate c, int t)
+	public Item(boolean alwaysRender)
 	{
-		_position = c;
+		_alwaysRender = alwaysRender;
+		_typeID = 0;
+		_render = alwaysRender ? true : false;
+	}
+	
+	
+	public Item(int t)
+	{
 		_typeID = t;
-	}
-	
-	public Coordinate getPosition()
-	{
-		return _position;
 	}
 
 	public int getType()
@@ -31,9 +34,20 @@ public abstract class Item
 		return _typeID;
 	}
 	
-	public void setPosition(Coordinate c)
+	public void flagForRender()
 	{
-		_position = c;
+		_render = true;
+	}
+	
+	public boolean shallRender()
+	{
+		return _render;
+	}
+	
+	public void rendered()
+	{
+		if (!_alwaysRender)
+			_render = false;
 	}
 	
 	public void setType(int t)

@@ -6,7 +6,7 @@ public class Coordinate {
     public int y;
 
     public Coordinate(int newX, int newY) 
-    {
+    {	
         x = newX;
         y = newY;
     }
