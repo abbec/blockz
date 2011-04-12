@@ -19,16 +19,16 @@ public class CollisionHandler
 		
 		switch(dir)
 		{
-			case MovableBlock.UP:
+			case Constant.UP:
 				sI = itemList.get(12*(y-1)+x);
 				break;
-			case MovableBlock.RIGHT:
+			case Constant.RIGHT:
 				sI = itemList.get(12*y+(x+1));
 				break;
-			case MovableBlock.DOWN:
+			case Constant.DOWN:
 				sI = itemList.get(12*(y+1)+x);
 				break;
-			case MovableBlock.LEFT:
+			case Constant.LEFT:
 				sI = itemList.get(12*y+(x-1));
 				break;
 		}
