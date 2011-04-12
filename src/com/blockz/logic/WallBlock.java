@@ -1,5 +1,6 @@
 package com.blockz.logic;
 
+
 public class WallBlock extends Block {
 	/**
 	 * 
@@ -9,9 +10,9 @@ public class WallBlock extends Block {
 	 * Wallblock that will not move. The orange block in the prototype.
 	 * 
 	 */
-	public WallBlock(Coordinate c, int spriteID)
+	public WallBlock(int spriteID)
 	{
-		super(c, spriteID);
+		super(spriteID);
 	}
 	public String getTypeName()
 	{

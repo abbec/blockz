@@ -4,9 +4,13 @@ import java.util.LinkedList;
 
 import android.util.Log;
 
-public class MovableBlock extends MovableItem
+public class MovableBlock extends Block
 {
 	private int _direction;
+	private static final int UP = 0;
+	private static final int RIGHT = 1;
+	private static final int DOWN = 2;
+	private static final int LEFT = 3;
 	/**
 	 * 
 	 * @param c - position
@@ -14,20 +18,21 @@ public class MovableBlock extends MovableItem
 	 * 
 	 * Blocks that moves, the green blocks in the prototype.
 	 */
-	public MovableBlock(Coordinate c, int t)
+	public MovableBlock(int t)
 	{
-		super(c,t);
+		super(t);
 	}
 	public String getTypeName()
 	{
 	  return "MovableBlock";
 	}
+	
 	public void move(int dir, LinkedList<Item> itemList)
 	{
 		Log.d("B_INFO", "Moving block...");
 		_direction = dir;
-		int x = this.getPosition().x;
-		int y = this.getPosition().y;
+		int x = 4;
+		int y = 8;
 		
 		int newX = x;
 		int newY = y;
@@ -50,7 +55,6 @@ public class MovableBlock extends MovableItem
 					newX -= 40;
 					break;
 			}
-			this.setPosition(new Coordinate(newX, newY));
 		}
 	}
 	public int getDirection(){

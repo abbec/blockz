@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.blockz.Game;
+import com.blockz.logic.Cell;
 import com.blockz.logic.Item;
 
 import junit.framework.Assert;
@@ -76,26 +77,33 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	 * 
 	 * @param renderList of type ConcurrentLinkedQueue<Item> 
 	 */
-    public void draw(LinkedList<Item> constRenderList, ConcurrentLinkedQueue<Item> renderList, long gameTime)
+    public void draw(Cell[][] renderList, long gameTime)
     {	
     	// Lock the canvas to begin editing its pixels
     	synchronized (_surfHolder)
     	{
     	
 	    	Canvas c = _surfHolder.lockCanvas();
+	    	Item[] items = new Item[2];
+	    	Sprite s;
 	    
-	    	while(!renderList.isEmpty())
-	    	{   		
-	    		Item it = renderList.poll();
-	    		Sprite s = _spriteTable.get(it.getType());
-	    		s.draw(c, it.getPosition().x , it.getPosition().y, gameTime);
-	    	}
-	    	
-	    	for (int i=0; i < constRenderList.size(); i++)
+	    	for (int i = 0; i < 8; i++)
 	    	{
-	    		Item it = constRenderList.get(i);
-	    		Sprite s = _spriteTable.get(it.getType());
-	    		s.draw(c, it.getPosition().x, it.getPosition().y, gameTime);
+	    		for (int j = 0; j < 12; j++)
+	    		{
+	    			items = renderList[i][j].getItems();
+	    			
+	    			for (int p = 0; p < 2; p++)
+	    			{
+	    				if (items[p] != null && items[p].shallRender())
+	    				{
+	    					s = _spriteTable.get(items[p].getType());
+	    					s.draw(c, i*40, j*40, gameTime);
+	    					items[p].rendered();
+	    				}
+	    			}
+	    			
+	    		}
 	    	}
 	    	
 	    	// Unlock the canvas to show the screen

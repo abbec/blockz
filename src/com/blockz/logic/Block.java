@@ -11,9 +11,9 @@ public abstract class Block extends Item
 	 * @param c - Coordinate.
 	 * @param t - type of block.
 	 */
-	public Block(Coordinate c, int t)
+	public Block(int t)
 	{
-		super(c, t);
+		super(t);
 	}
 }	
 	

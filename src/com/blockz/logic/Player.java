@@ -1,7 +1,5 @@
 package com.blockz.logic;
-
 import java.util.LinkedList;
-
 /**
  * Class Player
  * 
@@ -15,9 +13,9 @@ public class Player extends Actor {
 	 * Our own slowlori.
 	 * 
 	 */
-	public Player(Coordinate c, int typeID )
+	public Player(int typeID )
 	{
-		super(c,typeID);
+		super(typeID);
 	}
 	
 	@Override
