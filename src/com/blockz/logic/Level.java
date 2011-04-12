@@ -3,7 +3,7 @@
  */
 package com.blockz.logic;
 
-import java.util.*;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import junit.framework.Assert;
@@ -73,8 +73,9 @@ public class Level
 	  Log.d("B_INFO","gy:"+y);
 	  //Hämtar blocket som har intersektat med touchen.
 	  name = (_itemList.get(12*y+x)).getTypeName();
-	  
 	  Log.d("B_INFO","Name:" +  name);
+	  
+	  
 	}
 	
     /**
@@ -105,11 +106,13 @@ public class Level
 				 int drawableValue =-1;
 				 int staticInt =-1;
 				 boolean isBlockMovable = false;
+				 boolean isGroundBlock = false;
 				 switch (pixelValue) {
 					case GRASS:
 						drawableValue =  R.drawable.grass;
 						staticInt = Scene.STATIC_SPRITE;
 						isBlockMovable = false;
+						isGroundBlock = true;
 						break;
 					case STONE_FIXED:
 						drawableValue =  R.drawable.stone;
@@ -152,7 +155,13 @@ public class Level
 				
 				if(!isBlockMovable)
 				{
-					WallBlock f = new WallBlock(new Coordinate(row * _height, col * _width), drawableValue);
+					Item f = null;
+					
+					if(isGroundBlock)
+						f = new GroundBlock(new Coordinate(row * _height, col * _width), drawableValue);
+					else
+						f = new WallBlock(new Coordinate(row * _height, col * _width), drawableValue);
+					
 					_itemList.add(f);
 					
 					if (staticInt == Scene.STATIC_SPRITE)

@@ -1,12 +1,16 @@
 package com.blockz.logic;
 
+import java.util.LinkedList;
+
+import android.util.Log;
+
 public class MovableBlock extends Block
 {
 	private int _direction;
-	private static final int UP = 0;
-	private static final int RIGHT = 1;
-	private static final int DOWN = 2;
-	private static final int LEFT = 3;
+	public static final int UP = 0;
+	public static final int RIGHT = 1;
+	public static final int DOWN = 2;
+	public static final int LEFT = 3;
 	/**
 	 * 
 	 * @param c - position
@@ -22,15 +26,39 @@ public class MovableBlock extends Block
 	{
 	  return "MovableBlock";
 	}
-	public void move(int dir)
+	public void move(int dir, LinkedList<Item> itemList)
 	{
+		Log.d("B_INFO", "Moving block...");
 		_direction = dir;
-		/*
-		 *Måste räkna ut slutpositionen för blocket på något sätt. Startposition har man i _position, 
-		 *riktning i _direction. Kolla level för att se var blocket tar vägen. 
-		 */
+		int x = this.getPosition().x;
+		int y = this.getPosition().y;
 		
-		//anropa setposition från Item.
+		int newX = x;
+		int newY = y;
+		
+		while(!(CollisionHandler.checkCollision(this,itemList)))
+		{
+
+			switch(_direction)
+			{
+				case MovableBlock.UP:
+					newY -= 40;
+					break;
+				case MovableBlock.RIGHT:
+					newX += 40;
+					break;
+				case MovableBlock.DOWN:
+					newY += 40;
+					break;
+				case MovableBlock.LEFT:
+					newX -= 40;
+					break;
+			}
+			this.setPosition(new Coordinate(newX, newY));
+		}
+	}
+	public int getDirection(){
+		return _direction;
 	}
 
 }
