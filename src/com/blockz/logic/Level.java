@@ -40,6 +40,7 @@ public class Level
 	private Context _context;
 	private int _width,_height = 0;
 	private MyEvent _currentEvent;
+	private long playingTime = 0;
 
 	public Level(Context context, Scene theScene, int width, int height)
 	{
@@ -59,10 +60,9 @@ public class Level
 	public void update(long gameTime)
 	{		
 
+		
 		int x,y;	String name;
-
-
-
+		updatePlayingTime();
 		if(_currentEvent != null)
 		{
 			//GRIDCOORDINATES
@@ -84,6 +84,19 @@ public class Level
 			_currentEvent = null;
 		}
 	}
+	
+	public void updatePlayingTime(){
+		int min_frame_time = 1000/30;
+		int seconds = 0;
+		int minutes = 0;
+		playingTime += min_frame_time;
+		seconds = (int) (playingTime/1000);		
+		minutes = seconds/60;
+		seconds = seconds - (minutes * 60);
+		
+		Log.d("B_INFO", "Seconds: " +  seconds + "Minuter: " +  minutes);
+	}
+	
 
 	public void addEvent(MyEvent ev)
 	{
