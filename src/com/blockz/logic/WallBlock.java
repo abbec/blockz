@@ -1,7 +1,5 @@
 package com.blockz.logic;
 
-import com.blockz.R;
-
 public class WallBlock extends Block {
 	/**
 	 * 
