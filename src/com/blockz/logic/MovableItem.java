@@ -1,5 +1,7 @@
 package com.blockz.logic;
 
+import java.util.LinkedList;
+
 /**
  * Items that can move, such as Players and movable blocks.
  * 
@@ -20,5 +22,5 @@ public abstract class MovableItem extends Item {
 		super(c,typeID);
 	}
 	
-	public abstract void Move(Coordinate c);
+	public abstract void move(int dir, LinkedList<Item> itemList);
 }

@@ -1,5 +1,7 @@
 package com.blockz.logic;
 
+import java.util.LinkedList;
+
 /**
  * Class Player
  * 
@@ -19,7 +21,7 @@ public class Player extends Actor {
 	}
 	
 	@Override
-	public void Move(Coordinate c) {
+	public void move(int dir, LinkedList<Item> itemList) {
 		// TODO Auto-generated method stub
 		
 	}

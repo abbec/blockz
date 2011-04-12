@@ -8,7 +8,7 @@ public class CollisionHandler
 	
 	public CollisionHandler(){}
 	
-	public static boolean checkCollision(MovableBlock mB, LinkedList<Item> iList)
+	public static boolean checkCollision(MovableBlock mB, LinkedList<Item> itemList)
 	{
 		Log.d("B_INFO", "Running collision check");
 		int dir = mB.getDirection();
@@ -20,16 +20,16 @@ public class CollisionHandler
 		switch(dir)
 		{
 			case MovableBlock.UP:
-				sI = iList.get(12*(y-1)+x);
+				sI = itemList.get(12*(y-1)+x);
 				break;
 			case MovableBlock.RIGHT:
-				sI = iList.get(12*y+(x+1));
+				sI = itemList.get(12*y+(x+1));
 				break;
 			case MovableBlock.DOWN:
-				sI = iList.get(12*(y+1)+x);
+				sI = itemList.get(12*(y+1)+x);
 				break;
 			case MovableBlock.LEFT:
-				sI = iList.get(12*y+(x-1));
+				sI = itemList.get(12*y+(x-1));
 				break;
 		}
 		
@@ -37,5 +37,27 @@ public class CollisionHandler
 			return true;
 		else
 			return false;
+	}
+	
+	public static boolean[] preCollisionCheck(MovableBlock mB, LinkedList<Item> itemList)
+	{
+		boolean[] allowedDir = new boolean[4];
+		int x = (int) Math.floor(mB.getPosition().x / 40.0);
+		int y = (int)Math.floor(mB.getPosition().y / 40.0);
+		
+		
+		if(itemList.get(12*(y-1)+x).getTypeName() == "WallBlock")
+			allowedDir[0] = true;
+		
+		if(itemList.get(12*(y+1)+x).getTypeName() == "WallBlock")
+			allowedDir[2] = true;
+		
+		if(itemList.get(12*y+(x+1)).getTypeName() == "WallBlock")
+			allowedDir[1] = true;
+		
+		if(itemList.get(12*y+(x-1)).getTypeName() == "WallBlock")
+			allowedDir[3] = true;
+		
+		return allowedDir;
 	}
 }
