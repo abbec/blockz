@@ -54,7 +54,6 @@ public class Level
 		updatePlayingTime();
 		if(_currentEvent != null)
 		{
-			//GRIDCOORDINATES
 			col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
 			row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
 

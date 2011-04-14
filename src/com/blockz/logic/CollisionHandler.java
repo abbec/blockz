@@ -1,4 +1,5 @@
 package com.blockz.logic;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.util.Log;
@@ -8,38 +9,51 @@ public class CollisionHandler
 	
 	public CollisionHandler(){}
 	
-	public static boolean checkCollision(MovableBlock mB, LinkedList<Item> itemList)
+	public static Coordinate calculateDestination(Grid grid, int startRow, int startCol, int direction)
 	{
-		Log.d("B_INFO", "Running collision check");
-		int dir = mB.getDirection();
-		int x = 0;//(int) Math.floor(mB.getPosition().x / 40.0);
-		int y = 0;//(int)Math.floor(mB.getPosition().y / 40.0);
+		Coordinate coord = new Coordinate(startRow, startCol);
+		Iterator<Cell> it;
+		Cell c;
 		
-		Item sI = null;
-		
-		switch(dir)
+		switch(direction)
 		{
 			case Constant.UP:
-				sI = itemList.get(12*(y-1)+x);
-				break;
+				it = grid.reversedRowIterator(startRow, startCol);
+			break;	
+			
 			case Constant.RIGHT:
-				sI = itemList.get(12*y+(x+1));
-				break;
+				it = grid.columnIterator(startRow, startCol);
+			break;	
+			
 			case Constant.DOWN:
-				sI = itemList.get(12*(y+1)+x);
-				break;
+				it = grid.rowIterator(startRow, startCol);	
+			break;
+			
 			case Constant.LEFT:
-				sI = itemList.get(12*y+(x-1));
+				it = grid.reversedColumnIterator(startRow, startCol);
+			break;
+		}
+		
+		while(it.hasNext())
+		{
+			c = it.next();
+			if(!grid.getGridCoords(it).equal(coord))
+			{
+				if(!c.hasMovable()||!c.fixedIsWall())
+				{
+					coord = grid.getGridCoords(it);
+				}
+				else
+					break;
+			}
+			else
 				break;
 		}
 		
-		if(sI.getTypeName() == "WallBlock" || sI.getTypeName() == "MovableBlock")
-			return true;
-		else
-			return false;
+		return coord;
 	}
 	
-	public static boolean[] preCollisionCheck(MovableBlock mB, LinkedList<Item> itemList)
+	/*public static boolean[] preCollisionCheck(MovableBlock mB, LinkedList<Item> itemList)
 	{
 		boolean[] allowedDir = new boolean[4];
 		int x = 0;//(int) Math.floor(mB.getPosition().x / 40.0);
@@ -59,5 +73,5 @@ public class CollisionHandler
 			allowedDir[3] = true;
 		
 		return allowedDir;
-	}
+	}*/
 }
