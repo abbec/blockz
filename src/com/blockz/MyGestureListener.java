@@ -28,7 +28,7 @@ public class MyGestureListener extends SimpleOnGestureListener
 	{
 
 		Log.d("B_INFO", "Press!");
-
+		_event.setShowArrows(false);
 		_event.setCoordinate(new Coordinate((int)e.getRawX(), (int)e.getRawY()));
 		_event.setDirection(Constant.UNKNOWN);
 		return true;
@@ -40,10 +40,12 @@ public class MyGestureListener extends SimpleOnGestureListener
 		Log.d("B_INFO", "LongPress!");
 		_event.setCoordinate(new Coordinate((int)e.getRawX(), (int)e.getRawY()));
 		_event.setDirection(Constant.UNKNOWN);
+		_event.setShowArrows(true);
 	}
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) 
 	{
+		_event.setShowArrows(false);
 		_event.setCoordinate(new Coordinate((int)e1.getRawX(), (int)e1.getRawY()));
 		System.out.println("Offset : " + Math.abs(e1.getY() - e2.getY()));
 
