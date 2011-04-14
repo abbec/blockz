@@ -103,12 +103,14 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		}
 	    		
 	    		// Render the movable block
-	    		mv = cell.getMovable();
-	    		
-	    		if (mv.shallRender())
+	    		if (cell.hasMovable())
 	    		{
-	    			s = _spriteTable.get(mv.getType());
-	    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
+		    		mv = cell.getMovable();
+		    		if (mv.shallRender())
+		    		{
+		    			s = _spriteTable.get(mv.getType());
+		    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
+		    		}
 	    		}
 	    		
 	    	}
