@@ -199,9 +199,11 @@ public class Grid implements Iterable<Cell>
 		@Override
 		public Cell next() 
 		{
+			Cell c = _gridArray[_row][_column];
+			
 			_column = _reverse ? _column-1 : _column+1;
 			
-			return _gridArray[_row][_column];
+			return c;
 		}
 
 		@Override
@@ -230,9 +232,11 @@ public class Grid implements Iterable<Cell>
 		@Override
 		public Cell next() 
 		{
+			Cell c = _gridArray[_row][_column]; 
+			
 			_row = _reverse ? _row-1 : _row+1;
 			
-			return _gridArray[_row][_column];
+			return c;
 		}
 
 		@Override
