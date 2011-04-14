@@ -33,7 +33,7 @@ public class CollisionHandler
 				it = grid.reverseColumnIterator(startRow, startCol);
 			break;
 		}
-		
+		//FIXME: Fixa så att coord får rätt koordinater.
 		while(it.hasNext())
 		{
 			c = it.next();
@@ -46,8 +46,6 @@ public class CollisionHandler
 				else
 					break;
 			}
-			else
-				break;
 		}
 		
 		return coord;
