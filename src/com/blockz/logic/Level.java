@@ -118,7 +118,7 @@ public class Level
 		{
 			for(int row = 0; row < 8; row++)
 			{
-				 int pixelValue =_levelImage.getPixel(row,col);
+				 int pixelValue =_levelImage.getPixel(col ,row);
 				 int drawableValue =-1;
 				 int staticInt =-1;
 				 boolean isBlockMovable = false;
