@@ -2,7 +2,13 @@ package com.blockz.logic;
 
 public abstract class Item 
 {
-	private int _typeID;
+	
+	public final static int GROUND = 0;
+	public final static int WALL = 1;
+	public final static int PLAYER = 2;
+	public final static int MOVABLE = 3;
+	
+	private int _spriteID;
 	private boolean _render;
 	private boolean _alwaysRender;
 	/*private String _type;*/
@@ -11,7 +17,7 @@ public abstract class Item
 	public Item()
 	{
 		_alwaysRender = false;
-		_typeID = 0;
+		_spriteID = 0;
 		_render = false;
 	}
 	
@@ -19,19 +25,19 @@ public abstract class Item
 	public Item(boolean alwaysRender)
 	{
 		_alwaysRender = alwaysRender;
-		_typeID = 0;
+		_spriteID = 0;
 		_render = alwaysRender ? true : false;
 	}
 	
 	
 	public Item(int t)
 	{
-		_typeID = t;
+		_spriteID = t;
 	}
 
-	public int getType()
+	public int getSpriteID()
 	{
-		return _typeID;
+		return _spriteID;
 	}
 	
 	public void flagForRender()
@@ -50,10 +56,10 @@ public abstract class Item
 			_render = false;
 	}
 	
-	public void setType(int t)
+	public void setSprite(int t)
 	{
-		_typeID = t;
+		_spriteID = t;
 	}
 	
-	public  abstract String getTypeName();
+	public abstract int getType();
 }

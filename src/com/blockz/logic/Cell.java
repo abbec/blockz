@@ -76,4 +76,9 @@ public class Cell
 		return _movable != null;
 	}
 	
+	public boolean fixedIsWall()
+	{
+		return _fixed.getType() == Item.WALL; 
+	}
+	
 }

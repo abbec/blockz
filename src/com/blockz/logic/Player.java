@@ -4,28 +4,24 @@ import java.util.LinkedList;
  * Class Player
  * 
  */
-public class Player extends Actor {
+public class Player extends Actor 
+{
 
 	/**
 	 * @param c - Coordinate;
-	 * @param typeID - Player type;
+	 * @param spriteID - Player type;
 	 * 
 	 * Our own slowlori.
 	 * 
 	 */
-	public Player(int typeID )
+	public Player(int spriteID)
 	{
-		super(typeID);
+		super(spriteID);
 	}
 	
-	@Override
-	public void move(int dir, LinkedList<Item> itemList) {
-		// TODO Auto-generated method stub
-		
-	}
-	public String getTypeName()
+	public int getType()
 	{
-	  return "Player";
+	  return Item.PLAYER;
 	}
    
 }

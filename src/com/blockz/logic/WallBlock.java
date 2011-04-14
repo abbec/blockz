@@ -14,8 +14,9 @@ public class WallBlock extends Block {
 	{
 		super(spriteID);
 	}
-	public String getTypeName()
+	
+	public int getType()
 	{
-	  return "WallBlock";
+	  return Item.WALL;
 	}
 }

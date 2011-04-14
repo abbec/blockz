@@ -1,6 +1,7 @@
 package com.blockz.logic;
 
-public class GroundBlock extends Block {
+public class GroundBlock extends Block 
+{
 	/**
 	 * 
 	 * @param c - position, a Coordinate.
@@ -13,8 +14,9 @@ public class GroundBlock extends Block {
 	{
 		super(spriteID);
 	}
-	public String getTypeName()
+	
+	public int getType()
 	{
-	  return "GroundBlock";
+	  return Item.GROUND;
 	}
 }
