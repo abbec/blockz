@@ -54,6 +54,7 @@ public class Level
 		updatePlayingTime();
 		if(_currentEvent != null)
 		{
+			//GRIDCOORDINATES
 			col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
 			row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
 
@@ -63,6 +64,12 @@ public class Level
 			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN)
 			{
 				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
+				
+				
+			}
+			else if(_grid.hasMovable(row,col) &&_currentEvent.getDirection() == Constant.UNKNOWN && _currentEvent.isShowArrows())
+			{
+				Log.d("B_INFO","Level Class: Visa pilar");
 			}
 			_currentEvent = null;
 		}
@@ -79,7 +86,7 @@ public class Level
 		minutes = seconds/60;
 		seconds = seconds - (minutes * 60);
 		
-		Log.d("B_INFO", "Seconds: " +  seconds + "Minuter: " +  minutes);
+		//Log.d("B_INFO", "Seconds: " +  seconds + "Minuter: " +  minutes);
 	}
 	
 	public void addEvent(MyEvent ev)
@@ -111,7 +118,7 @@ public class Level
 		{
 			for(int row = 0; row < 8; row++)
 			{
-				 int pixelValue =_levelImage.getPixel(col, row);
+				 int pixelValue =_levelImage.getPixel(row,col);
 				 int drawableValue =-1;
 				 int staticInt =-1;
 				 boolean isBlockMovable = false;
@@ -168,12 +175,12 @@ public class Level
 					if(isGroundBlock)
 					{
 						b = new GroundBlock(R.drawable.grass);
-						_grid.setCostG(row,col,10);
+					//	_grid.setCostG(row,col,10);
 					}
 					else
 					{
 						b = new WallBlock(drawableValue);
-						_grid.setCostG(row,col,10000);
+					//	_grid.setCostG(row,col,10000);
 					}
 					_grid.setFixed(row,col,b);
 				}
@@ -183,7 +190,7 @@ public class Level
 					GroundBlock g = new GroundBlock(R.drawable.grass);
 					_grid.setFixed(row,col,g);
 					_grid.setMovable(row,col,m);
-					_grid.setCostG(row,col,10000);
+				//	_grid.setCostG(row,col,10000);
 				}
 				else
 				{

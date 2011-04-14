@@ -5,7 +5,14 @@ import com.blockz.logic.Coordinate;
 public class MyEvent {
 	private int _direction;
 	private Coordinate _coordinate;
+	private boolean _showArrows = false;
 	
+	public boolean isShowArrows() {
+		return _showArrows;
+	}
+	public void setShowArrows(boolean showArrows) {
+		_showArrows = showArrows;
+	}
 	public int getDirection() {
 		return _direction;
 	}
