@@ -6,7 +6,7 @@ import java.util.LinkedList;
  */
 public class Player extends Actor 
 {
-
+	private Coordinate _position;
 	/**
 	 * @param c - Coordinate;
 	 * @param spriteID - Player type;
@@ -14,14 +14,13 @@ public class Player extends Actor
 	 * Our own slowlori.
 	 * 
 	 */
-	public Player(int spriteID)
+	public Player(Grid grid, int spriteID)
 	{
-		super(spriteID);
+		super(grid, spriteID);
 	}
 	
 	public int getType()
 	{
 	  return Item.PLAYER;
 	}
-   
 }
