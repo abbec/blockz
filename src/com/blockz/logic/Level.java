@@ -167,10 +167,15 @@ public class Level
 				{
 					Block b;
 					if(isGroundBlock)
+					{
 						b = new GroundBlock(R.drawable.grass);
+						_grid.setCostG(row,col,10);
+					}
 					else
+					{
 						b = new WallBlock(drawableValue);
-					
+						_grid.setCostG(row,col,10000);
+					}
 					_grid.setFixed(row,col,b);
 				}
 				else if(isBlockMovable)
@@ -179,6 +184,7 @@ public class Level
 					GroundBlock g = new GroundBlock(R.drawable.grass);
 					_grid.setFixed(row,col,g);
 					_grid.setMovable(row,col,m);
+					_grid.setCostG(row,col,10000);
 				}
 				else
 				{
