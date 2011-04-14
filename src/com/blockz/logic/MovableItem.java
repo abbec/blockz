@@ -20,5 +20,4 @@ public abstract class MovableItem extends Item {
 		super(typeID);
 	}
 	
-	public abstract void move(int dir, LinkedList<Item> itemList);
 }
