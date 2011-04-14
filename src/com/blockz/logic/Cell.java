@@ -8,7 +8,8 @@ public class Cell
 	private int _f, _g, _h;
 	private Block _fixed;
 	private MovableItem _movable;
-	
+	private Cell _parent;
+	private Coordinate _position;
 	public Cell()
 	{
 	}
@@ -79,6 +80,24 @@ public class Cell
 	public boolean fixedIsWall()
 	{
 		return _fixed.getType() == Item.WALL; 
+	}
+
+	public void setParent(Cell _parent) {
+		this._parent = _parent;
+	}
+
+	public Cell getParent() {
+		return _parent;
+	}
+
+	public Coordinate getPosition() {
+		
+		return _position;
+	}
+
+	public Coordinate setPosition(Coordinate position) {
+		_position = position;
+		return null;
 	}
 	
 }
