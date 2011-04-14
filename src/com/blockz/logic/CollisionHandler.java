@@ -18,7 +18,7 @@ public class CollisionHandler
 		switch(direction)
 		{
 			case Constant.UP:
-				it = grid.reversedRowIterator(startRow, startCol);
+				it = grid.reverseRowIterator(startRow, startCol);
 			break;	
 			
 			case Constant.RIGHT:
@@ -29,15 +29,15 @@ public class CollisionHandler
 				it = grid.rowIterator(startRow, startCol);	
 			break;
 			
-			case Constant.LEFT:
-				it = grid.reversedColumnIterator(startRow, startCol);
+			default:
+				it = grid.reverseColumnIterator(startRow, startCol);
 			break;
 		}
 		
 		while(it.hasNext())
 		{
 			c = it.next();
-			if(!grid.getGridCoords(it).equal(coord))
+			if(!grid.getGridCoords(it).equals(coord))
 			{
 				if(!c.hasMovable()||!c.fixedIsWall())
 				{
