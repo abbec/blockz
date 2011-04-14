@@ -12,8 +12,8 @@ public class CollisionHandler
 	{
 		Log.d("B_INFO", "Running collision check");
 		int dir = mB.getDirection();
-		int x = (int) Math.floor(mB.getPosition().x / 40.0);
-		int y = (int)Math.floor(mB.getPosition().y / 40.0);
+		int x = 0;//(int) Math.floor(mB.getPosition().x / 40.0);
+		int y = 0;//(int)Math.floor(mB.getPosition().y / 40.0);
 		
 		Item sI = null;
 		
@@ -42,8 +42,8 @@ public class CollisionHandler
 	public static boolean[] preCollisionCheck(MovableBlock mB, LinkedList<Item> itemList)
 	{
 		boolean[] allowedDir = new boolean[4];
-		int x = (int) Math.floor(mB.getPosition().x / 40.0);
-		int y = (int)Math.floor(mB.getPosition().y / 40.0);
+		int x = 0;//(int) Math.floor(mB.getPosition().x / 40.0);
+		int y = 0;//(int)Math.floor(mB.getPosition().y / 40.0);
 		
 		
 		if(itemList.get(12*(y-1)+x).getTypeName() == "WallBlock")

@@ -9,9 +9,9 @@ public class GroundBlock extends Block {
 	 * Wallblock that will not move. The orange block in the prototype.
 	 * 
 	 */
-	public GroundBlock(Coordinate c, int spriteID)
+	public GroundBlock(int spriteID)
 	{
-		super(c, spriteID);
+		super(spriteID);
 	}
 	public String getTypeName()
 	{
