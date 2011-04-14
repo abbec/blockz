@@ -90,15 +90,15 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    	Iterator<Cell> it = renderList.iterator();
 	    	while(it.hasNext())
 	    	{
-	    		cell = it.next();
 	    		pixelCoord = renderList.getPixelCoords(it);
+	    		cell = it.next();
 	    		
 	    		// Render the fixed block
 	    		b = cell.getFixed();
 	    		
 	    		if (b.shallRender())
 	    		{
-	    			s = _spriteTable.get(b.getType());
+	    			s = _spriteTable.get(b.getSpriteID());
 	    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
 	    		}
 	    		
@@ -108,7 +108,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 		    		mv = cell.getMovable();
 		    		if (mv.shallRender())
 		    		{
-		    			s = _spriteTable.get(mv.getType());
+		    			s = _spriteTable.get(mv.getSpriteID());
 		    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
 		    		}
 	    		}

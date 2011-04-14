@@ -18,21 +18,21 @@ public abstract class Item
 	{
 		_alwaysRender = false;
 		_spriteID = 0;
-		_render = false;
+		_render = true;
 	}
-	
-	
-	public Item(boolean alwaysRender)
-	{
-		_alwaysRender = alwaysRender;
-		_spriteID = 0;
-		_render = alwaysRender ? true : false;
-	}
-	
 	
 	public Item(int t)
 	{
+		_alwaysRender = false;
 		_spriteID = t;
+		_render = true;
+	}
+	
+	public Item(int t, boolean alwaysRender)
+	{
+		_spriteID = t;
+		_alwaysRender = alwaysRender;
+		_render = true;
 	}
 
 	public int getSpriteID()
