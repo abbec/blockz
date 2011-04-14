@@ -19,11 +19,10 @@ public class MovableBlock extends MovableItem
 	{
 		super(t);
 	}
-	public String getTypeName()
+	public int getType()
 	{
-	  return "MovableBlock";
+	  return Item.MOVABLE;
 	}
-	
 	
 	public int getDirection(){
 		return _direction;

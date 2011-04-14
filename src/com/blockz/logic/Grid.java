@@ -67,6 +67,11 @@ public class Grid implements Iterable<Cell>
 		return new Coordinate(c*_cellWidth, r*_cellHeight);
 	}
 	
+	/**
+	 * Get pixel coordinates from a cell from the iterator.
+	 * @param it The Iterator<Cell> to use.
+	 * @return a Coordinate (pixel coordinates)
+	 */
 	public Coordinate getPixelCoords(Iterator<Cell> it)
 	{
 		GridIterator gi = (GridIterator) it;
@@ -75,6 +80,16 @@ public class Grid implements Iterable<Cell>
 		int c = gi.getCol();
 		
 		return new Coordinate(c*_cellWidth, r*_cellHeight);
+	}
+	
+	public Coordinate getGridCoords(Iterator<Cell> it)
+	{
+		GridIterator gi = (GridIterator) it;
+		
+		int r = gi.getRow();
+		int c = gi.getCol();
+		
+		return new Coordinate(r, c);
 	}
 	
 	/**
@@ -91,6 +106,13 @@ public class Grid implements Iterable<Cell>
 		return _gridArray[r][c].hasMovable();
 	}
 	
+	public void setCostG(int r, int c, int g)
+	{
+		Assert.assertTrue("Row or col outside cell range!", r < 8 && c < 12);
+		
+		_gridArray[r][c].setG(g);
+	}
+	
 	
 	/* --------------- INTERNAL CLASSES ------------------------------- */
 	
@@ -98,6 +120,100 @@ public class Grid implements Iterable<Cell>
 	public Iterator<Cell> iterator() 
 	{
 		return new GridIterator();
+	}
+	
+	public Iterator<Cell> rowIterator(int r, int c)
+	{
+		Assert.assertTrue("r is outside grid range!", r < 8);
+		
+		return new RowIterator(r, c, false);
+	}
+	
+	public Iterator<Cell> reverseRowIterator(int r, int c)
+	{
+		Assert.assertTrue("r is outside grid range!", r < 8);
+		
+		return new RowIterator(r, c, true);
+	}
+	
+	public Iterator<Cell> columnIterator(int r, int c)
+	{
+		Assert.assertTrue("r is outside grid range!", r < 8);
+		
+		return new ColumnIterator(r, c, false);
+	}
+	
+	public Iterator<Cell> reverseColumnIterator(int r, int c)
+	{
+		Assert.assertTrue("r is outside grid range!", r < 8);
+		
+		return new ColumnIterator(r, c, true);
+	}
+	
+	private class RowIterator implements Iterator<Cell>
+	{
+		private int _row, _column;
+		private boolean _reverse;
+		
+		public RowIterator(int r, int c, boolean reverse)
+		{
+			_row = r;
+			_column = c;
+			_reverse = reverse;
+		}
+
+		@Override
+		public boolean hasNext() 
+		{
+			
+			return _reverse ? _column >= 0 : _column < 12;
+		}
+
+		@Override
+		public Cell next() 
+		{
+			_column = _reverse ? _column-1 : _column+1;
+			
+			return _gridArray[_row][_column];
+		}
+
+		@Override
+		public void remove() 
+		{}	
+		
+	}
+	
+	private class ColumnIterator implements Iterator<Cell>
+	{
+		private int _row, _column;
+		private boolean _reverse;
+		
+		public ColumnIterator(int r, int c, boolean reverse)
+		{
+			_row = r;
+			_column = c;
+			_reverse = reverse;
+		}
+
+		@Override
+		public boolean hasNext() 
+		{
+			
+			return _reverse ? _row >= 0 : _row < 8;
+		}
+
+		@Override
+		public Cell next() 
+		{
+			_row = _reverse ? _row-1 : _row+1;
+			
+			return _gridArray[_row][_column];
+		}
+
+		@Override
+		public void remove() 
+		{}	
+		
 	}
 	
 	private class GridIterator implements Iterator<Cell>

@@ -15,9 +15,8 @@ public abstract class MovableItem extends Item {
 	 * The abstract class for all movable items.
 	 * 
 	 */
-	public MovableItem( int typeID )
+	public MovableItem( int spriteID )
 	{
-		super(typeID);
+		super(spriteID);
 	}
-	
 }
