@@ -30,68 +30,19 @@ public class Level
 	public final static int GOAL = -1;
 	public final static int START = -1710619;
 	
-	
-	private LinkedList<Item> _itemList;
-	private LinkedList<Item> _constRenderList;
-	private ConcurrentLinkedQueue<Item> _renderQueue;
 	private Scene _scene;
 	private Bitmap _levelImage;
 	private Context _context;
-	private int _width,_height = 0;
 	private MyEvent _currentEvent;
 	private long playingTime = 0;
-	private Cell[][] _grid;
+	private Grid _grid;
 	
-	public Level(Context context, Scene theScene, int width, int height)
+	public Level(Context context, Scene theScene, int width,int height, int resourceNumber)
 	{
-		_itemList = new LinkedList<Item>();
-		_renderQueue = new ConcurrentLinkedQueue<Item>();
-		_constRenderList = new LinkedList<Item>();
-		
+		_grid = new Grid(width,height);
 		_context = context;
 		_scene = theScene;
-		this._width = width / 12;
-		this._height = height / 8;
-		
-		//Skapar grid.
-		createGrid();
-	}
-	
-	public void createGrid()
-	{
-		int x=0, y=0;
-		
-		//skapar grid
-		
-		_grid = new Cell[8][12];
-		
-		//skapar cell
-		Cell c = new Cell();
-		
-		//Beräknar och sätter in kostnaderna i cellerna.
-		Log.d("B_INFO","size:" + _itemList.size());
-		for(int i=0; i < _itemList.size(); i++)
-		{
-			if((_itemList.get(i)).getType() == R.drawable.grass)
-				c.setG(10);
-			else
-				c.setG(10000);
-			
-			c.setH(0);
-			c.setF(c.getG() + c.getH());
-			
-			//Lägger in i griddet.
-			_grid[x][y] = c;
-			Log.d("B_INFO","Position:" + x +", " + y +" F= " + _grid[x][y].getF() +"--"+(_itemList.get(i)).getType()+ " Grass " + R.drawable.grass);
-
-			if(y < 11)
-			y++;
-			else
-			{
-				x++;
-				y = 0;
-			}
-		}
+		readLevel(resourceNumber);
 	}
 	
 	/**
@@ -99,30 +50,26 @@ public class Level
 	 */
 	public void update(long gameTime)
 	{		
-		int x,y;	String name;
+		int col,row;
 		updatePlayingTime();
 		if(_currentEvent != null)
 		{
 			//GRIDCOORDINATES
-			x = (int) Math.floor(_currentEvent.getCoordinate().x/40.0);
-			y = (int) Math.floor(_currentEvent.getCoordinate().y/40.0);
+			col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
+			row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
 
-			Log.d("B_INFO","gx:"+x);
-			Log.d("B_INFO","gy:"+y);
-			//Hämtar blocket som har intersektat med touchen.
-			name = (_itemList.get(12*y+x)).getTypeName();
-			Log.d("B_INFO","Name:" +  name);
-			
-			if(_itemList.get(12*y+x).getTypeName() == "MovableBlock" && _currentEvent.getDirection() != Constant.UNKNOWN)
+			Log.d("B_INFO","Level Class: Column number: "+col);
+			Log.d("B_INFO","Level Class: Row number:"+row);
+					
+			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN)
 			{
-				MovableBlock movableBlock = (MovableBlock)_itemList.get(12*y+x);
-				movableBlock.move(_currentEvent.getDirection(), _itemList);
-				Log.d("B_INFO", "Flyttar");
+				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
 			}
 			_currentEvent = null;
 		}
 	}
 	
+
 	public void updatePlayingTime()
 	{
 		int min_frame_time = 1000/30;
@@ -155,29 +102,27 @@ public class Level
 		_scene.draw(_grid, gameTime);
 	}
     /**
-	 * readLevel() reads a level as resource and populates the _itemList and _renderQueue.
+	 * readLevel() reads a level as resource and populates the _grid with fixed and movable blocks.
 	 * @param int with the resource number to a level
 	 */
 	public void readLevel(int resourceNumber)
 	{
 		_levelImage = BitmapFactory.decodeResource(_context.getResources(), resourceNumber);
-		 //Log.d("B_INFO", "Width: " + _levelImage.getWidth());
-		 //Log.d("B_INFO", "Height: " + _levelImage.getHeight());
-		for(int col = 0; col<_levelImage.getHeight(); col++)
+		for(int col = 0; col < 12; col++)
 		{
-			for(int row = 0; row<_levelImage.getWidth(); row++)
+			for(int row = 0; row < 8; row++)
 			{
 				 int pixelValue =_levelImage.getPixel(row,col);
-				 //String ps = java.lang.Integer.toHexString(pixelValue);
-				 //System.out.println(pixelValue +" : "+ps );
 				 int drawableValue =-1;
 				 int staticInt =-1;
 				 boolean isBlockMovable = false;
+				 boolean isGroundBlock = false;
 				 switch (pixelValue) {
 					case GRASS:
 						drawableValue =  R.drawable.grass;
 						staticInt = Scene.STATIC_SPRITE;
 						isBlockMovable = false;
+						isGroundBlock = true;
 						break;
 					case STONE_FIXED:
 						drawableValue =  R.drawable.stone;
@@ -218,17 +163,22 @@ public class Level
 
 				_scene.addSprite(drawableValue, staticInt);
 				
-				//_grid[row][col].getItems()[0] = new GroundBlock(R.drawable.grass);
-				
 				if(!isBlockMovable)
 				{
-					WallBlock f = new WallBlock(drawableValue);
-					_grid[row][col].getItems()[1] = f;
+					Block b;
+					if(isGroundBlock)
+						b = new GroundBlock(R.drawable.grass);
+					else
+						b = new WallBlock(drawableValue);
+					
+					_grid.setFixed(row,col,b);
 				}
 				else if(isBlockMovable)
 				{
 					MovableBlock m = new MovableBlock(drawableValue);
-					_grid[row][col].getItems()[1] = m;
+					GroundBlock g = new GroundBlock(R.drawable.grass);
+					_grid.setFixed(row,col,g);
+					_grid.setMovable(row,col,m);
 				}
 				else
 				{
