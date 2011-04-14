@@ -4,11 +4,9 @@
 package com.blockz.graphics;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.blockz.Game;
-import com.blockz.logic.Cell;
-import com.blockz.logic.Item;
+import com.blockz.logic.*;
 
 import junit.framework.Assert;
 
@@ -19,6 +17,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 /**
+ * The Scene class which is our surface.
  * @author
  *
  */
@@ -73,37 +72,45 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	}
 	
 	/**
-	 * draw() locks the canvas, draws the Items in the parameter Queue<Item> list and then unlocks the canvas.
+	 * Draws to the surface what has been flagged for render in the level grid.
 	 * 
-	 * @param renderList of type ConcurrentLinkedQueue<Item> 
+	 * @param renderList The level grid with render flags.
+	 * @param gameTime The game clock. 
 	 */
-    public void draw(Cell[][] renderList, long gameTime)
+    public void draw(Grid renderList, long gameTime)
     {	
     	// Lock the canvas to begin editing its pixels
     	synchronized (_surfHolder)
     	{
-    	
 	    	Canvas c = _surfHolder.lockCanvas();
-	    	Item[] items = new Item[2];
+	    	Cell cell; Block b;	MovableItem mv;
+	    	Coordinate pixelCoord;
 	    	Sprite s;
 	    
-	    	for (int i = 0; i < 8; i++)
+	    	Iterator<Cell> it = renderList.iterator();
+	    	while(it.hasNext())
 	    	{
-	    		for (int j = 0; j < 12; j++)
+	    		cell = it.next();
+	    		pixelCoord = renderList.getPixelCoords(it);
+	    		
+	    		// Render the fixed block
+	    		b = cell.getFixed();
+	    		
+	    		if (b.shallRender())
 	    		{
-	    			items = renderList[i][j].getItems();
-	    			
-	    			for (int p = 0; p < 2; p++)
-	    			{
-	    				if (items[p] != null && items[p].shallRender())
-	    				{
-	    					s = _spriteTable.get(items[p].getType());
-	    					s.draw(c, i*40, j*40, gameTime);
-	    					items[p].rendered();
-	    				}
-	    			}
-	    			
+	    			s = _spriteTable.get(b.getType());
+	    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
 	    		}
+	    		
+	    		// Render the movable block
+	    		mv = cell.getMovable();
+	    		
+	    		if (mv.shallRender())
+	    		{
+	    			s = _spriteTable.get(mv.getType());
+	    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
+	    		}
+	    		
 	    	}
 	    	
 	    	// Unlock the canvas to show the screen

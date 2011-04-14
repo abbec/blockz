@@ -1,43 +1,79 @@
 package com.blockz.logic;
 
-public class Cell {
+import junit.framework.Assert;
+
+public class Cell 
+{
 	
-	private int F,G,H;
-	private Item[] _items;
-	
+	private int _f, _g, _h;
+	private Block _fixed;
+	private MovableItem _movable;
 	
 	public Cell()
 	{
-		_items = new Item[2];
 	}
 	
-	public Item[] getItems()
+	public Block getFixed()
 	{
-		return _items;
+		return _fixed;
+	}
+	
+	/**
+	 * Set the fixed block of the cell.
+	 * @param b The block to set as fixed.
+	 */
+	public void setFixed(Block b)
+	{
+		Assert.assertTrue("Tried to set fixed block with empty block!", b != null);
+		
+		_fixed = b;
+	}
+	
+	public MovableItem getMovable()
+	{
+		return _movable;
+	}
+	
+	public void setMovable(MovableItem it) 
+	{
+		Assert.assertTrue("Tried to set movable item with empty item!", it != null);
+		
+		_movable = it;
+	}
+	
+	public void setG(int g) 
+	{
+		_g = g;
 	}
 
-	public void setG(int g) {
-		G = g;
+	public int getG() 
+	{
+		return _g;
 	}
 
-	public int getG() {
-		return G;
+	public void setH(int h) 
+	{
+		_h = h;
 	}
 
-	public void setH(int h) {
-		H = h;
+	public int getH() 
+	{
+		return _h;
 	}
 
-	public int getH() {
-		return H;
+	public void setF(int f) 
+	{
+		_f = f;
 	}
 
-	public void setF(int f) {
-		F = f;
+	public int getF() 
+	{
+		return _f;
 	}
-
-	public int getF() {
-		return F;
+	
+	public boolean hasMovable()
+	{
+		return _movable != null;
 	}
 	
 }
