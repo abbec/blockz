@@ -82,7 +82,7 @@ public class Grid implements Iterable<Cell>
 	 */
 	public Coordinate getPixelCoords(Iterator<Cell> it)
 	{
-		GridIterator gi = (GridIterator) it;
+		BaseGridIterator gi = (BaseGridIterator) it;
 		
 		int r = gi.getRow();
 		int c = gi.getCol();
@@ -92,7 +92,7 @@ public class Grid implements Iterable<Cell>
 	
 	public Coordinate getGridCoords(Iterator<Cell> it)
 	{
-		GridIterator gi = (GridIterator) it;
+		BaseGridIterator gi = (BaseGridIterator) it;
 		
 		int r = gi.getRow();
 		int c = gi.getCol();
@@ -158,15 +158,35 @@ public class Grid implements Iterable<Cell>
 		return new ColumnIterator(r, c, true);
 	}
 	
-	private class RowIterator implements Iterator<Cell>
+	private class BaseGridIterator
+	{
+		protected int _row, _column;
+		
+		public BaseGridIterator(int r, int c)
+		{
+			_row = r;
+			_column = c;
+		}
+		
+		public int getRow()
+		{
+			return _row;
+		}
+		
+		public int getCol()
+		{
+			return _column;
+		}
+	}
+	
+	private class RowIterator extends BaseGridIterator implements Iterator<Cell>
 	{
 		private int _row, _column;
 		private boolean _reverse;
 		
 		public RowIterator(int r, int c, boolean reverse)
 		{
-			_row = r;
-			_column = c;
+			super(r, c);
 			_reverse = reverse;
 		}
 
@@ -191,15 +211,14 @@ public class Grid implements Iterable<Cell>
 		
 	}
 	
-	private class ColumnIterator implements Iterator<Cell>
+	private class ColumnIterator extends BaseGridIterator implements Iterator<Cell>
 	{
 		private int _row, _column;
 		private boolean _reverse;
 		
 		public ColumnIterator(int r, int c, boolean reverse)
 		{
-			_row = r;
-			_column = c;
+			super(r, c);
 			_reverse = reverse;
 		}
 
@@ -224,15 +243,14 @@ public class Grid implements Iterable<Cell>
 		
 	}
 	
-	private class GridIterator implements Iterator<Cell>
+	private class GridIterator extends BaseGridIterator implements Iterator<Cell>
 	{
 		
 		private int _row, _column;
 		
 		public GridIterator()
 		{
-			_row = 0;
-			_column = 0;
+			super(0, 0);
 		}
 
 		@Override
@@ -250,16 +268,6 @@ public class Grid implements Iterable<Cell>
 			_row = (_column % 12 == 0) ? _row+1 : _row;
 			
 			return c;
-		}
-		
-		public int getRow()
-		{
-			return _row;
-		}
-		
-		public int getCol()
-		{
-			return _column;
 		}
 		
 		@Override
