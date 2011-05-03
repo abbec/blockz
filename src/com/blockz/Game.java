@@ -44,7 +44,7 @@ public class Game extends Activity
 		MyGestureListener mgl = new MyGestureListener(_event); 
 		setContentView(_scene);
 		gd = new GestureDetector(mgl);
-		_level = new Level(this, _scene, width, height,R.drawable.level10);	
+		_level = new Level(this, _scene, width, height,R.drawable.level1);	
 	}
 	
 	public boolean dispatchTouchEvent(MotionEvent ev)

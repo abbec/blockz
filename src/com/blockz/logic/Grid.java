@@ -2,6 +2,8 @@ package com.blockz.logic;
 
 import java.util.Iterator;
 
+import android.util.Log;
+
 import junit.framework.Assert;
 
 /**
@@ -66,6 +68,13 @@ public class Grid implements Iterable<Cell>
 		Assert.assertTrue("Row or col outside cell range!", r < 8 && c < 12);
 		
 		_gridArray[r][c].setMovable(it);
+	}
+	
+	public void setPlayer(int r, int c, Player p) {
+		Assert.assertTrue("Row or col outside cell range!", r < 8 && c < 12);
+		
+		_gridArray[r][c].setPlayer(p);
+		
 	}
 	
 	public Coordinate getPixelCoords(int r, int c)
@@ -179,7 +188,7 @@ public class Grid implements Iterable<Cell>
 		}
 	}
 	
-	private class ColumnIterator extends BaseGridIterator 
+private class ColumnIterator extends BaseGridIterator 
 	{
 		private boolean _reverse;
 		
@@ -274,5 +283,4 @@ public class Grid implements Iterable<Cell>
 		{}
 		
 	}
-	
 }
