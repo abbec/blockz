@@ -36,6 +36,7 @@ public class Level
 	private MyEvent _currentEvent;
 	private long playingTime = 0;
 	private Grid _grid;
+	private double _points = 999;
 	
 	public Level(Context context, Scene theScene, int width,int height, int resourceNumber)
 	{
@@ -75,7 +76,14 @@ public class Level
 		}
 	}
 	
-
+	public void updatePoints(double p)
+	{
+		_points -= p;
+		
+		if(_points < 0)
+			_points = 0;
+	}
+	
 	public void updatePlayingTime()
 	{
 		int min_frame_time = 1000/30;
@@ -86,8 +94,18 @@ public class Level
 		minutes = seconds/60;
 		seconds = seconds - (minutes * 60);
 		
+		updatePoints(1/30.0);
+		
 		//Log.d("B_INFO", "Seconds: " +  seconds + "Minuter: " +  minutes);
 	}
+	
+	public void reset()
+	{
+		//Resets the blocks
+		
+		updatePoints(100.0);
+	}
+	
 	
 	public void addEvent(MyEvent ev)
 	{
@@ -123,6 +141,8 @@ public class Level
 				 int staticInt =-1;
 				 boolean isBlockMovable = false;
 				 boolean isGroundBlock = false;
+				 boolean isGoalBlock = false;
+				 
 				 switch (pixelValue) {
 					case GRASS:
 						drawableValue =  R.drawable.grass;
@@ -149,6 +169,7 @@ public class Level
 						drawableValue =  R.drawable.goal;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = false;
+						isGoalBlock = true;
 						break;
 					case START:	
 						drawableValue =  R.drawable.grasshole;
@@ -175,6 +196,13 @@ public class Level
 					if(isGroundBlock)
 					{
 						b = new GroundBlock(R.drawable.grass);
+					//	_grid.setCostG(row,col,10);
+					}
+					else if(isGoalBlock)
+					{
+						b = new GroundBlock(R.drawable.goal);
+						((GroundBlock) b).setGoalBlock(true);
+						
 					//	_grid.setCostG(row,col,10);
 					}
 					else

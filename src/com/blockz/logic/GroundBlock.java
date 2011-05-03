@@ -2,6 +2,9 @@ package com.blockz.logic;
 
 public class GroundBlock extends Block 
 {
+	
+	private boolean _isGoalBlock;
+
 	/**
 	 * 
 	 * @param c - position, a Coordinate.
@@ -13,6 +16,11 @@ public class GroundBlock extends Block
 	public GroundBlock(int spriteID)
 	{
 		super(spriteID);
+	}
+	
+	public void setGoalBlock(boolean isGoalBlock) 
+	{
+		_isGoalBlock = isGoalBlock;
 	}
 	
 	public int getType()
