@@ -179,11 +179,11 @@ public class Grid implements Iterable<Cell>
 		}
 	}
 	
-	private class RowIterator extends BaseGridIterator 
+	private class ColumnIterator extends BaseGridIterator 
 	{
 		private boolean _reverse;
 		
-		public RowIterator(int r, int c, boolean reverse)
+		public ColumnIterator(int r, int c, boolean reverse)
 		{
 			super(r, c);
 			_reverse = reverse;
@@ -212,11 +212,11 @@ public class Grid implements Iterable<Cell>
 		
 	}
 	
-	private class ColumnIterator extends BaseGridIterator
+	private class RowIterator extends BaseGridIterator
 	{
 		private boolean _reverse;
 		
-		public ColumnIterator(int r, int c, boolean reverse)
+		public RowIterator(int r, int c, boolean reverse)
 		{
 			super(r, c);
 			_reverse = reverse;
