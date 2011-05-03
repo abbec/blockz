@@ -44,13 +44,7 @@ public class Game extends Activity
 		MyGestureListener mgl = new MyGestureListener(_event); 
 		setContentView(_scene);
 		gd = new GestureDetector(mgl);
-		_level = new Level(this, _scene, width, height,R.drawable.level10);	
-		
-		// ====================== LEVELMANAGER TEST ==================== //
-		LevelManager lm = new LevelManager(new LevelManager.SaveSlot(1,"Abbe"));
-		lm.setLevel(4);
-		lm.setScore(4000);
-		lm.save();
+		_level = new Level(this, _scene, width, height,R.drawable.level1);	
 	}
 	
 	public boolean dispatchTouchEvent(MotionEvent ev)
