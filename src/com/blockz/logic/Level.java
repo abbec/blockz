@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ListView.FixedViewInfo;
-
 import com.blockz.MyEvent;
 import com.blockz.R;
 import com.blockz.graphics.Scene;
@@ -39,6 +38,7 @@ public class Level
 	private long playingTime = 0;
 	private Grid _grid;
 	private double _points = 999;
+	private LinkedList<Move> _moveList; 
 	
 	public Level(Context context, Scene theScene, int width,int height, int resourceNumber)
 	{
@@ -46,6 +46,7 @@ public class Level
 		_context = context;
 		_scene = theScene;
 		readLevel(resourceNumber);
+		_moveList = new LinkedList<Move>();
 	}
 	
 	/**
@@ -55,6 +56,7 @@ public class Level
 	{		
 		int col,row;
 		updatePlayingTime();
+		Move move;
 		checkGoals();
 		
 		if(_currentEvent != null)
@@ -70,6 +72,8 @@ public class Level
 			{
 				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
 				Log.d("B_INFO", CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()).toString());
+				//Stoppa in ett Move-objekt i Levels move-lista, skicka med row, col
+				_moveList.add(new Move(new Coordinate(row, col),CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()), _grid, gameTime, _currentEvent.getDirection()));
 				
 			}
 			else if(_grid.hasMovable(row,col) &&_currentEvent.getDirection() == Constant.UNKNOWN && _currentEvent.isShowArrows())
@@ -78,6 +82,25 @@ public class Level
 			}
 			_currentEvent = null;
 		}
+		//for-loop som går igenom move-lista, kollar om de är onTheMove (uppdatera offset) 
+		if(_moveList != null)
+		{
+			for (int i = 0; i < _moveList.size(); i++)
+			{
+			
+				if(_moveList.get(i).isMoving())
+				{
+					_moveList.get(i).move(gameTime);
+				
+				}
+				else
+					//Kolla upp om indexen blir förskjutna
+					_moveList.remove(i);
+			}
+		}
+		
+		
+		
 	}
 	
 	public void updatePoints(double p)
@@ -88,6 +111,7 @@ public class Level
 			_points = 0;
 	}
 	
+
 	public void updatePlayingTime()
 	{
 		int min_frame_time = 1000/30;
@@ -99,10 +123,8 @@ public class Level
 		seconds = seconds - (minutes * 60);
 		
 		updatePoints(1/30.0);
-		
 		//Log.d("B_INFO", "Seconds: " +  seconds + "Minuter: " +  minutes);
 	}
-	
 	public void checkGoals()
 	{
 		Iterator<Cell> it = _grid.iterator();
@@ -126,8 +148,6 @@ public class Level
 		
 		updatePoints(100.0);
 	}
-	
-	
 	public void addEvent(MyEvent ev)
 	{
 
@@ -163,7 +183,6 @@ public class Level
 				 boolean isBlockMovable = false;
 				 boolean isGroundBlock = false;
 				 boolean isGoalBlock = false;
-				 
 				 switch (pixelValue) {
 					case GRASS:
 						drawableValue =  R.drawable.grass;

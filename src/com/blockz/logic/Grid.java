@@ -60,12 +60,21 @@ public class Grid implements Iterable<Cell>
 		
 		_gridArray[r][c].setFixed(b);
 	}
+	public Block getFixed(int r, int c)
+	{
+		return _gridArray[r][c].getFixed();
+	}
 	
 	public void setMovable(int r, int c, MovableItem it)
 	{
 		Assert.assertTrue("Row or col outside cell range!", r < 8 && c < 12);
 		
 		_gridArray[r][c].setMovable(it);
+	}
+	
+	public MovableItem getMovable(int r, int c)
+	{
+		return _gridArray[r][c].getMovable();
 	}
 	
 	public Coordinate getPixelCoords(int r, int c)
