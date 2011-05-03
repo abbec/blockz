@@ -8,6 +8,7 @@ import com.blockz.logic.*;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.*;
 
@@ -21,16 +22,17 @@ public class Game extends Activity
 	private Level _level;
 	private Scene _scene;
 	private GameThread _mainThread;
-	private long _gameStart;
+	public long _gameStart;
 	private GestureDetector gd;
 	private MyEvent _event;
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("state",0).commit();
 		
 		// Get screen size
 		Display display = getWindowManager().getDefaultDisplay();
@@ -44,7 +46,13 @@ public class Game extends Activity
 		MyGestureListener mgl = new MyGestureListener(_event); 
 		setContentView(_scene);
 		gd = new GestureDetector(mgl);
-		_level = new Level(this, _scene, width, height,R.drawable.level10);	
+		_level = new Level(this, _scene, width, height,R.drawable.level10);
+		_mainThread = new GameThread(this);
+		
+		int state = PreferenceManager.getDefaultSharedPreferences(this).getInt("state", 0);
+		if(state != 1){
+			_gameStart = System.currentTimeMillis();
+		}
 	}
 	
 	public boolean dispatchTouchEvent(MotionEvent ev)
@@ -76,6 +84,7 @@ public class Game extends Activity
 	{
 		boolean retry = true;
         _mainThread.setRunning(false);
+      
         while (retry) 
         {
             try 
@@ -84,25 +93,44 @@ public class Game extends Activity
                 retry = false;
             } 
             catch (InterruptedException e) 
-            {}
+            {
+            	Log.d("B_INFO", "error in stopThread()");
+            }
         }
 	}
 	
+	@Override
 	public void onPause()
 	{
-		super.onPause();
+		Log.d("B_INFO", "inne i pause");
 		_mainThread.pause();
-		//spara allt, inklusive tiden som gäller.
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
+		Log.d("B_INFO", "State saved: " + _mainThread.state());
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("state", _mainThread.state()).commit();
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("run", _mainThread.isRunning()).commit();
+		
+		super.onPause();
 	}
+	
+
 	
 	public void onResume()
 	{
-		super.onResume();
-		//starta allt, inklusive tiden som gäller.
-		// Start the main game loop
-		_mainThread = new GameThread(this);
+		Log.d("B_INFO", "inne i resume");
+		Log.d("B_INFO", "state" + PreferenceManager.getDefaultSharedPreferences(this).getInt("state", -1));
+		int state = PreferenceManager.getDefaultSharedPreferences(this).getInt("state", 0);
+		if( (state == 1 && PreferenceManager.getDefaultSharedPreferences(this).getBoolean("run", false)))
+		{
+			Log.d("B_INFO", "state inne i resume: "  + state);
+			Log.d("B_INFO", "inne i resume och state==1 och run = true");
+			Log.d("B_INFO", "time inne i resume" + PreferenceManager.getDefaultSharedPreferences(this).getFloat("time", 0));
+			_gameStart = _gameStart + (System.currentTimeMillis() - (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("time", 0));
+			_mainThread.unPause();
+		}
 		
-		_gameStart = System.currentTimeMillis();
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("state", _mainThread.state()).commit();
+		
+		super.onResume();
 	}
 
 	/**

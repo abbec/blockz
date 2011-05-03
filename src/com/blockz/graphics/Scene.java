@@ -136,6 +136,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) 
     {
+    	Log.d("B_INFO", "Surface Destroyed");
     	_game.stopThread();
     }
     
