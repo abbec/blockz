@@ -7,7 +7,7 @@ public class Move {
 	private Grid _grid;
 	private long _lastUpdate;
 	private int _fps = 30;
-	private int _speed = 10;
+	private int _speed = 15;
 	private int _direction, _offsetX, _offsetY;
 	
 	public Move(Coordinate start, Coordinate end, Grid grid, long currentTime, int direction)
@@ -46,7 +46,7 @@ public class Move {
 	public void move(long currentTime)
 	{
 		
-		if (currentTime - _lastUpdate > 33)
+		if (currentTime - _lastUpdate > (1000/_fps))
 		{
 			Coordinate offset = _grid.getMovable(_start.x, _start.y).getOffset();
 			
@@ -57,7 +57,6 @@ public class Move {
 			 **/
 			if (offset.x > 40-_speed || offset.y > 40-_speed || offset.x < -40+_speed || offset.y < -40+_speed)
 			{
-				_grid.getFixed(_start.x, _start.y).flagForRender();
 				_grid.getMovable(_start.x, _start.y).setOffset(new Coordinate(0,0));
 				_grid.setMovable(_start.x+_offsetY, _start.y+_offsetX, _grid.getMovable(_start.x, _start.y));
 				_grid.setMovable(_start.x, _start.y, null);
@@ -65,7 +64,6 @@ public class Move {
 				_start.x += _offsetY;
 				_start.y += _offsetX;
 				
-				_grid.getMovable(_start.x,  _start.y).flagForRender();
 				
 				_lastUpdate = currentTime;
 				

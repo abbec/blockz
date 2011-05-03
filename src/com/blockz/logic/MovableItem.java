@@ -33,4 +33,9 @@ public abstract class MovableItem extends Item {
 	{
 		return _offset;
 	}
+	public boolean hasOffset()
+	{
+		return !_offset.equals(new Coordinate(0,0));
+	}
+	
 }

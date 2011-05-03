@@ -78,7 +78,8 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	 * @param gameTime The game clock. 
 	 */
     public void draw(Grid renderList, long gameTime)
-    {	
+    {
+    	
     	// Lock the canvas to begin editing its pixels
     	synchronized (_surfHolder)
     	{
@@ -86,7 +87,8 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    	Cell cell; Block b;	MovableItem mv;
 	    	Coordinate pixelCoord;
 	    	Sprite s;
-	    
+	    	LinkedList<OverDraw> overDraw = new LinkedList<OverDraw>();
+	    	
 	    	Iterator<Cell> it = renderList.iterator();
 	    	while(it.hasNext())
 	    	{
@@ -95,29 +97,38 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		
 	    		// Render the fixed block
 	    		b = cell.getFixed();
+	    		s = _spriteTable.get(b.getSpriteID());
+	    		s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
 	    		
-	    		if (b.shallRender())
-	    		{
-	    			s = _spriteTable.get(b.getSpriteID());
-	    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
-	    			//b.rendered();
-	    		}
 	    		
 	    		// Render the movable block
 	    		if (cell.hasMovable())
 	    		{
 		    		mv = cell.getMovable();
-		    		pixelCoord.add(mv.getOffset());
 		    		
-		    		if (mv.shallRender())
+		    		if(mv.hasOffset())
+		    		{
+		    			overDraw.add(new OverDraw(mv,pixelCoord));
+		    		}
+		    		else
 		    		{
 		    			s = _spriteTable.get(mv.getSpriteID());
-		    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
-		    			//mv.rendered();
+			    		s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);	    		
 		    		}
-	    		}
-	    		
+	    		}	
 	    	}
+	    	Iterator<OverDraw> it2 = overDraw.iterator();
+	    	OverDraw od;
+	    	while(it2.hasNext())
+	    	{
+	    		od = it2.next();
+	    		
+	    		pixelCoord = od._pixelCoord;
+	    		pixelCoord.add(od._item.getOffset());
+    			s = _spriteTable.get(od._item.getSpriteID());
+    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);	    		
+	    	}
+	    	
 	    	
 	    	// Unlock the canvas to show the screen
 	    	_surfHolder.unlockCanvasAndPost(c);
@@ -141,6 +152,17 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceDestroyed(SurfaceHolder holder) 
     {
     	_game.stopThread();
+    }
+    
+    private class OverDraw
+    {
+    	public MovableItem _item;
+    	public Coordinate _pixelCoord;
+    	
+    	public OverDraw(MovableItem item, Coordinate c)
+    	{
+    		_item = item; _pixelCoord = c;
+    	}
     }
     
 }
