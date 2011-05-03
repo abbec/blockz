@@ -135,11 +135,11 @@ public class Level
 			Cell c = it.next();
 			Block b = c.getFixed();
 			
-			if(b.getType() == Item.GOAL && !c.hasMovable())
-				Log.d("B_INFO", "Goal");
+			//if(b.getType() == Item.GOAL && !c.hasMovable())
+				//Log.d("B_INFO", "Goal");
 		}
 		
-		Log.d("B_INFO", "Da Capo");
+		//Log.d("B_INFO", "Da Capo");
 	}
 	
 	public void reset()
