@@ -50,7 +50,7 @@ public abstract class Menu extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) 
     {
-    	_menus.start();
+    	//_menus.start();
     
     }
  
