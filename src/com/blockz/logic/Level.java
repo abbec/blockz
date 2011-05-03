@@ -39,6 +39,7 @@ public class Level
 	private Grid _grid;
 	private double _points = 999;
 	private LinkedList<Move> _moveList; 
+	private boolean _levelComplete;
 	
 	public Level(Context context, Scene theScene, int width,int height, int resourceNumber)
 	{
@@ -53,11 +54,14 @@ public class Level
 	 * FIXME: Fugly implementation.
 	 */
 	public void update(long gameTime)
-	{		
+	{
+		if(_levelComplete)
+			return;
+		
 		int col,row;
 		updatePlayingTime();
 		Move move;
-		checkGoals();
+		_levelComplete = isLevelComplete();
 		
 		if(_currentEvent != null)
 		{
@@ -103,6 +107,19 @@ public class Level
 		
 	}
 	
+	public boolean onTheMove()
+	{
+		for (int i = 0; i < _moveList.size(); i++)
+		{
+			if(_moveList.get(i).isMoving())
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public void updatePoints(double p)
 	{
 		_points -= p;
@@ -125,8 +142,16 @@ public class Level
 		updatePoints(1/30.0);
 		//Log.d("B_INFO", "Seconds: " +  seconds + "Minuter: " +  minutes);
 	}
-	public void checkGoals()
+	
+	public void levelComplete()
 	{
+		Log.d("B_INFO", "Victory! You got points: " + _points);
+	}
+	public boolean isLevelComplete()
+	{
+		if(onTheMove())
+			return false;
+		
 		Iterator<Cell> it = _grid.iterator();
 		while(it.hasNext())
 		{
@@ -135,9 +160,14 @@ public class Level
 			Cell c = it.next();
 			Block b = c.getFixed();
 			
-			if(b.getType() == Item.GOAL && c.hasMovable())
-				Log.d("B_INFO", "Goal");
+			if(b.getType() == Item.GOAL && !c.hasMovable())
+			{
+				return false;
+			}
+			
 		}
+			levelComplete();
+			return true; //All goals has a moveable
 		
 	}
 	
