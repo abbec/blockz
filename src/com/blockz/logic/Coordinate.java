@@ -25,4 +25,10 @@ public class Coordinate {
     {
         return "Coordinate(x,y): [" + x + "," + y + "]";
     }
+    
+    public void add(Coordinate c)
+    {
+    	x = x + c.x;
+    	y = y + c.y;
+    }
 }

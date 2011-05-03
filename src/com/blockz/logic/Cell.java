@@ -36,9 +36,7 @@ public class Cell
 	}
 	
 	public void setMovable(MovableItem it) 
-	{
-		Assert.assertTrue("Tried to set movable item with empty item!", it != null);
-		
+	{		
 		_movable = it;
 	}
 	
