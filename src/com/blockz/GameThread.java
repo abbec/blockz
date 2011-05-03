@@ -54,6 +54,11 @@ public class GameThread extends Thread
     	return _run;
     }
     
+    public boolean isPaused()
+    {
+    	return _state == PAUSED;
+    }
+    
     @Override
     public void run() 
     {	

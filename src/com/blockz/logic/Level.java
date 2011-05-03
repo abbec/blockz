@@ -51,7 +51,7 @@ public class Level
 	public void update(long gameTime)
 	{		
 		int col,row;
-		updatePlayingTime();
+		updatePlayingTime(gameTime);
 		if(_currentEvent != null)
 		{
 			//GRIDCOORDINATES
@@ -76,8 +76,11 @@ public class Level
 	}
 	
 
-	public void updatePlayingTime()
+	public void updatePlayingTime(long gameTime)
 	{
+		
+		long sekunder = gameTime /1000;
+		/*
 		int min_frame_time = 1000/30;
 		int seconds = 0;
 		int minutes = 0;
@@ -85,8 +88,9 @@ public class Level
 		seconds = (int) (playingTime/1000);		
 		minutes = seconds/60;
 		seconds = seconds - (minutes * 60);
-		
-		//Log.d("B_INFO", "Seconds: " +  seconds + "Minuter: " +  minutes);
+		*/
+
+		Log.d("B_INFO", "Seconds: " +  sekunder);// + "Minuter: " +  minutes);
 	}
 	
 	public void addEvent(MyEvent ev)
