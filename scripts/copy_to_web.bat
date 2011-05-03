@@ -1,0 +1,1 @@
+xcopy /Y bin\blockz.apk W:\TNM082\
