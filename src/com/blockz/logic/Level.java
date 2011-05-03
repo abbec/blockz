@@ -12,6 +12,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.ListView.FixedViewInfo;
+
 import com.blockz.MyEvent;
 import com.blockz.R;
 import com.blockz.graphics.Scene;
@@ -53,6 +55,8 @@ public class Level
 	{		
 		int col,row;
 		updatePlayingTime();
+		checkGoals();
+		
 		if(_currentEvent != null)
 		{
 			//GRIDCOORDINATES
@@ -97,6 +101,23 @@ public class Level
 		updatePoints(1/30.0);
 		
 		//Log.d("B_INFO", "Seconds: " +  seconds + "Minuter: " +  minutes);
+	}
+	
+	public void checkGoals()
+	{
+		Iterator<Cell> it = _grid.iterator();
+		while(it.hasNext())
+		{
+			//Coordinate tempCoord = _grid.getGridCoords(it);
+			//_grid.getCell(tempCoord.x, tempCoord.y);
+			Cell c = it.next();
+			Block b = c.getFixed();
+			
+			if(b.getType() == Item.GOAL && !c.hasMovable())
+				Log.d("B_INFO", "Goal");
+		}
+		
+		Log.d("B_INFO", "Da Capo");
 	}
 	
 	public void reset()
@@ -200,8 +221,7 @@ public class Level
 					}
 					else if(isGoalBlock)
 					{
-						b = new GroundBlock(R.drawable.goal);
-						((GroundBlock) b).setGoalBlock(true);
+						b = new GoalBlock(R.drawable.goal);
 						
 					//	_grid.setCostG(row,col,10);
 					}
