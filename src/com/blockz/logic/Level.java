@@ -64,7 +64,7 @@ public class Level
 			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN)
 			{
 				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
-				
+				Log.d("B_INFO", CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()).toString());
 				
 			}
 			else if(_grid.hasMovable(row,col) &&_currentEvent.getDirection() == Constant.UNKNOWN && _currentEvent.isShowArrows())

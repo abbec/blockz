@@ -8,7 +8,12 @@ public class CollisionHandler
 {
 	
 	public CollisionHandler(){}
-	
+	/**
+	 * Calculates the end destination of a movable block
+	 * @param Grid the grid
+	 * @param int startRow, startCol of the movable block
+	 * @param int direction from the event
+	 */
 	public static Coordinate calculateDestination(Grid grid, int startRow, int startCol, int direction)
 	{
 		Coordinate coord = new Coordinate(startRow, startCol);
@@ -33,15 +38,21 @@ public class CollisionHandler
 				it = grid.reverseColumnIterator(startRow, startCol);
 			break;
 		}
-		//FIXME: Fixa så att coord får rätt koordinater.
+		
+
 		while(it.hasNext())
 		{
+			Coordinate tempCoord = grid.getGridCoords(it);
 			c = it.next();
-			if(!grid.getGridCoords(it).equals(coord))
-			{
-				if(!c.hasMovable()||!c.fixedIsWall())
+			if(!tempCoord.equals(coord))
+			{			
+				if(!c.fixedIsWall())
 				{
-					coord = grid.getGridCoords(it);
+					if(!c.hasMovable()){
+						coord = tempCoord;
+					}
+					else
+						break;
 				}
 				else
 					break;
