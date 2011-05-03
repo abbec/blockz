@@ -7,9 +7,12 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import junit.framework.Assert;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ListView.FixedViewInfo;
@@ -23,13 +26,13 @@ import com.blockz.graphics.Scene;
  */
 public class Level 
 {
-	public final static int STONE_FIXED = -13421773;
-	public final static int STONE_MOVABLE = -6710887;
-	public final static int HUD = -16777216;
-	public final static int GRASS = -3355444;
-	public final static int WATER = -5066052;
-	public final static int GOAL = -1;
-	public final static int START = -1710619;
+	public final static int STONE_FIXED = Color.YELLOW;
+	public final static int STONE_MOVABLE = Color.RED;
+	public final static int HUD = Color.BLACK;
+	public final static int GRASS = Color.GREEN;
+	public final static int WATER = Color.BLUE;
+	public final static int GOAL = Color.WHITE;
+	public final static int START = Color.CYAN;
 	
 	private Scene _scene;
 	private Bitmap _levelImage;
@@ -38,8 +41,8 @@ public class Level
 	private long playingTime = 0;
 	private Grid _grid;
 	private double _points = 999;
-	private LinkedList<Move> _moveList; 
-	private boolean _levelComplete;
+	private LinkedList<Move> _moveList;
+	private boolean _levelComplete = false;
 	
 	public Level(Context context, Scene theScene, int width,int height, int resourceNumber)
 	{
@@ -220,7 +223,7 @@ public class Level
 						isGroundBlock = true;
 						break;
 					case STONE_FIXED:
-						drawableValue =  R.drawable.stone;
+						drawableValue =  R.drawable.stones;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = false;
 						break;
@@ -251,7 +254,7 @@ public class Level
 						isBlockMovable = false;
 						break;
 		            default:
-		            	drawableValue =  R.drawable.icon;
+		            	drawableValue =  R.drawable.fuglyblock;
 		            	staticInt =	Scene.STATIC_SPRITE;
 		            	isBlockMovable = false;
 		            	break;
@@ -297,6 +300,5 @@ public class Level
 			}
 		}
 		
-	}
-	
+	}	
 }

@@ -6,7 +6,7 @@ public class Move {
 	private boolean _isMoving = true;
 	private Grid _grid;
 	private long _lastUpdate;
-	private int _fps = 30;
+	private int _fps = 40;
 	private int _speed = 15;
 	private int _direction, _offsetX, _offsetY;
 	
