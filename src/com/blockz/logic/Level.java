@@ -135,11 +135,10 @@ public class Level
 			Cell c = it.next();
 			Block b = c.getFixed();
 			
-			//if(b.getType() == Item.GOAL && !c.hasMovable())
-				//Log.d("B_INFO", "Goal");
+			if(b.getType() == Item.GOAL && c.hasMovable())
+				Log.d("B_INFO", "Goal");
 		}
 		
-		//Log.d("B_INFO", "Da Capo");
 	}
 	
 	public void reset()
@@ -185,7 +184,7 @@ public class Level
 				 boolean isGoalBlock = false;
 				 switch (pixelValue) {
 					case GRASS:
-						drawableValue =  R.drawable.grass;
+						drawableValue =  R.drawable.grass2;
 						staticInt = Scene.STATIC_SPRITE;
 						isBlockMovable = false;
 						isGroundBlock = true;
@@ -196,7 +195,7 @@ public class Level
 						isBlockMovable = false;
 						break;
 					case STONE_MOVABLE:
-						drawableValue =  R.drawable.grasshole;
+						drawableValue =  R.drawable.fuglyblock;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = true;
 						break;
@@ -217,7 +216,7 @@ public class Level
 						isBlockMovable = false;
 						break;
 					case HUD:
-						drawableValue =  R.drawable.anim_test;
+						drawableValue =  R.drawable.wateranim;
 						staticInt =	Scene.ANIMATED_SPRITE;
 						isBlockMovable = false;
 						break;
@@ -235,7 +234,7 @@ public class Level
 					Block b;
 					if(isGroundBlock)
 					{
-						b = new GroundBlock(R.drawable.grass);
+						b = new GroundBlock(R.drawable.grass2);
 					//	_grid.setCostG(row,col,10);
 					}
 					else if(isGoalBlock)
@@ -254,7 +253,7 @@ public class Level
 				else if(isBlockMovable)
 				{
 					MovableBlock m = new MovableBlock(drawableValue);
-					GroundBlock g = new GroundBlock(R.drawable.grass);
+					GroundBlock g = new GroundBlock(R.drawable.grass2);
 					_grid.setFixed(row,col,g);
 					_grid.setMovable(row,col,m);
 				//	_grid.setCostG(row,col,10000);
