@@ -112,6 +112,16 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 		    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
 		    		}
 	    		}
+	    		// Render the player.
+	    		if (cell.hasPlayer())
+	    		{
+		    		mv = cell.getPlayer();
+		    		if (mv.shallRender())
+		    		{
+		    			s = _spriteTable.get(mv.getSpriteID());
+		    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
+		    		}
+	    		}
 	    		
 	    	}
 	    	

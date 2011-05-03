@@ -28,12 +28,12 @@ public class Level
 	public final static int GRASS = -3355444;
 	public final static int WATER = -5066052;
 	public final static int GOAL = -1;
-	public final static int START = -1710619;
-	
+	public final static int PLAYER = -10263709;
 	private Scene _scene;
 	private Bitmap _levelImage;
 	private Context _context;
 	private MyEvent _currentEvent;
+	private Player _player;
 	private long playingTime = 0;
 	private Grid _grid;
 	
@@ -52,19 +52,29 @@ public class Level
 	{		
 		int col,row;
 		updatePlayingTime();
+		
 		if(_currentEvent != null)
 		{
 			//GRIDCOORDINATES
 			col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
 			row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
 
-			Log.d("B_INFO","Level Class: Column number: "+col);
 			Log.d("B_INFO","Level Class: Row number:"+row);
-					
+			Log.d("B_INFO","Level Class: Column number: "+col);
+			
+			
+			Vector<Coordinate> path = new Vector<Coordinate>();
+			path = _player.moveTo(new Coordinate(row,col));
+			Log.d("B_INFO","Path created with moveTo");
+			for(int i = 0; i < path.size(); i++)
+			{
+			Log.d("B_INFO","Pos: "+path.elementAt(i).x +","+path.elementAt(i).y);
+			}
 			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN)
 			{
 				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
 				Log.d("B_INFO", CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()).toString());
+				
 				
 			}
 			else if(_grid.hasMovable(row,col) &&_currentEvent.getDirection() == Constant.UNKNOWN && _currentEvent.isShowArrows())
@@ -122,6 +132,7 @@ public class Level
 				 int drawableValue =-1;
 				 int staticInt =-1;
 				 boolean isBlockMovable = false;
+				 boolean isPlayer = false;
 				 boolean isGroundBlock = false;
 				 switch (pixelValue) {
 					case GRASS:
@@ -136,13 +147,13 @@ public class Level
 						isBlockMovable = false;
 						break;
 					case STONE_MOVABLE:
-						drawableValue =  R.drawable.grasshole;
+						drawableValue =  R.drawable.fuglyblock;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = true;
 						break;
 					case WATER:
 						drawableValue =  R.drawable.water;
-						staticInt =	Scene.STATIC_SPRITE;
+						staticInt =	Scene.ANIMATED_SPRITE;
 						isBlockMovable = false;
 						break;
 					case GOAL:
@@ -150,15 +161,16 @@ public class Level
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = false;
 						break;
-					case START:	
-						drawableValue =  R.drawable.grasshole;
-						staticInt =	Scene.STATIC_SPRITE;
-						isBlockMovable = false;
-						break;
 					case HUD:
 						drawableValue =  R.drawable.anim_test;
 						staticInt =	Scene.ANIMATED_SPRITE;
 						isBlockMovable = false;
+						break;
+					case PLAYER:
+						drawableValue =  R.drawable.gubbe;
+						staticInt =	Scene.ANIMATED_SPRITE;
+						isBlockMovable = true;
+						isPlayer = true;
 						break;
 		            default:
 		            	drawableValue =  R.drawable.icon;
@@ -175,23 +187,39 @@ public class Level
 					if(isGroundBlock)
 					{
 						b = new GroundBlock(R.drawable.grass);
-					//	_grid.setCostG(row,col,10);
+						_grid.setCostG(row,col,10);
 					}
 					else
 					{
 						b = new WallBlock(drawableValue);
-					//	_grid.setCostG(row,col,10000);
+						_grid.setCostG(row,col,10000);
 					}
 					_grid.setFixed(row,col,b);
 				}
 				else if(isBlockMovable)
 				{
-					MovableBlock m = new MovableBlock(drawableValue);
+					if(isPlayer)
+					{
+						Log.d("B_INFO","Player created..");
+						_player = new Player(_grid,drawableValue);
+						Coordinate pos  = new Coordinate(row,col);
+						_player.setPosition(pos);
+						_grid.setPlayer(row,col,_player);
+						Log.d("B_INFO","Player pos: "+ _player.getPosition().x+" "+_player.getPosition().y);
+						
+					}
+					else
+					{
+						MovableBlock m = new MovableBlock(drawableValue);
+						_grid.setMovable(row,col,m);
+					}
 					GroundBlock g = new GroundBlock(R.drawable.grass);
 					_grid.setFixed(row,col,g);
-					_grid.setMovable(row,col,m);
-				//	_grid.setCostG(row,col,10000);
+					_grid.setCostG(row,col,10000);
+					
+					
 				}
+
 				else
 				{
 					Assert.assertTrue("Level Class: Wrong Movable constant",false);
