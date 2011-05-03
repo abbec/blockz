@@ -32,7 +32,7 @@ public class Game extends Activity
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
-		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("state",0).commit();
+		//PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("state",0).commit();
 		
 		// Get screen size
 		Display display = getWindowManager().getDefaultDisplay();
@@ -105,6 +105,7 @@ public class Game extends Activity
 		Log.d("B_INFO", "inne i pause");
 		_mainThread.pause();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
 		Log.d("B_INFO", "State saved: " + _mainThread.state());
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("state", _mainThread.state()).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("run", _mainThread.isRunning()).commit();
@@ -118,13 +119,20 @@ public class Game extends Activity
 	{
 		Log.d("B_INFO", "inne i resume");
 		Log.d("B_INFO", "state" + PreferenceManager.getDefaultSharedPreferences(this).getInt("state", -1));
-		int state = PreferenceManager.getDefaultSharedPreferences(this).getInt("state", 0);
+		int state = PreferenceManager.getDefaultSharedPreferences(this).getInt("state", -1);
 		if( (state == 1 && PreferenceManager.getDefaultSharedPreferences(this).getBoolean("run", false)))
 		{
 			Log.d("B_INFO", "state inne i resume: "  + state);
 			Log.d("B_INFO", "inne i resume och state==1 och run = true");
-			Log.d("B_INFO", "time inne i resume" + PreferenceManager.getDefaultSharedPreferences(this).getFloat("time", 0));
-			_gameStart = _gameStart + (System.currentTimeMillis() - (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("time", 0));
+	
+			long time = (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("time", 0);
+			Log.d("B_INFO", "time inne i resume" + time);
+			Log.d("B_INFO", "systemtime inne i resume" + System.currentTimeMillis());
+			Log.d("B_INFO", "gamestart innan: " + _gameStart);
+			//KOLLA DETTA, GAMESTART ÄR 0 INNAN .. INTE SÅ KONSTIGT DE BLIR FEL
+			_gameStart = (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("gamestart", 0);
+			_gameStart = _gameStart + (System.currentTimeMillis() - time);
+			Log.d("B_INFO", "gamestart efter: " + _gameStart);
 			_mainThread.unPause();
 		}
 		
