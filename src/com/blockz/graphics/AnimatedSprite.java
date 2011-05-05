@@ -13,14 +13,14 @@ public class AnimatedSprite extends Sprite
 	 
 	private int _updateTime;
 	
-	private Bitmap _sprite;
     private Rect _sRectangle;
     private int _noFrames;
     private int _currentFrame;
     private long _frameTimer;
     private int _spriteHeight;
     private int _spriteWidth;
-    private Context _context;
+    private int _singleWidth;
+    private int _singleHeight;
     
     /**
      * 
@@ -29,36 +29,26 @@ public class AnimatedSprite extends Sprite
      * 
      * Animated sprite that animates a block, for example a character.
      */
-    public AnimatedSprite(int typeID, Context context)
+    public AnimatedSprite(int typeID, Context context, int width, int height)
     {
-    	_context = context;
-    	_sRectangle = new Rect(0,0,0,0);
+    	super(typeID, context, width, height);
+    	
+    	_singleWidth = width;
+    	_singleHeight = height;
+    	
         _frameTimer = 0;
         _currentFrame = 0;
-        
-        _sprite = BitmapFactory.decodeResource(_context.getResources(), typeID);
         
         _spriteWidth = _sprite.getWidth();
         _spriteHeight = _sprite.getHeight();
         
+        _sRectangle = new Rect(0,0,0,0);
         _sRectangle.top = 0;
-        _sRectangle.bottom = 40;
+        _sRectangle.bottom = height;
         _sRectangle.left = 0;
-        _sRectangle.right = 40;
-        _noFrames = _spriteWidth / 40;
+        _sRectangle.right = width;
+        _noFrames = _spriteWidth / width;
         _updateTime = 1000/FPS;
-		
-		/*// Calculate the scale
-        float scaleWidth = ((float) width) / _sprite.getWidth();
-        float scaleHeight = ((float) height) / _sprite.getHeight();
-        
-        // Create a matrix for the manipulation
-        Matrix matrix = new Matrix();
-        // Resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight);
- 
-        // Recreate the new Bitmap
-        _sprite = Bitmap.createBitmap(origSprite, 0, 0, width, height, matrix, true);*/
     	
     }
     
@@ -76,8 +66,8 @@ public class AnimatedSprite extends Sprite
             }
         }
      
-        _sRectangle.left = _currentFrame * 40;
-        _sRectangle.right = _sRectangle.left + 40;
+        _sRectangle.left = _currentFrame * _singleWidth;
+        _sRectangle.right = _sRectangle.left + _singleWidth;
     }
     
     public void draw(Canvas canvas, int x, int y, long gameTime) 
@@ -85,7 +75,7 @@ public class AnimatedSprite extends Sprite
     	// Update the sprite
     	update(gameTime);
     	
-        Rect dest = new Rect(x, y, x+40, y+40);
+        Rect dest = new Rect(x, y, x+_singleWidth, y+_singleHeight);
      
         canvas.drawBitmap(_sprite, _sRectangle, dest, null);
         

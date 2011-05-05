@@ -27,8 +27,8 @@ public class Grid implements Iterable<Cell>
 			}
 		}
 		
-		_cellWidth = screenWidth / 12;
-		_cellHeight = screenHeight / 8;
+		_cellWidth = (int) Math.ceil(screenWidth/12.0);
+		_cellHeight = (int) Math.ceil(screenHeight/8.0);
 	}
 	
 	/**
@@ -60,12 +60,21 @@ public class Grid implements Iterable<Cell>
 		
 		_gridArray[r][c].setFixed(b);
 	}
+	public Block getFixed(int r, int c)
+	{
+		return _gridArray[r][c].getFixed();
+	}
 	
 	public void setMovable(int r, int c, MovableItem it)
 	{
 		Assert.assertTrue("Row or col outside cell range!", r < 8 && c < 12);
 		
 		_gridArray[r][c].setMovable(it);
+	}
+	
+	public MovableItem getMovable(int r, int c)
+	{
+		return _gridArray[r][c].getMovable();
 	}
 	
 	public Coordinate getPixelCoords(int r, int c)
@@ -179,11 +188,11 @@ public class Grid implements Iterable<Cell>
 		}
 	}
 	
-	private class RowIterator extends BaseGridIterator 
+	private class ColumnIterator extends BaseGridIterator 
 	{
 		private boolean _reverse;
 		
-		public RowIterator(int r, int c, boolean reverse)
+		public ColumnIterator(int r, int c, boolean reverse)
 		{
 			super(r, c);
 			_reverse = reverse;
@@ -212,11 +221,11 @@ public class Grid implements Iterable<Cell>
 		
 	}
 	
-	private class ColumnIterator extends BaseGridIterator
+	private class RowIterator extends BaseGridIterator
 	{
 		private boolean _reverse;
 		
-		public ColumnIterator(int r, int c, boolean reverse)
+		public RowIterator(int r, int c, boolean reverse)
 		{
 			super(r, c);
 			_reverse = reverse;

@@ -5,16 +5,22 @@ package com.blockz.graphics;
 
 import java.util.*;
 
-import com.blockz.Game;
-import com.blockz.logic.*;
-
 import junit.framework.Assert;
-
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.blockz.Game;
+import com.blockz.logic.Block;
+import com.blockz.logic.Cell;
+import com.blockz.logic.Coordinate;
+import com.blockz.logic.Grid;
+import com.blockz.logic.MovableItem;
 
 /**
  * The Scene class which is our surface.
@@ -35,13 +41,13 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	
 	private Game _game;
 	
-    public Scene(Context context, Game g, int screenWidth, int screenHeight)
+    public Scene(Context context, Game g, int spriteWidth, int spriteHeight)
     {
     	super(context);
     	_context = context;
     	
-    	_spriteHeight = screenHeight / 8;
-    	_spriteWidth = screenWidth / 12;
+    	_spriteHeight = spriteHeight;
+    	_spriteWidth = spriteWidth;
     	
     	_surfHolder = getHolder();
     	_surfHolder.addCallback(this);
@@ -64,7 +70,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 			if (type == STATIC_SPRITE)
 				_spriteTable.put(spriteId, new StaticSprite(spriteId,_context, _spriteWidth, _spriteHeight));
 			else if (type == ANIMATED_SPRITE)
-				_spriteTable.put(spriteId, new AnimatedSprite(spriteId,_context));
+				_spriteTable.put(spriteId, new AnimatedSprite(spriteId,_context, _spriteWidth, _spriteHeight));
 			else
 				Assert.assertTrue("This sprite type does not exist!", false);
 		}
@@ -78,16 +84,20 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	 * @param gameTime The game clock. 
 	 */
     public void draw(Grid renderList, long gameTime)
-    {	
+    {
+    	
     	// Lock the canvas to begin editing its pixels
     	synchronized (_surfHolder)
     	{
-	    	Canvas c = _surfHolder.lockCanvas();
+	    	Canvas canvas = _surfHolder.lockCanvas();
 	    	Cell cell; Block b;	MovableItem mv;
 	    	Coordinate pixelCoord;
 	    	Sprite s;
-	    
+	    	LinkedList<OverDraw> overDraw = new LinkedList<OverDraw>();
+	    	
 	    	Iterator<Cell> it = renderList.iterator();
+	    	
+
 	    	while(it.hasNext())
 	    	{
 	    		pixelCoord = renderList.getPixelCoords(it);
@@ -95,28 +105,45 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		
 	    		// Render the fixed block
 	    		b = cell.getFixed();
+	    		s = _spriteTable.get(b.getSpriteID());
+	    		s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);
 	    		
-	    		if (b.shallRender())
-	    		{
-	    			s = _spriteTable.get(b.getSpriteID());
-	    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
-	    		}
 	    		
 	    		// Render the movable block
 	    		if (cell.hasMovable())
 	    		{
 		    		mv = cell.getMovable();
-		    		if (mv.shallRender())
+		    		
+		    		if(mv.hasOffset())
+		    		{
+		    			overDraw.add(new OverDraw(mv,pixelCoord));
+		    		}
+		    		else
 		    		{
 		    			s = _spriteTable.get(mv.getSpriteID());
-		    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
+			    		s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);	    		
 		    		}
-	    		}
+	    		}	
+	    	}
+	    	Iterator<OverDraw> it2 = overDraw.iterator();
+	    	OverDraw od;
+	    	while(it2.hasNext())
+	    	{
+	    		od = it2.next();
 	    		
+	    		pixelCoord = od._pixelCoord;
+	    		pixelCoord.add(od._item.getOffset());
+    			s = _spriteTable.get(od._item.getSpriteID());
+    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);	    		
 	    	}
 	    	
+	    
+	    	
+	    	_game.getHud().setPoints(_game.getLevel().getPoints());
+	    	_game.getHud().draw(canvas);	
+	    		    	
 	    	// Unlock the canvas to show the screen
-	    	_surfHolder.unlockCanvasAndPost(c);
+	    	_surfHolder.unlockCanvasAndPost(canvas);
     	}
     }
     
@@ -136,8 +163,18 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) 
     {
-    	Log.d("B_INFO", "Surface Destroyed");
     	_game.stopThread();
+    }
+    
+    private class OverDraw
+    {
+    	public MovableItem _item;
+    	public Coordinate _pixelCoord;
+    	
+    	public OverDraw(MovableItem item, Coordinate c)
+    	{
+    		_item = item; _pixelCoord = c;
+    	}
     }
     
 }

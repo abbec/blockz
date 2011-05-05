@@ -7,11 +7,15 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import junit.framework.Assert;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.ListView.FixedViewInfo;
 import com.blockz.MyEvent;
 import com.blockz.R;
 import com.blockz.graphics.Scene;
@@ -22,13 +26,13 @@ import com.blockz.graphics.Scene;
  */
 public class Level 
 {
-	public final static int STONE_FIXED = -13421773;
-	public final static int STONE_MOVABLE = -6710887;
-	public final static int HUD = -16777216;
-	public final static int GRASS = -3355444;
-	public final static int WATER = -5066052;
-	public final static int GOAL = -1;
-	public final static int START = -1710619;
+	public final static int STONE_FIXED = Color.YELLOW;
+	public final static int STONE_MOVABLE = Color.RED;
+	public final static int HUD = Color.BLACK;
+	public final static int GRASS = Color.GREEN;
+	public final static int WATER = Color.BLUE;
+	public final static int GOAL = Color.WHITE;
+	public final static int START = Color.CYAN;
 	
 	private Scene _scene;
 	private Bitmap _levelImage;
@@ -36,23 +40,32 @@ public class Level
 	private MyEvent _currentEvent;
 	private long playingTime = 0;
 	private Grid _grid;
-	public int temp = 0;
+	private double _points = 999;
+	private LinkedList<Move> _moveList;
+	private boolean _levelComplete = false;
 	
-	public Level(Context context, Scene theScene, int width,int height, int resourceNumber)
+	public Level(Context context, Scene theScene, Grid g, int resourceNumber)
 	{
-		_grid = new Grid(width,height);
+		_grid = g;
 		_context = context;
 		_scene = theScene;
 		readLevel(resourceNumber);
+		_moveList = new LinkedList<Move>();
 	}
 	
 	/**
 	 * FIXME: Fugly implementation.
 	 */
 	public void update(long gameTime)
-	{		
+	{
+		if(_levelComplete)
+			return;
+		
 		int col,row;
-		updatePlayingTime(gameTime);
+		updatePlayingTime();
+		Move move;
+		_levelComplete = isLevelComplete();
+		
 		if(_currentEvent != null)
 		{
 			//GRIDCOORDINATES
@@ -62,11 +75,17 @@ public class Level
 			Log.d("B_INFO","Level Class: Column number: "+col);
 			Log.d("B_INFO","Level Class: Row number:"+row);
 					
-			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN)
+			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN && !_grid.getMovable(row, col).getMoving() )
 			{
 				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
-				
-				
+				//Log.d("B_INFO", CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()).toString());
+				//Stoppa in ett Move-objekt i Levels move-lista, skicka med row, col
+				Coordinate finalDestination = CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection());
+				if(!finalDestination.equals(new Coordinate(row,col)))
+				{	
+					_grid.getMovable(row, col).setMoving(true);
+					_moveList.add(new Move(new Coordinate(row, col), finalDestination, _grid, gameTime, _currentEvent.getDirection()));
+				}
 			}
 			else if(_grid.hasMovable(row,col) &&_currentEvent.getDirection() == Constant.UNKNOWN && _currentEvent.isShowArrows())
 			{
@@ -74,24 +93,57 @@ public class Level
 			}
 			_currentEvent = null;
 		}
+		//for-loop som går igenom move-lista, kollar om de är onTheMove (uppdatera offset) 
+		if(_moveList != null)
+		{
+			for (int i = 0; i < _moveList.size(); i++)
+			{
+			
+				if(_moveList.get(i).isMoving())
+				{
+					_moveList.get(i).move(gameTime);
+				
+				}
+				else
+					//Kolla upp om indexen blir förskjutna
+					_moveList.remove(i);
+			}
+		}
+		
+		
+		
+	}
+	
+	public boolean onTheMove()
+	{
+		for (int i = 0; i < _moveList.size(); i++)
+		{
+			if(_moveList.get(i).isMoving())
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public void updatePoints(double p)
+	{
+		_points -= p;
+		
+		if(_points < 0)
+			_points = 0;
 	}
 	
 
-	public void updatePlayingTime(long gameTime)
+	public double getPoints() 
 	{
-		//long sekunder = gameTime / 1000;
-		int seconds = 0;
-		int minutes = 0;
-		
-		int min_frame_time = 1000/30;
-		temp += min_frame_time;
-		seconds = (int) (temp/1000);
-		minutes = seconds/60;
-		seconds = seconds - (minutes * 60);
-		
-		Log.d("B_INFO", "Seconds: " + seconds + ", Minuter: " +  minutes);
-		
-		/*
+		return _points;
+	}
+
+
+	public void updatePlayingTime()
+	{
 		int min_frame_time = 1000/30;
 		int seconds = 0;
 		int minutes = 0;
@@ -99,11 +151,45 @@ public class Level
 		seconds = (int) (playingTime/1000);		
 		minutes = seconds/60;
 		seconds = seconds - (minutes * 60);
-		*/
-
-	//	Log.d("B_INFO", "Seconds: " +  sekunder);// + "Minuter: " +  minutes);
+		
+		updatePoints(1/30.0);
+		//Log.d("B_INFO", "Seconds: " +  seconds + "Minuter: " +  minutes);
 	}
 	
+	public void levelComplete()
+	{
+		Log.d("B_INFO", "Victory! You got points: " + _points);
+	}
+	public boolean isLevelComplete()
+	{
+		if(onTheMove())
+			return false;
+		
+		Iterator<Cell> it = _grid.iterator();
+		while(it.hasNext())
+		{
+			//Coordinate tempCoord = _grid.getGridCoords(it);
+			//_grid.getCell(tempCoord.x, tempCoord.y);
+			Cell c = it.next();
+			Block b = c.getFixed();
+			
+			if(b.getType() == Item.GOAL && !c.hasMovable())
+			{
+				return false;
+			}
+			
+		}
+			levelComplete();
+			return true; //All goals has a moveable
+		
+	}
+	
+	public void reset()
+	{
+		//Resets the blocks
+		
+		updatePoints(100.0);
+	}
 	public void addEvent(MyEvent ev)
 	{
 
@@ -138,20 +224,21 @@ public class Level
 				 int staticInt =-1;
 				 boolean isBlockMovable = false;
 				 boolean isGroundBlock = false;
+				 boolean isGoalBlock = false;
 				 switch (pixelValue) {
 					case GRASS:
-						drawableValue =  R.drawable.grass;
+						drawableValue =  R.drawable.grass2;
 						staticInt = Scene.STATIC_SPRITE;
 						isBlockMovable = false;
 						isGroundBlock = true;
 						break;
 					case STONE_FIXED:
-						drawableValue =  R.drawable.stone;
+						drawableValue =  R.drawable.stones;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = false;
 						break;
 					case STONE_MOVABLE:
-						drawableValue =  R.drawable.grasshole;
+						drawableValue =  R.drawable.fuglyblock;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = true;
 						break;
@@ -164,6 +251,7 @@ public class Level
 						drawableValue =  R.drawable.goal;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = false;
+						isGoalBlock = true;
 						break;
 					case START:	
 						drawableValue =  R.drawable.grasshole;
@@ -171,12 +259,12 @@ public class Level
 						isBlockMovable = false;
 						break;
 					case HUD:
-						drawableValue =  R.drawable.anim_test;
+						drawableValue =  R.drawable.wateranim;
 						staticInt =	Scene.ANIMATED_SPRITE;
 						isBlockMovable = false;
 						break;
 		            default:
-		            	drawableValue =  R.drawable.icon;
+		            	drawableValue =  R.drawable.fuglyblock;
 		            	staticInt =	Scene.STATIC_SPRITE;
 		            	isBlockMovable = false;
 		            	break;
@@ -189,7 +277,13 @@ public class Level
 					Block b;
 					if(isGroundBlock)
 					{
-						b = new GroundBlock(R.drawable.grass);
+						b = new GroundBlock(R.drawable.grass2);
+					//	_grid.setCostG(row,col,10);
+					}
+					else if(isGoalBlock)
+					{
+						b = new GoalBlock(R.drawable.goal);
+						
 					//	_grid.setCostG(row,col,10);
 					}
 					else
@@ -202,7 +296,7 @@ public class Level
 				else if(isBlockMovable)
 				{
 					MovableBlock m = new MovableBlock(drawableValue);
-					GroundBlock g = new GroundBlock(R.drawable.grass);
+					GroundBlock g = new GroundBlock(R.drawable.grass2);
 					_grid.setFixed(row,col,g);
 					_grid.setMovable(row,col,m);
 				//	_grid.setCostG(row,col,10000);
@@ -216,6 +310,5 @@ public class Level
 			}
 		}
 		
-	}
-	
+	}	
 }

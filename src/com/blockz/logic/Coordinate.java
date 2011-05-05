@@ -23,6 +23,12 @@ public class Coordinate {
     @Override
     public String toString() 
     {
-        return "Coordinate: [" + x + "," + y + "]";
+        return "Coordinate(x,y): [" + x + "," + y + "]";
+    }
+    
+    public void add(Coordinate c)
+    {
+    	x = x + c.x;
+    	y = y + c.y;
     }
 }
