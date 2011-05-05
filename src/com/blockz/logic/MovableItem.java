@@ -8,7 +8,7 @@ import java.util.LinkedList;
 public abstract class MovableItem extends Item {
 	
 	private Coordinate _offset;
-	
+	private boolean _isMoving = false;
 	/**
 	 * 
 	 * @param c -Coordinate position
@@ -22,6 +22,16 @@ public abstract class MovableItem extends Item {
 	{
 		super(spriteID);
 		_offset = new Coordinate(0,0);
+	}
+	
+	public boolean getMoving()
+	{
+		return _isMoving;
+	}
+	
+	public void setMoving(boolean b)
+	{
+		_isMoving = b;
 	}
 	
 	public void setOffset(Coordinate c)

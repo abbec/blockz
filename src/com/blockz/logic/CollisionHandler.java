@@ -48,6 +48,7 @@ public class CollisionHandler
 			{			
 				if(!c.fixedIsWall())
 				{
+					boolean koll = c.hasMovable();
 					if(!c.hasMovable()){
 						coord = tempCoord;
 					}

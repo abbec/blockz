@@ -75,13 +75,17 @@ public class Level
 			Log.d("B_INFO","Level Class: Column number: "+col);
 			Log.d("B_INFO","Level Class: Row number:"+row);
 					
-			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN)
+			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN && !_grid.getMovable(row, col).getMoving() )
 			{
 				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
-				Log.d("B_INFO", CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()).toString());
+				//Log.d("B_INFO", CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()).toString());
 				//Stoppa in ett Move-objekt i Levels move-lista, skicka med row, col
-				_moveList.add(new Move(new Coordinate(row, col),CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()), _grid, gameTime, _currentEvent.getDirection()));
-				
+				Coordinate finalDestination = CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection());
+				if(!finalDestination.equals(new Coordinate(row,col)))
+				{	
+					_grid.getMovable(row, col).setMoving(true);
+					_moveList.add(new Move(new Coordinate(row, col), finalDestination, _grid, gameTime, _currentEvent.getDirection()));
+				}
 			}
 			else if(_grid.hasMovable(row,col) &&_currentEvent.getDirection() == Constant.UNKNOWN && _currentEvent.isShowArrows())
 			{
