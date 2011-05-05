@@ -261,7 +261,7 @@ public class Level
 						break;
 					case START:	
 						drawableValue =  R.drawable.gubbe;
-						staticInt =	Scene.ANIMATED_SPRITE;
+						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = true;
 						isPlayer = true;
 						break;
@@ -317,7 +317,7 @@ public class Level
 						MovableBlock m = new MovableBlock(drawableValue);
 						_grid.setMovable(row,col,m);
 					}
-					GroundBlock g = new GroundBlock(R.drawable.grass);
+					GroundBlock g = new GroundBlock(R.drawable.grass2);
 					_grid.setFixed(row,col,g);
 					_grid.setCostG(row,col,10000);
 				}
