@@ -81,6 +81,7 @@ public class Game extends Activity
 
 			}
 			else if(col == 1 && row == 0)
+			{
 				Log.d("B_INFO","Reset!");
 				_grid = new Grid(_width, _height);
 				_level.setGrid(_grid);
@@ -88,6 +89,7 @@ public class Game extends Activity
 			}
 			else
 				_level.addEvent(_event);
+		}
 			
 		return result;
 	}
