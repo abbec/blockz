@@ -106,6 +106,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		// Render the fixed block
 	    		b = cell.getFixed();
 	    		s = _spriteTable.get(b.getSpriteID());
+	    		
 	    		s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);
 	    		
 	    		
@@ -132,7 +133,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 		    		if (mv.shallRender())
 		    		{
 		    			s = _spriteTable.get(mv.getSpriteID());
-		    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
+		    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);
 		    		}
 	    		}
 	    			
