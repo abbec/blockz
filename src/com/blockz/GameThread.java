@@ -3,7 +3,6 @@
  */
 package com.blockz;
 
-import android.os.Debug;
 import android.util.Log;
 
 /**
@@ -14,6 +13,8 @@ public class GameThread extends Thread
 {
 	public final static int RUNNING = 0;
 	public final static int PAUSED = 1;
+	
+	
     private Game _game;
     private boolean _run;
     private Debug.MemoryInfo _devInfo;
@@ -53,7 +54,12 @@ public class GameThread extends Thread
     	return _run;
     }
     
-    @Override
+    public boolean isPaused()
+    {
+    	return _state == PAUSED;
+    }
+    
+     @Override
     public void run() 
     {	
     	int min_frame_time = 1000/UPDATE_RATE;
