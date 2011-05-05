@@ -35,7 +35,7 @@ public class Game extends Activity
 	}
 	
 	/**
-	 * 
+	 * Method that initializes the game. It creates grid, scene, game thread, level and HUD.
 	 */
 	private void init()
 	{
@@ -61,6 +61,7 @@ public class Game extends Activity
 		_hud = new Hud(this, _width, _height, _grid.getCellWidth(), _grid.getCellHeight());
 	}
 	
+	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev)
 	{
 		boolean result;
@@ -80,7 +81,6 @@ public class Game extends Activity
 
 			}
 			else if(col == 1 && row == 0)
-			{
 				Log.d("B_INFO","Reset!");
 				_grid = new Grid(_width, _height);
 				_level.setGrid(_grid);
@@ -89,15 +89,23 @@ public class Game extends Activity
 			else
 				_level.addEvent(_event);
 			
-		}
 		return result;
 	}
 	
+	/**
+	 * IMPORTANT: control that _gameStart is correctly updated.
+	 * Calculates the game time.
+	 * @return Game time
+	 */
 	public long gameTime()
 	{
 		return System.currentTimeMillis() - _gameStart;
 	}
 	
+	/**
+	 * Marks the game thread as running and tries to start it. If it is already started, another game thread is started with a new
+	 * scene and the new thread is marked as running.
+	 */
 	public void startThread()
 	{
 		_mainThread.setRunning(true);
@@ -114,65 +122,70 @@ public class Game extends Activity
 		}
 	}
 	
+	/**
+	 * Marks the thread as not running and stops the thread.
+	 */
 	public void stopThread()
 	{
-		boolean retry = true;
         _mainThread.setRunning(false);
-        while (retry) 
+        
+        while (true) 
         {
             try
             {
                 _mainThread.join();
-                retry = false;
+                break;
             } 
             catch(Exception e){
-            	Log.d("B_INFO", "Exception " + e.toString() + e.getLocalizedMessage());
+            	Log.d("B_INFO", "Exception " + e.toString() + ": " + e.getLocalizedMessage());
             }
         }
 	}
 	
-	
+	/**
+	 * Saves played time preferences.
+	 */
 	@Override
-	public void onPause()
+	protected void onPause()
 	{
-		PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
-		PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
-		//Log.d("B_INFO", "State saved: " + _mainThread.state());
+		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
+		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("playedTime", _level.getPlayedTime()).commit();
 		setPauseFlag(true);
+		//_mainThread.pause();
 		super.onPause();
-		_mainThread.pause();
 	}
 	
 
 	@Override 
-	public void onStart()
+	protected void onStart()
 	{
 		super.onStart();
 	}
 	
 	@Override 
-	public void onStop()
+	protected void onStop()
 	{
 		super.onStop();
 	}
 	
-	public void setPauseFlag(boolean flag)
+	/**
+	 * Sets the pause flag.
+	 * @param flag
+	 */
+	private void setPauseFlag(boolean flag)
 	{
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("flag", flag).commit();
 	}
 	
-	public void onResume()
+	/**
+	 * Sets played time to level. 
+	 */
+	protected void onResume()
 	{
 		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("flag", false)) {
 			_level.setPlayedTime(PreferenceManager.getDefaultSharedPreferences(this).getInt("playedTime", 0));
-			long time= (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("time", 0);
-			/*_gameStart = (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("gamestart", 0);
-			Log.d("B_INFO", "Gamestart" + _gameStart);
-			Log.d("B_INFO", "System time" + System.currentTimeMillis());
-			Log.d("B_INFO", "time" + time);
-			_gameStart = _gameStart + (System.currentTimeMillis() - time);*/
-			_mainThread.unPause();
+			//_mainThread.unPause();
 		} else {
 			_level.setPlayedTime(0);
 			_gameStart = System.currentTimeMillis();
@@ -189,10 +202,11 @@ public class Game extends Activity
 		return _level;
 	}
 
+	/**
+	 * @return the _hud
+	 */
 	public Hud getHud() 
 	{
 		return _hud;
 	}
-
-
 }
