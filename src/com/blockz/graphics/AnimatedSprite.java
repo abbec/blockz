@@ -67,7 +67,7 @@ public class AnimatedSprite extends Sprite
         }
      
         _sRectangle.left = _currentFrame * _singleWidth;
-        _sRectangle.right = _sRectangle.left + _singleHeight;
+        _sRectangle.right = _sRectangle.left + _singleWidth;
     }
     
     public void draw(Canvas canvas, int x, int y, long gameTime) 
