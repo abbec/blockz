@@ -1,27 +1,18 @@
-/**
- * 
- */
 package com.blockz;
 
 import java.io.*;
 import java.util.*;
-
 import android.os.Environment;
 import android.util.Log;
-
 import junit.framework.Assert;
 
 /**
- * @author Jenny Yu, Albert Cervin
- *
+ * Class that handles the levels.
  */
 public class LevelManager 
 {
 	/**
-	 * 
-	 * Creates a save slot with the objects needed to 
-	 * create/load a save file 
-	 *
+	 * Creates a save slot with the objects needed to create/load a save file.
 	 */
 	public static class SaveSlot
 	{
@@ -31,70 +22,99 @@ public class LevelManager
 		private int _lastClearedLevel;
 		private LinkedList<Integer> _clearedLevels;
 		
+		/**
+		 * Constructor for a save slot.
+		 * @param id of the slot
+		 * @param name of the slot
+		 */
 		public SaveSlot(int id, String name)
 		{
 			Assert.assertTrue("Invalid save slot!", id < 6 && id > 0);
-			_id = id; _name = name;
+			_id = id;
+			_name = name;
 			_currentScore = 0;
 			_lastClearedLevel = 0;
 			_clearedLevels = new LinkedList<Integer>();
 		}
 
+		/**
+		 * @return The id.
+		 */
 		public int getId() 
 		{
 			return _id;
 		}
 		
+		/**
+		 * @return The name.
+		 */
 		public String getName()
 		{
 			return _name;
 		}
 		
+		/**
+		 * @return The score.
+		 */
 		public int getScore()
 		{
 			return _currentScore;
 		}
 		
+		/**
+		 * @return The last cleared level.
+		 */
 		public int getLastClearedLevel()
 		{
 			return _lastClearedLevel;
 		}
 		
+		/**
+		 * Sets the score.
+		 * @param Score to be set.
+		 */
 		public void setScore(int score)
 		{
 			if (score > 0)
 				_currentScore = score;
 		}
 		
+		/**
+		 * Sets the last cleared level.
+		 * @param Level to be set.
+		 */
 		public void setLastClearedLevel(int level)
 		{
 			if (level > 0)
 				_lastClearedLevel = level;
 		}
 		
+		/**
+		 * Adds the level to the cleared levels list.
+		 * @param Level to add.
+		 */
 		public void addClearedLevel(int level)
 		{
 			_clearedLevels.add(level);
 		}
 	}
-	private final String FILENAME = "save.bz";
+	
+	private static final String FILENAME = "save.bz";
 	private SaveSlot _saveSlot;
 	private int _currentLevel;
+	private static File _dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/blockz");
 	
-	private File _dir;
-	
+	/**
+	 * Constructor for the LevelManager.
+	 * @param saveSlot to be handled by the LevelManager.
+	 */
 	public LevelManager(SaveSlot saveSlot)
 	{
-		
 		_saveSlot = saveSlot;
-		
-		File sdCard = Environment.getExternalStorageDirectory();
-		_dir = new File(sdCard.getAbsolutePath() + "/blockz");
 	}
 	
 	/**
-	 * Saves progress to the sd card in the slot associated with the 
-	 * <code>LevelManager</code>.
+	 * Saves progress to the SD card in the slot associated with the <code>LevelManager</code>.
 	 */
 	public void save()
 	{	
@@ -182,17 +202,16 @@ public class LevelManager
 	}
 	
 	/**
-	 * Loads progress from the sd card from the save slot associated with
-	 * the <code>LevelManager</code>.
+	 * Loads progress from the SD card from the save slot associated with the <code>LevelManager</code>.
 	 */
 	public void load()
 	{
 		File saveFile = new File(_dir, FILENAME);
 		int saveslot = 0;
+		
 		try
 		{
 			Scanner sc = new Scanner(saveFile);
-			
 			saveslot = sc.nextInt();
 			
 			while(saveslot != _saveSlot.getId())
@@ -230,26 +249,21 @@ public class LevelManager
 	/**
 	 * Get a list of save slots specified in the save file.
 	 * 
-	 * @return An array with five save slots. A save slot has the name
-	 * "Empty" if it is empty.
+	 * @return An array with five save slots. A save slot has the name "Empty" if it is empty.
 	 */
-	public SaveSlot[] getSaveSlots()
+	public static SaveSlot[] getSaveSlots()
 	{
 		SaveSlot[] slots = new SaveSlot[5];
 		
 		File saveFile = new File(_dir, FILENAME);
-		int tempInt = 0;
-		String tempString = "";
 		
 		try
 		{
 			Scanner sc = new Scanner(saveFile);
 			int i = 0;
+			
 			while (sc.hasNext())
 			{
-				tempInt = sc.nextInt();
-				tempString = sc.nextLine();
-				
 				slots[i] = new SaveSlot(sc.nextInt(), sc.nextLine().substring(1)); // Remove whitespace
 				
 				slots[i].setScore(sc.nextInt());
@@ -274,11 +288,19 @@ public class LevelManager
 		return slots;
 	}
 	
+	/**
+	 * Sets the level.
+	 * @param level to be set.
+	 */
 	public void setLevel(int level)
 	{
 		_currentLevel = level;
 	}
 	
+	/**
+	 * Gets the level.
+	 * @return the current level.
+	 */
 	public int getLevel()
 	{
 		return _currentLevel;
@@ -293,6 +315,10 @@ public class LevelManager
 		_saveSlot.setScore(score);
 	}
 	
+	/**
+	 * Cleans the text file.
+	 * @return A fresh text file.
+	 */
 	private String cleanFile()
 	{
 		String buffer = "";
