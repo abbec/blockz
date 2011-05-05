@@ -7,7 +7,7 @@ public class Move {
 	private Grid _grid;
 	private long _lastUpdate;
 	private int _fps = 40;
-	private int _speed = 15;
+	private int _speed = 5;
 	private int _direction, _offsetX, _offsetY;
 	
 	public Move(Coordinate start, Coordinate end, Grid grid, long currentTime, int direction)
@@ -55,7 +55,7 @@ public class Move {
 			 * se lite konstigt ut men det är så det ska vara
 			 *CC och EA
 			 **/
-			if (offset.x > 40-_speed || offset.y > 40-_speed || offset.x < -40+_speed || offset.y < -40+_speed)
+			if (offset.x > _grid.getCellHeight() -_speed || offset.y > _grid.getCellWidth()- _speed || offset.x < -1*_grid.getCellHeight() +_speed || offset.y < -1*_grid.getCellWidth() +_speed)
 			{
 				_grid.getMovable(_start.x, _start.y).setOffset(new Coordinate(0,0));
 				_grid.setMovable(_start.x+_offsetY, _start.y+_offsetX, _grid.getMovable(_start.x, _start.y));
@@ -70,6 +70,7 @@ public class Move {
 				if (_end.equals(new Coordinate(_start.x,_start.y)))
 				{
 					_isMoving = false;
+					_grid.getMovable(_start.x, _start.y).setMoving(false); 
 				}
 			}
 			else
