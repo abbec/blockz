@@ -8,7 +8,8 @@ public abstract class Actor extends MovableItem {
 	public Actor(Grid grid, int typeID )
 	{
 		super(typeID);
-		setPathfinder(new PathFinder(grid));
+		
+		
 	}
 
 	public void setPathfinder(PathFinder pathfinder) {
