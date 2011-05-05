@@ -43,8 +43,16 @@ public class Level
 	private double _points = 999;
 	private LinkedList<Move> _moveList;
 	private boolean _levelComplete = false;
-	public int temp = 0;
+	private int _playedTime = 0;
 	
+	public int getPlayedTime() {
+		return _playedTime;
+	}
+
+	public void setPlayedTime(int playedTime) {
+		_playedTime = playedTime;
+	}
+
 	public Level(Context context, Scene theScene, Grid g, int resourceNumber)
 	{
 		_grid = g;
@@ -149,15 +157,12 @@ public class Level
 		int minutes = 0;
 		
 		int min_frame_time = 1000/30;
-		temp += min_frame_time;
-		seconds = (int) (temp/1000);
+		_playedTime += min_frame_time;
+		seconds = (int) (_playedTime/1000);
 		minutes = seconds/60;
 		seconds = seconds - (minutes * 60);
 		
-		//Log.d("B_INFO", "Seconds: " + seconds + ", Minuter: " +  minutes);
-		
 		updatePoints(1/30.0);
-		//Log.d("B_INFO", "Seconds: " +  seconds + "Minuter: " +  minutes);
 	}
 	
 	public void levelComplete()
