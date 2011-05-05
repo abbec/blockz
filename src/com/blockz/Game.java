@@ -62,7 +62,7 @@ public class Game extends Activity
 		Grid grid = new Grid(width, height);
 		
 		Log.d("B_INFO", "Creating scene...");
-		_scene = new Scene(this, this, grid.getCellWidth(), grid.getCellWidth());
+		_scene = new Scene(this, this, grid.getCellWidth(), grid.getCellHeight());
 		_event = new MyEvent();
 		MyGestureListener mgl = new MyGestureListener(_event); 
 		setContentView(_scene);

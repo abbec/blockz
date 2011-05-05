@@ -31,9 +31,7 @@ public abstract class Sprite
         matrix.postScale(scaleWidth, scaleHeight);
  
         // Recreate the new Bitmap
-        _sprite = Bitmap.createBitmap(origSprite, 0, 0, 40, 40, matrix, true);
-        
-        Assert.assertTrue("Sprite is null...", _sprite != null);
+        _sprite = Bitmap.createBitmap(origSprite, 0, 0, origSprite.getWidth(), origSprite.getHeight(), matrix, true);
 	}
 	
 	public abstract void draw(Canvas c, int x, int y, long gameTime);	
