@@ -70,7 +70,7 @@ public class Game extends Activity
 	}
 	
 	/**
-	 * IMPORTANT: control that the game starts correctly.
+	 * IMPORTANT: control that _gameStart is correctly updated.
 	 * Calculates the game time.
 	 * @return Game time
 	 */
@@ -130,7 +130,7 @@ public class Game extends Activity
 		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("playedTime", _level.getPlayedTime()).commit();
 		setPauseFlag(true);
-		_mainThread.pause();
+		//_mainThread.pause();
 		super.onPause();
 	}
 	
@@ -162,7 +162,7 @@ public class Game extends Activity
 	{
 		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("flag", false)) {
 			_level.setPlayedTime(PreferenceManager.getDefaultSharedPreferences(this).getInt("playedTime", 0));
-			_mainThread.unPause();
+			//_mainThread.unPause();
 		} else {
 			_level.setPlayedTime(0);
 			_gameStart = System.currentTimeMillis();
