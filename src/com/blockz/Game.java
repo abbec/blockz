@@ -31,8 +31,7 @@ public class Game extends Activity
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
-		//PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("state",0).commit();
+		Log.d("B_INFO", "Inne i onCreate");
 		
 		// Get screen size
 		Display display = getWindowManager().getDefaultDisplay();
@@ -49,10 +48,9 @@ public class Game extends Activity
 		_level = new Level(this, _scene, width, height,R.drawable.level10);
 		_mainThread = new GameThread(this);
 		
-		int state = PreferenceManager.getDefaultSharedPreferences(this).getInt("state", 0);
-		if(state != 1){
-			_gameStart = System.currentTimeMillis();
-		}
+
+		
+		setPauseFlag(false);
 	}
 	
 	public boolean dispatchTouchEvent(MotionEvent ev)
@@ -77,11 +75,20 @@ public class Game extends Activity
 	public void startThread()
 	{
 		_mainThread.setRunning(true);
-		_mainThread.start();
+		try{
+			_mainThread.start();
+		}catch(Exception ex){
+			Log.d("B_INFO", "startThread Exception");
+			_mainThread = new GameThread(this);
+			_scene = new Scene(this, this, 300, 300);
+			_mainThread.setRunning(true);
+			_mainThread.start();
+		}
 	}
 	
 	public void stopThread()
 	{
+		Log.d("B_INFO", "inne i stopThread");
 		boolean retry = true;
         _mainThread.setRunning(false);
       
@@ -90,14 +97,19 @@ public class Game extends Activity
             try 
             {
                 _mainThread.join();
+                _mainThread.stop();
                 retry = false;
             } 
             catch (InterruptedException e) 
             {
-            	Log.d("B_INFO", "error in stopThread()");
+            	Log.d("B_INFO", "Interrupt");
+            }
+            catch(Exception e){
+            	Log.d("B_INFO", "Exception");
             }
         }
 	}
+	
 	
 	@Override
 	public void onPause()
@@ -109,34 +121,48 @@ public class Game extends Activity
 		Log.d("B_INFO", "State saved: " + _mainThread.state());
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("state", _mainThread.state()).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("run", _mainThread.isRunning()).commit();
-		
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("temp", _level.temp).commit();
+		setPauseFlag(true);
 		super.onPause();
 	}
 	
 
+	@Override 
+	public void onStart()
+	{
+		super.onStart();
+		Log.d("B_INFO", "inne i onStart");
+	}
+	
+	@Override 
+	public void onStop()
+	{
+		super.onStop();
+		Log.d("B_INFO", "Inne i onStop");
+	
+	}
+	
+	public void setPauseFlag(boolean flag)
+	{
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("flag", flag).commit();
+	}
 	
 	public void onResume()
 	{
-		Log.d("B_INFO", "inne i resume");
-		Log.d("B_INFO", "state" + PreferenceManager.getDefaultSharedPreferences(this).getInt("state", -1));
-		int state = PreferenceManager.getDefaultSharedPreferences(this).getInt("state", -1);
-		if( (state == 1 && PreferenceManager.getDefaultSharedPreferences(this).getBoolean("run", false)))
-		{
-			Log.d("B_INFO", "state inne i resume: "  + state);
-			Log.d("B_INFO", "inne i resume och state==1 och run = true");
-	
-			long time = (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("time", 0);
-			Log.d("B_INFO", "time inne i resume" + time);
-			Log.d("B_INFO", "systemtime inne i resume" + System.currentTimeMillis());
-			Log.d("B_INFO", "gamestart innan: " + _gameStart);
-			//KOLLA DETTA, GAMESTART ÄR 0 INNAN .. INTE SÅ KONSTIGT DE BLIR FEL
+		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("flag", false)) {
+			_level.temp = PreferenceManager.getDefaultSharedPreferences(this).getInt("temp", 0);
+			Log.d("B_INFO", "onResume, temp:" + _level.temp);
+			long time= (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("time", 0);
 			_gameStart = (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("gamestart", 0);
+			Log.d("B_INFO", "Gamestart" + _gameStart);
+			Log.d("B_INFO", "System time" + System.currentTimeMillis());
+			Log.d("B_INFO", "time" + time);
 			_gameStart = _gameStart + (System.currentTimeMillis() - time);
-			Log.d("B_INFO", "gamestart efter: " + _gameStart);
 			_mainThread.unPause();
+		} else {
+			_level.temp = 0;
+			_gameStart = System.currentTimeMillis();
 		}
-		
-		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("state", _mainThread.state()).commit();
 		
 		super.onResume();
 	}
