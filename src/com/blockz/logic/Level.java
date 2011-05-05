@@ -3,19 +3,17 @@
  */
 package com.blockz.logic;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import junit.framework.Assert;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.widget.ListView.FixedViewInfo;
+
 import com.blockz.MyEvent;
 import com.blockz.R;
 import com.blockz.graphics.Scene;
@@ -45,6 +43,7 @@ public class Level
 	private LinkedList<Move> _moveList;
 	private boolean _levelComplete = false;
 	private int _playedTime = 0;
+	private int _levelResourceNumber;
 	
 	public Level(Context context, Scene theScene, Grid g, int resourceNumber)
 	{
@@ -53,10 +52,16 @@ public class Level
 		_scene = theScene;
 		readLevel(resourceNumber);
 		_moveList = new LinkedList<Move>();
+		_levelResourceNumber = resourceNumber;
 	}
 	
 	public int getPlayedTime() {
 		return _playedTime;
+	}
+	
+	public int getLevelResourceNr()
+	{
+		return _levelResourceNumber;
 	}
 
 	public void setPlayedTime(int playedTime) {
@@ -84,7 +89,7 @@ public class Level
 
 			Log.d("B_INFO","Level Class: Column number: "+col);
 			Log.d("B_INFO","Level Class: Row number:"+row);
-					
+
 			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN && !_grid.getMovable(row, col).getMoving() )
 			{
 				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
@@ -122,6 +127,11 @@ public class Level
 		
 		
 		
+	}
+	
+	public void setGrid(Grid g)
+	{
+		_grid = g;
 	}
 	
 	public boolean onTheMove()
@@ -199,6 +209,7 @@ public class Level
 		//Resets the blocks
 		
 		updatePoints(100.0);
+		readLevel(_levelResourceNumber);
 	}
 	public void addEvent(MyEvent ev)
 	{
@@ -271,8 +282,8 @@ public class Level
 						isPlayer = true;
 						break;
 					case HUD:
-						drawableValue =  R.drawable.wateranim;
-						staticInt =	Scene.ANIMATED_SPRITE;
+						drawableValue =  R.drawable.grass2;
+						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = false;
 						break;
 		            default:
