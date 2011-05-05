@@ -7,10 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 
 public class StaticSprite extends Sprite 
-{
-
-	private Context _context;
-	
+{	
 	/**
 	 * 
 	 * @param typeID - type of Sprite.
@@ -18,20 +15,7 @@ public class StaticSprite extends Sprite
 	 */
 	public StaticSprite(int typeID, Context context, int width, int height)
 	{
-		_context = context;
-		Bitmap origSprite = BitmapFactory.decodeResource(_context.getResources(), typeID);
-		
-		// Calculate the scale
-        float scaleWidth = ((float) width) / 40;
-        float scaleHeight = ((float) height) / 40;
-        
-        // Create a matrix for the manipulation
-        Matrix matrix = new Matrix();
-        // Resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight);
- 
-        // Recreate the new Bitmap
-        _sprite = Bitmap.createBitmap(origSprite, 0, 0, 40, 40, matrix, true); 
+		super(typeID, context, width, height); 
 	}
 	@Override
 	public void draw(Canvas canvas,int x, int y, long gameTime) 

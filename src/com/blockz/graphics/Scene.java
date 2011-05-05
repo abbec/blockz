@@ -64,7 +64,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 			if (type == STATIC_SPRITE)
 				_spriteTable.put(spriteId, new StaticSprite(spriteId,_context, _spriteWidth, _spriteHeight));
 			else if (type == ANIMATED_SPRITE)
-				_spriteTable.put(spriteId, new AnimatedSprite(spriteId,_context));
+				_spriteTable.put(spriteId, new AnimatedSprite(spriteId,_context, _spriteWidth, _spriteHeight));
 			else
 				Assert.assertTrue("This sprite type does not exist!", false);
 		}
