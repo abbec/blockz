@@ -10,7 +10,8 @@ import android.util.Log;
 import android.view.*;
 
 /**
- * Activity for the game.
+ * Activity that 
+ *
  */
 public class Game extends Activity
 {
@@ -22,6 +23,7 @@ public class Game extends Activity
 	private GestureDetector gd;
 	private MyEvent _event;
 	private Grid _grid;
+	private int _width, _height;
 	
 	/**
 	 * Called when the activity is created.
@@ -33,7 +35,7 @@ public class Game extends Activity
 	}
 	
 	/**
-	 * Method that initializes the game. It creates grid, scene, game thread, level and HUD.
+	 * 
 	 */
 	private void init()
 	{
@@ -42,9 +44,9 @@ public class Game extends Activity
 		
 		// Get screen size
 		Display display = getWindowManager().getDefaultDisplay();
-		int width = display.getWidth();
-		int height = display.getHeight();
-		_grid = new Grid(width, height);
+		_width = display.getWidth();
+		_height = display.getHeight();
+		_grid = new Grid(_width, _height);
 		
 		_scene = new Scene(this, this, _grid.getCellWidth(), _grid.getCellHeight());
 		_event = new MyEvent();
@@ -56,37 +58,49 @@ public class Game extends Activity
 		_mainThread = new GameThread(this);
 		setPauseFlag(false);
 		
-		_hud = new Hud(width, height, _grid.getCellWidth(), _grid.getCellHeight());
+		_hud = new Hud(this, _width, _height, _grid.getCellWidth(), _grid.getCellHeight());
 	}
 	
-	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev)
 	{
 		boolean result;
 		result = gd.onTouchEvent(ev);
 		if(result)
-			_level.addEvent(_event);
+		{
+			int col = (int) Math.floor(_event.getCoordinate().x/_grid.getCellWidth());
+			int row = (int) Math.floor(_event.getCoordinate().y/_grid.getCellHeight());
+			
+			if(col == 0 && row == 0)
+			{
+				Log.d("B_INFO","Pause!");
+			/*	_mainThread.pause();
+				
+				pauseMenu = new PauseMenu();
+				pauseMenu.mainLoop(); */
+
+			}
+			else if(col == 1 && row == 0)
+			{
+				Log.d("B_INFO","Reset!");
+				_grid = new Grid(_width, _height);
+				_level.setGrid(_grid);
+				_level.reset();
+			}
+			else
+				_level.addEvent(_event);
+			
+		}
 		return result;
 	}
 	
-	/**
-	 * IMPORTANT: control that _gameStart is correctly updated.
-	 * Calculates the game time.
-	 * @return Game time
-	 */
 	public long gameTime()
 	{
 		return System.currentTimeMillis() - _gameStart;
 	}
 	
-	/**
-	 * Marks the game thread as running and tries to start it. If it is already started, another game thread is started with a new
-	 * scene and the new thread is marked as running.
-	 */
 	public void startThread()
 	{
 		_mainThread.setRunning(true);
-		
 		try
 		{
 			_mainThread.start();
@@ -100,69 +114,65 @@ public class Game extends Activity
 		}
 	}
 	
-	/**
-	 * Marks the thread as not running and stops the thread.
-	 */
 	public void stopThread()
 	{
+		boolean retry = true;
         _mainThread.setRunning(false);
-        
-        while (true) 
+        while (retry) 
         {
             try
             {
                 _mainThread.join();
-                break;
+                retry = false;
             } 
             catch(Exception e){
-            	Log.d("B_INFO", "Exception " + e.toString() + ": " + e.getLocalizedMessage());
+            	Log.d("B_INFO", "Exception " + e.toString() + e.getLocalizedMessage());
             }
         }
 	}
 	
-	/**
-	 * Saves played time preferences.
-	 */
+	
 	@Override
-	protected void onPause()
+	public void onPause()
 	{
-		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
-		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
+		//Log.d("B_INFO", "State saved: " + _mainThread.state());
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("playedTime", _level.getPlayedTime()).commit();
 		setPauseFlag(true);
-		//_mainThread.pause();
 		super.onPause();
+		_mainThread.pause();
 	}
 	
+
 	@Override 
-	protected void onStart()
+	public void onStart()
 	{
 		super.onStart();
 	}
 	
 	@Override 
-	protected void onStop()
+	public void onStop()
 	{
 		super.onStop();
 	}
 	
-	/**
-	 * Sets the pause flag.
-	 * @param flag
-	 */
-	private void setPauseFlag(boolean flag)
+	public void setPauseFlag(boolean flag)
 	{
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("flag", flag).commit();
 	}
 	
-	/**
-	 * Sets played time to level. 
-	 */
-	protected void onResume()
+	public void onResume()
 	{
 		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("flag", false)) {
 			_level.setPlayedTime(PreferenceManager.getDefaultSharedPreferences(this).getInt("playedTime", 0));
-			//_mainThread.unPause();
+			long time= (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("time", 0);
+			/*_gameStart = (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("gamestart", 0);
+			Log.d("B_INFO", "Gamestart" + _gameStart);
+			Log.d("B_INFO", "System time" + System.currentTimeMillis());
+			Log.d("B_INFO", "time" + time);
+			_gameStart = _gameStart + (System.currentTimeMillis() - time);*/
+			_mainThread.unPause();
 		} else {
 			_level.setPlayedTime(0);
 			_gameStart = System.currentTimeMillis();
@@ -179,11 +189,10 @@ public class Game extends Activity
 		return _level;
 	}
 
-	/**
-	 * @return the _hud
-	 */
 	public Hud getHud() 
 	{
 		return _hud;
 	}
+
+
 }
