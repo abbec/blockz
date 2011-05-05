@@ -57,13 +57,13 @@ public class Game extends Activity
 		Grid grid = new Grid(width, height);
 		
 		Log.d("B_INFO", "Creating scene...");
-		_scene = new Scene(this, this, grid.getCellWidth(), grid.getCellWidth());
+		_scene = new Scene(this, this, grid.getCellWidth(), grid.getCellHeight());
 		_event = new MyEvent();
-		MyGestureListener mgl = new MyGestureListener(_event); 
+		MyGestureListener mgl = new MyGestureListener(_event);
 		setContentView(_scene);
 		gd = new GestureDetector(mgl);
 		
-		_level = new Level(this, _scene, grid, R.drawable.level10);
+		_level = new Level(this, _scene, grid, R.drawable.level2);
 	}
 	
 	public long gameTime()
