@@ -36,6 +36,7 @@ public class Level
 	private MyEvent _currentEvent;
 	private long playingTime = 0;
 	private Grid _grid;
+	public int temp = 0;
 	
 	public Level(Context context, Scene theScene, int width,int height, int resourceNumber)
 	{
@@ -78,8 +79,10 @@ public class Level
 
 	public void updatePlayingTime(long gameTime)
 	{
+		//long sekunder = gameTime / 1000;
+		temp = temp + 1;
+		Log.d("B_INFO", "Seconds: " +  temp);
 		
-		long sekunder = gameTime /1000;
 		/*
 		int min_frame_time = 1000/30;
 		int seconds = 0;
@@ -90,7 +93,7 @@ public class Level
 		seconds = seconds - (minutes * 60);
 		*/
 
-		Log.d("B_INFO", "Seconds: " +  sekunder);// + "Minuter: " +  minutes);
+	//	Log.d("B_INFO", "Seconds: " +  sekunder);// + "Minuter: " +  minutes);
 	}
 	
 	public void addEvent(MyEvent ev)
