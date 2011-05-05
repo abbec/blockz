@@ -48,8 +48,6 @@ public class Game extends Activity
 		_level = new Level(this, _scene, width, height,R.drawable.level10);
 		_mainThread = new GameThread(this);
 		
-
-		
 		setPauseFlag(false);
 	}
 	
@@ -116,11 +114,10 @@ public class Game extends Activity
 	{
 		Log.d("B_INFO", "inne i pause");
 		_mainThread.pause();
+		
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
 		Log.d("B_INFO", "State saved: " + _mainThread.state());
-		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("state", _mainThread.state()).commit();
-		PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("run", _mainThread.isRunning()).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("temp", _level.temp).commit();
 		setPauseFlag(true);
 		super.onPause();
@@ -153,11 +150,11 @@ public class Game extends Activity
 			_level.temp = PreferenceManager.getDefaultSharedPreferences(this).getInt("temp", 0);
 			Log.d("B_INFO", "onResume, temp:" + _level.temp);
 			long time= (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("time", 0);
-			_gameStart = (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("gamestart", 0);
+			/*_gameStart = (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("gamestart", 0);
 			Log.d("B_INFO", "Gamestart" + _gameStart);
 			Log.d("B_INFO", "System time" + System.currentTimeMillis());
 			Log.d("B_INFO", "time" + time);
-			_gameStart = _gameStart + (System.currentTimeMillis() - time);
+			_gameStart = _gameStart + (System.currentTimeMillis() - time);*/
 			_mainThread.unPause();
 		} else {
 			_level.temp = 0;

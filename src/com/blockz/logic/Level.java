@@ -80,8 +80,16 @@ public class Level
 	public void updatePlayingTime(long gameTime)
 	{
 		//long sekunder = gameTime / 1000;
-		temp = temp + 1;
-		Log.d("B_INFO", "Seconds: " +  temp);
+		int seconds = 0;
+		int minutes = 0;
+		
+		int min_frame_time = 1000/30;
+		temp += min_frame_time;
+		seconds = (int) (temp/1000);
+		minutes = seconds/60;
+		seconds = seconds - (minutes * 60);
+		
+		Log.d("B_INFO", "Seconds: " + seconds + ", Minuter: " +  minutes);
 		
 		/*
 		int min_frame_time = 1000/30;
