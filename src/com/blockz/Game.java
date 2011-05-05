@@ -1,27 +1,20 @@
-/**
- * 
- */
 package com.blockz;
 
 import com.blockz.graphics.*;
 import com.blockz.logic.*;
 
 import android.app.Activity;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.*;
 
 /**
- * @author
+ * Activity that 
  *
  */
 public class Game extends Activity
 {
-	
 	private Level _level;
 	private Scene _scene;
 	private Hud _hud;
@@ -31,27 +24,19 @@ public class Game extends Activity
 	private MyEvent _event;
 	private Grid _grid;
 	
+	/**
+	 * Called when the activity is created.
+	 */
 	public void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
-		
 		init();
-		
+		super.onCreate(savedInstanceState);
 	}
 	
-	public boolean dispatchTouchEvent(MotionEvent ev)
-	{
-		boolean result;
-		result = gd.onTouchEvent(ev);
-		if(result)
-		{
-			_level.addEvent(_event);
-		}
-		return result;
-		
-	}
-		
-	public void init()
+	/**
+	 * 
+	 */
+	private void init()
 	{
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -60,10 +45,8 @@ public class Game extends Activity
 		Display display = getWindowManager().getDefaultDisplay();
 		int width = display.getWidth();
 		int height = display.getHeight();
-		
 		_grid = new Grid(width, height);
 		
-		Log.d("B_INFO", "Creating scene...");
 		_scene = new Scene(this, this, _grid.getCellWidth(), _grid.getCellHeight());
 		_event = new MyEvent();
 		MyGestureListener mgl = new MyGestureListener(_event); 
@@ -75,9 +58,15 @@ public class Game extends Activity
 		setPauseFlag(false);
 		
 		_hud = new Hud(width, height, _grid.getCellWidth(), _grid.getCellHeight());
-		
-		_hud.appendDevString("Det");
-		_hud.appendDevString("funkar");
+	}
+	
+	public boolean dispatchTouchEvent(MotionEvent ev)
+	{
+		boolean result;
+		result = gd.onTouchEvent(ev);
+		if(result)
+			_level.addEvent(_event);
+		return result;
 	}
 	
 	public long gameTime()
