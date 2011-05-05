@@ -7,7 +7,7 @@ public class Move {
 	private Grid _grid;
 	private long _lastUpdate;
 	private int _fps = 40;
-	private int _speed = 5;
+	private int _speed = 15;
 	private int _direction, _offsetX, _offsetY;
 	
 	public Move(Coordinate start, Coordinate end, Grid grid, long currentTime, int direction)
