@@ -88,8 +88,6 @@ public class Level
 			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN && !_grid.getMovable(row, col).getMoving() )
 			{
 				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
-				//Log.d("B_INFO", CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()).toString());
-				//Stoppa in ett Move-objekt i Levels move-lista, skicka med row, col
 				Coordinate finalDestination = CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection());
 				if(!finalDestination.equals(new Coordinate(row,col)))
 				{	
