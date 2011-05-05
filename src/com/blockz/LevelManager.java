@@ -1,9 +1,14 @@
+/**
+ * 
+ */
 package com.blockz;
 
 import java.io.*;
 import java.util.*;
+
 import android.os.Environment;
 import android.util.Log;
+
 import junit.framework.Assert;
 
 /**
@@ -37,33 +42,21 @@ public class LevelManager
 			_clearedLevels = new LinkedList<Integer>();
 		}
 
-		/**
-		 * @return The id.
-		 */
 		public int getId() 
 		{
 			return _id;
 		}
 		
-		/**
-		 * @return The name.
-		 */
 		public String getName()
 		{
 			return _name;
 		}
 		
-		/**
-		 * @return The score.
-		 */
 		public int getScore()
 		{
 			return _currentScore;
 		}
 		
-		/**
-		 * @return The last cleared level.
-		 */
 		public int getLastClearedLevel()
 		{
 			return _lastClearedLevel;
@@ -110,7 +103,11 @@ public class LevelManager
 	 */
 	public LevelManager(SaveSlot saveSlot)
 	{
+		
 		_saveSlot = saveSlot;
+		
+		File sdCard = Environment.getExternalStorageDirectory();
+		_dir = new File(sdCard.getAbsolutePath() + "/blockz");
 	}
 	
 	/**
@@ -256,6 +253,8 @@ public class LevelManager
 		SaveSlot[] slots = new SaveSlot[5];
 		
 		File saveFile = new File(_dir, FILENAME);
+		int tempInt = 0;
+		String tempString = "";
 		
 		try
 		{
@@ -339,5 +338,31 @@ public class LevelManager
 		}
 		
 		return buffer;
+	}
+	
+	
+	
+	
+	
+	private class LevelNode
+	{
+		private int _level;
+		private boolean _cleared;
+		
+		public LevelNode(int level, boolean cleared)
+		{
+			_level = level;
+			_cleared = cleared;
+		}
+	
+		public int getLevel()
+		{
+			return _level;
+		}
+		
+		public boolean isCleared()
+		{
+			return _cleared;
+		}
 	}
 }
