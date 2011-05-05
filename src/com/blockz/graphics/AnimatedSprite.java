@@ -58,7 +58,7 @@ public class AnimatedSprite extends Sprite
         matrix.postScale(scaleWidth, scaleHeight);
  
         // Recreate the new Bitmap
-        _sprite = Bitmap.createBitmap(origSprite, 0, 0, width, height, matrix, true);*/
+        _sprite = Bitmap.createBitmap(_sprite, 0, 0, width, height, matrix, true);*/
     	
     }
     

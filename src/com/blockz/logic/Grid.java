@@ -27,8 +27,8 @@ public class Grid implements Iterable<Cell>
 			}
 		}
 		
-		_cellWidth = screenWidth / 12;
-		_cellHeight = screenHeight / 8;
+		_cellWidth = (int) Math.ceil(screenWidth/12.0);
+		_cellHeight = (int) Math.ceil(screenHeight/8.0);
 	}
 	
 	/**
