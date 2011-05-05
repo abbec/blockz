@@ -38,6 +38,7 @@ public class Level
 	private Bitmap _levelImage;
 	private Context _context;
 	private MyEvent _currentEvent;
+	private Player _player;
 	private long playingTime = 0;
 	private Grid _grid;
 	private double _points = 999;
@@ -227,6 +228,7 @@ public class Level
 				 int drawableValue =-1;
 				 int staticInt =-1;
 				 boolean isBlockMovable = false;
+				 boolean isPlayer = false;
 				 boolean isGroundBlock = false;
 				 boolean isGoalBlock = false;
 				 switch (pixelValue) {
@@ -258,9 +260,10 @@ public class Level
 						isGoalBlock = true;
 						break;
 					case START:	
-						drawableValue =  R.drawable.grasshole;
-						staticInt =	Scene.STATIC_SPRITE;
-						isBlockMovable = false;
+						drawableValue =  R.drawable.gubbe;
+						staticInt =	Scene.ANIMATED_SPRITE;
+						isBlockMovable = true;
+						isPlayer = true;
 						break;
 					case HUD:
 						drawableValue =  R.drawable.wateranim;
@@ -282,28 +285,41 @@ public class Level
 					if(isGroundBlock)
 					{
 						b = new GroundBlock(R.drawable.grass2);
-					//	_grid.setCostG(row,col,10);
+						_grid.setCostG(row,col,10);
 					}
 					else if(isGoalBlock)
 					{
 						b = new GoalBlock(R.drawable.goal);
 						
-					//	_grid.setCostG(row,col,10);
+						_grid.setCostG(row,col,10);
 					}
 					else
 					{
 						b = new WallBlock(drawableValue);
-					//	_grid.setCostG(row,col,10000);
+						_grid.setCostG(row,col,10000);
 					}
 					_grid.setFixed(row,col,b);
 				}
 				else if(isBlockMovable)
 				{
-					MovableBlock m = new MovableBlock(drawableValue);
-					GroundBlock g = new GroundBlock(R.drawable.grass2);
+					if(isPlayer)
+					{
+						Log.d("B_INFO","Player created..");
+						_player = new Player(_grid,drawableValue);
+						Coordinate pos  = new Coordinate(row,col);
+						_player.setPosition(pos);
+						_grid.setPlayer(row,col,_player);
+						Log.d("B_INFO","Player pos: "+ _player.getPosition().x+" "+_player.getPosition().y);
+						
+					}
+					else
+					{
+						MovableBlock m = new MovableBlock(drawableValue);
+						_grid.setMovable(row,col,m);
+					}
+					GroundBlock g = new GroundBlock(R.drawable.grass);
 					_grid.setFixed(row,col,g);
-					_grid.setMovable(row,col,m);
-				//	_grid.setCostG(row,col,10000);
+					_grid.setCostG(row,col,10000);
 				}
 				else
 				{

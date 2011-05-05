@@ -8,6 +8,7 @@ public class Cell
 	private int _f, _g, _h;
 	private Block _fixed;
 	private MovableItem _movable;
+	private Player _player;
 	private Cell _parent;
 	private Coordinate _position;
 	public Cell()
@@ -34,10 +35,16 @@ public class Cell
 	{
 		return _movable;
 	}
-	
+	public MovableItem getPlayer()
+	{
+		return _player;
+	}
 	public void setMovable(MovableItem it) 
 	{		
 		_movable = it;
+	}
+	public void setPlayer(Player p) {
+		_player  = p;
 	}
 	
 	public void setG(int g) 
@@ -50,19 +57,16 @@ public class Cell
 		return _g;
 	}
 
-	public void setH(int h) 
+	public void setCost(int h) 
 	{
-		_h = h;
+		 _h = h;
+		 _f = _g + _h;
+		
 	}
 
 	public int getH() 
 	{
 		return _h;
-	}
-
-	public void setF(int f) 
-	{
-		_f = f;
 	}
 
 	public int getF() 
@@ -73,6 +77,10 @@ public class Cell
 	public boolean hasMovable()
 	{
 		return _movable != null;
+	}
+	public boolean hasPlayer()
+	{
+		return _player != null;
 	}
 	
 	public boolean fixedIsWall()
