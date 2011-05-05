@@ -36,27 +36,29 @@ public class PathFinder{
 		
 		Log.d("B_INFO","StartPos!:" + startPos.x + "," +startPos.y);
 
-		int H = 0;
-		Iterator<Cell> it = _grid.iterator();
+		setAllH(endPos);
 		
-		//Set the H cost for all cells.
-		Cell itCell = new Cell();
-		while(it.hasNext())
-		{
-			Coordinate c = _grid.getGridCoords(it);
-			H = Math.abs(endPos.x-c.x) + Math.abs(endPos.y-c.y);
-			
-			// update costs according to endPoints position.
-			itCell = it.next();
-			itCell.setPosition(c);
-			itCell.setCost(H*10);
-		}
 
 		Cell currentCell = _grid.getCell(startPos.x,startPos.y);
 		Cell endCell = _grid.getCell(endPos.x,endPos.y);
+
+		Vector<Cell> neighbors = new Vector<Cell>();
+
+		//Kolla om neighbors går att gå på.
+		
+		endCell = checkNeighbors(endCell);
+		setAllH(endCell.getPosition());
+		Log.d("B_INFO", "Endcell_Changed:" + endCell.toString());
+		//Semi-ful fix för att fixa blockerad endCell-path
+		boolean blockedEndCell = false;
+		if (endCell.getG() != 10)
+		{
+			blockedEndCell = true;
+		}
+		
+		
 		//Add start position to the openList.
 		openList.addElement(currentCell);
-		Vector<Cell> neighbors = new Vector<Cell>();
 		Log.d("B_INFO","EndCellPos: " + endCell.getPosition().toString());
 		while( (currentCell.getPosition().x != endCell.getPosition().x  || currentCell.getPosition().y != endCell.getPosition().y) && openList.size() > 0)
 		{
@@ -73,37 +75,95 @@ public class PathFinder{
 			while(itr.hasNext())
 			{
 				c = itr.next();
-				if(c.getG() == 10 && !inClosedList(c) && !inOpenList(c))
+				if ( c.getH() == 10 && blockedEndCell && c.getG() == 10)
+				{
+					endCell = c;
+					openList.addElement(endCell);
+					endCell.setParent(currentCell);
+					blockedEndCell = false;
+					break;
+				}
+				else if( c.getG() == 10 && !inClosedList(c) && !inOpenList(c))
 				{
 					openList.addElement(c);
 					c.setParent(currentCell);
 				}
 			}
-			currentCell = openList.get(getSmallestCost(openList));
+			if ( openList.size()>0)
+			{
+				currentCell = openList.get(getSmallestCost(openList));
+			}
 			neighbors.clear();
 		}
 		Log.d("B_INFO","Done with closedListsize = " + closedList.size());
 		
-		
-		while(endPos.x != startPos.x || endPos.y != startPos.y)
+		while(endCell.getPosition().x != startPos.x || endCell.getPosition().y != startPos.y)
 		{
-			
-			_path.insertElementAt(endPos, 0);
-			endPos = _grid.getCell(endPos.x, endPos.y).getParent().getPosition();
+			if (!blockedEndCell)
+			{
+				_path.insertElementAt(endCell.getPosition(), 0);
+			}
+			endCell = endCell.getParent();
 		}
 		
 		return _path;
 	}
-	
+	public void setAllH(Coordinate endPos)
+	{
+		int H = 0;
+		Iterator<Cell> it = _grid.iterator();
+		//Set the H cost for all cells.
+		Cell itCell = new Cell();
+		while(it.hasNext())
+		{
+			Coordinate c = _grid.getGridCoords(it);
+			H = Math.abs(endPos.x-c.x) + Math.abs(endPos.y-c.y);
+			
+			// update costs according to endPoints position.
+			itCell = it.next();
+			itCell.setPosition(c);
+			itCell.setCost(H*10);
+		}
+	}
+	public Cell checkNeighbors(Cell endCell)
+	{
+		Vector<Cell> neighbors = new Vector<Cell>();
+		neighbors = getNeighbors(_grid, endCell.getPosition());
+		
+		Iterator<Cell> itr = neighbors.iterator();
+		Cell c = new Cell();
+		
+		while(itr.hasNext())
+		{
+			c = itr.next();
+			if(c != null)
+			{
+				if(c.getG() == 10)
+					return endCell;
+			}
+		}
+		itr = neighbors.iterator();
+		while(itr.hasNext())
+		{
+			c = itr.next();
+			if(c != null)
+				return c;
+		}
+		return endCell;
+	}
 	public Vector<Cell> getNeighbors(Grid grid, Coordinate startPos)
 	{
 		
 		int r = startPos.x, c = startPos.y;
-		Cell N,W,S,E;
 		
+		Cell N = null,W =null,S = null,E = null;
+			if(r>0)
 			N = grid.getCell(r-1,c);
+			if(c<11)
 			E = grid.getCell(r,c+1);
+			if(r<7)
 			S = grid.getCell(r+1,c);
+			if(c>0)
 			W = grid.getCell(r,c-1);
 		
 		Vector<Cell> neighbors = new Vector<Cell>();
