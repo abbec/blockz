@@ -29,22 +29,7 @@ public class Game extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
-		// Get screen size
-		Display display = getWindowManager().getDefaultDisplay();
-		int width = display.getWidth();
-		int height = display.getHeight();
-		
-		
-		Log.d("B_INFO", "Creating scene...");
-		_scene = new Scene(this, this, width, height);
-		_event = new MyEvent();
-		MyGestureListener mgl = new MyGestureListener(_event); 
-		setContentView(_scene);
-		gd = new GestureDetector(mgl);
-		_level = new Level(this, _scene, width, height,R.drawable.level1);	
+		init();	
 	}
 	
 	public boolean dispatchTouchEvent(MotionEvent ev)
@@ -59,7 +44,27 @@ public class Game extends Activity
 		
 	}
 		
-	
+	public void init()
+	{
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		// Get screen size
+		Display display = getWindowManager().getDefaultDisplay();
+		int width = display.getWidth();
+		int height = display.getHeight();
+		
+		Grid grid = new Grid(width, height);
+		
+		Log.d("B_INFO", "Creating scene...");
+		_scene = new Scene(this, this, grid.getCellWidth(), grid.getCellWidth());
+		_event = new MyEvent();
+		MyGestureListener mgl = new MyGestureListener(_event); 
+		setContentView(_scene);
+		gd = new GestureDetector(mgl);
+		
+		_level = new Level(this, _scene, grid, R.drawable.level10);
+	}
 	
 	public long gameTime()
 	{

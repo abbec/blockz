@@ -35,13 +35,13 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	
 	private Game _game;
 	
-    public Scene(Context context, Game g, int screenWidth, int screenHeight)
+    public Scene(Context context, Game g, int spriteWidth, int spriteHeight)
     {
     	super(context);
     	_context = context;
     	
-    	_spriteHeight = screenHeight / 8;
-    	_spriteWidth = screenWidth / 12;
+    	_spriteHeight = spriteHeight;
+    	_spriteWidth = spriteWidth;
     	
     	_surfHolder = getHolder();
     	_surfHolder.addCallback(this);

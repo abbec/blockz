@@ -44,9 +44,9 @@ public class Level
 	private LinkedList<Move> _moveList;
 	private boolean _levelComplete = false;
 	
-	public Level(Context context, Scene theScene, int width,int height, int resourceNumber)
+	public Level(Context context, Scene theScene, Grid g, int resourceNumber)
 	{
-		_grid = new Grid(width,height);
+		_grid = g;
 		_context = context;
 		_scene = theScene;
 		readLevel(resourceNumber);
