@@ -249,18 +249,18 @@ public class Level
 				 boolean isGoalBlock = false;
 				 switch (pixelValue) {
 					case GRASS:
-						drawableValue =  R.drawable.grass2;
+						drawableValue =  R.drawable.grass;
 						staticInt = Scene.STATIC_SPRITE;
 						isBlockMovable = false;
 						isGroundBlock = true;
 						break;
 					case STONE_FIXED:
-						drawableValue =  R.drawable.stones;
+						drawableValue =  R.drawable.stone;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = false;
 						break;
 					case STONE_MOVABLE:
-						drawableValue =  R.drawable.fuglyblock;
+						drawableValue =  R.drawable.block;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = true;
 						break;
@@ -282,7 +282,7 @@ public class Level
 						isPlayer = true;
 						break;
 					case HUD:
-						drawableValue =  R.drawable.grass2;
+						drawableValue =  R.drawable.grass;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = false;
 						break;
@@ -300,7 +300,7 @@ public class Level
 					Block b;
 					if(isGroundBlock)
 					{
-						b = new GroundBlock(R.drawable.grass2);
+						b = new GroundBlock(R.drawable.grass);
 						_grid.setCostG(row,col,10);
 					}
 					else if(isGoalBlock)
@@ -333,7 +333,7 @@ public class Level
 						MovableBlock m = new MovableBlock(drawableValue);
 						_grid.setMovable(row,col,m);
 					}
-					GroundBlock g = new GroundBlock(R.drawable.grass2);
+					GroundBlock g = new GroundBlock(R.drawable.grass);
 					_grid.setFixed(row,col,g);
 					_grid.setCostG(row,col,10000);
 				}
