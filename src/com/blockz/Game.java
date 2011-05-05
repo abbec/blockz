@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.*;
 
@@ -69,6 +70,9 @@ public class Game extends Activity
 		gd = new GestureDetector(mgl);
 		
 		_level = new Level(this, _scene, grid, R.drawable.level2);
+		_mainThread = new GameThread(this);
+		setPauseFlag(false);
+		
 		_hud = new Hud(width, height, grid.getCellWidth(), grid.getCellHeight());
 		
 		_hud.appendDevString("Det");
@@ -83,7 +87,15 @@ public class Game extends Activity
 	public void startThread()
 	{
 		_mainThread.setRunning(true);
-		_mainThread.start();
+		try{
+			_mainThread.start();
+		}catch(Exception ex){
+			Log.d("B_INFO", "startThread Exception");
+			_mainThread = new GameThread(this);
+			_scene = new Scene(this, this, 300, 300);
+			_mainThread.setRunning(true);
+			_mainThread.start();
+		}
 	}
 	
 	public void stopThread()
@@ -98,25 +110,73 @@ public class Game extends Activity
                 retry = false;
             } 
             catch (InterruptedException e) 
-            {}
+            {
+            	Log.d("B_INFO", "Interrupt");
+            }
+            catch(Exception e){
+            	Log.d("B_INFO", "Exception");
+            }
         }
 	}
 	
+	
+	@Override
 	public void onPause()
 	{
+		Log.d("B_INFO", "inne i pause");
+		_mainThread.pause();
+		
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
+		Log.d("B_INFO", "State saved: " + _mainThread.state());
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("temp", _level.temp).commit();
+		setPauseFlag(true);
 		super.onPause();
 		_mainThread.pause();
 		//spara allt, inklusive tiden som gäller.
 	}
 	
+
+	@Override 
+	public void onStart()
+	{
+		super.onStart();
+		Log.d("B_INFO", "inne i onStart");
+	}
+	
+	@Override 
+	public void onStop()
+	{
+		super.onStop();
+		Log.d("B_INFO", "Inne i onStop");
+	
+	}
+	
+	public void setPauseFlag(boolean flag)
+	{
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("flag", flag).commit();
+	}
+	
 	public void onResume()
 	{
+		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("flag", false)) {
+			_level.temp = PreferenceManager.getDefaultSharedPreferences(this).getInt("temp", 0);
+			Log.d("B_INFO", "onResume, temp:" + _level.temp);
+			long time= (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("time", 0);
+			/*_gameStart = (long) PreferenceManager.getDefaultSharedPreferences(this).getFloat("gamestart", 0);
+			Log.d("B_INFO", "Gamestart" + _gameStart);
+			Log.d("B_INFO", "System time" + System.currentTimeMillis());
+			Log.d("B_INFO", "time" + time);
+			_gameStart = _gameStart + (System.currentTimeMillis() - time);*/
+			_mainThread.unPause();
+		} else {
+			_level.temp = 0;
+			_gameStart = System.currentTimeMillis();
+		}
+		
 		super.onResume();
 		//starta allt, inklusive tiden som gäller.
 		// Start the main game loop
-		_mainThread = new GameThread(this);
-		
-		_gameStart = System.currentTimeMillis();
 	}
 
 	/**
