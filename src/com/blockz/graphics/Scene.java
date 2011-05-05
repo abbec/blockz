@@ -5,16 +5,22 @@ package com.blockz.graphics;
 
 import java.util.*;
 
-import com.blockz.Game;
-import com.blockz.logic.*;
-
 import junit.framework.Assert;
-
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.blockz.Game;
+import com.blockz.logic.Block;
+import com.blockz.logic.Cell;
+import com.blockz.logic.Coordinate;
+import com.blockz.logic.Grid;
+import com.blockz.logic.MovableItem;
 
 /**
  * The Scene class which is our surface.
@@ -83,13 +89,15 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
     	// Lock the canvas to begin editing its pixels
     	synchronized (_surfHolder)
     	{
-	    	Canvas c = _surfHolder.lockCanvas();
+	    	Canvas canvas = _surfHolder.lockCanvas();
 	    	Cell cell; Block b;	MovableItem mv;
 	    	Coordinate pixelCoord;
 	    	Sprite s;
 	    	LinkedList<OverDraw> overDraw = new LinkedList<OverDraw>();
 	    	
 	    	Iterator<Cell> it = renderList.iterator();
+	    	
+
 	    	while(it.hasNext())
 	    	{
 	    		pixelCoord = renderList.getPixelCoords(it);
@@ -98,7 +106,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		// Render the fixed block
 	    		b = cell.getFixed();
 	    		s = _spriteTable.get(b.getSpriteID());
-	    		s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);
+	    		s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);
 	    		
 	    		
 	    		// Render the movable block
@@ -113,7 +121,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 		    		else
 		    		{
 		    			s = _spriteTable.get(mv.getSpriteID());
-			    		s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);	    		
+			    		s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);	    		
 		    		}
 	    		}	
 	    	}
@@ -126,12 +134,16 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		pixelCoord = od._pixelCoord;
 	    		pixelCoord.add(od._item.getOffset());
     			s = _spriteTable.get(od._item.getSpriteID());
-    			s.draw(c, pixelCoord.x, pixelCoord.y, gameTime);	    		
+    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);	    		
 	    	}
 	    	
+	    
 	    	
+	    	_game.getHud().setPoints(_game.getLevel().getPoints());
+	    	_game.getHud().draw(canvas);	
+	    		    	
 	    	// Unlock the canvas to show the screen
-	    	_surfHolder.unlockCanvasAndPost(c);
+	    	_surfHolder.unlockCanvasAndPost(canvas);
     	}
     }
     

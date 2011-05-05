@@ -136,6 +136,12 @@ public class Level
 	}
 	
 
+	public double getPoints() 
+	{
+		return _points;
+	}
+
+
 	public void updatePlayingTime()
 	{
 		int min_frame_time = 1000/30;

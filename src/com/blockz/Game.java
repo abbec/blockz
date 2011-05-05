@@ -7,6 +7,9 @@ import com.blockz.graphics.*;
 import com.blockz.logic.*;
 
 import android.app.Activity;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -20,6 +23,7 @@ public class Game extends Activity
 	
 	private Level _level;
 	private Scene _scene;
+	private Hud _hud;
 	private GameThread _mainThread;
 	private long _gameStart;
 	private GestureDetector gd;
@@ -29,7 +33,8 @@ public class Game extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		
-		init();	
+		init();
+		
 	}
 	
 	public boolean dispatchTouchEvent(MotionEvent ev)
@@ -57,13 +62,17 @@ public class Game extends Activity
 		Grid grid = new Grid(width, height);
 		
 		Log.d("B_INFO", "Creating scene...");
-		_scene = new Scene(this, this, grid.getCellWidth(), grid.getCellHeight());
+		_scene = new Scene(this, this, grid.getCellWidth(), grid.getCellWidth());
 		_event = new MyEvent();
-		MyGestureListener mgl = new MyGestureListener(_event);
+		MyGestureListener mgl = new MyGestureListener(_event); 
 		setContentView(_scene);
 		gd = new GestureDetector(mgl);
 		
 		_level = new Level(this, _scene, grid, R.drawable.level2);
+		_hud = new Hud(width, height, grid.getCellWidth(), grid.getCellHeight());
+		
+		_hud.appendDevString("Det");
+		_hud.appendDevString("funkar");
 	}
 	
 	public long gameTime()
@@ -117,4 +126,11 @@ public class Game extends Activity
 	{
 		return _level;
 	}
+
+	public Hud getHud() 
+	{
+		return _hud;
+	}
+
+
 }
