@@ -10,7 +10,8 @@ import android.util.Log;
 import android.view.*;
 
 /**
- * Activity for the game.
+ * Activity that 
+ *
  */
 public class Game extends Activity
 {
@@ -22,6 +23,7 @@ public class Game extends Activity
 	private GestureDetector gd;
 	private MyEvent _event;
 	private Grid _grid;
+	private int _width, _height;
 	
 	/**
 	 * Called when the activity is created.
@@ -42,9 +44,9 @@ public class Game extends Activity
 		
 		// Get screen size
 		Display display = getWindowManager().getDefaultDisplay();
-		int width = display.getWidth();
-		int height = display.getHeight();
-		_grid = new Grid(width, height);
+		_width = display.getWidth();
+		_height = display.getHeight();
+		_grid = new Grid(_width, _height);
 		
 		_scene = new Scene(this, this, _grid.getCellWidth(), _grid.getCellHeight());
 		_event = new MyEvent();
@@ -56,7 +58,7 @@ public class Game extends Activity
 		_mainThread = new GameThread(this);
 		setPauseFlag(false);
 		
-		_hud = new Hud(width, height, _grid.getCellWidth(), _grid.getCellHeight());
+		_hud = new Hud(this, _width, _height, _grid.getCellWidth(), _grid.getCellHeight());
 	}
 	
 	@Override
@@ -65,7 +67,30 @@ public class Game extends Activity
 		boolean result;
 		result = gd.onTouchEvent(ev);
 		if(result)
-			_level.addEvent(_event);
+		{
+			int col = (int) Math.floor(_event.getCoordinate().x/_grid.getCellWidth());
+			int row = (int) Math.floor(_event.getCoordinate().y/_grid.getCellHeight());
+			
+			if(col == 0 && row == 0)
+			{
+				Log.d("B_INFO","Pause!");
+			/*	_mainThread.pause();
+				
+				pauseMenu = new PauseMenu();
+				pauseMenu.mainLoop(); */
+
+			}
+			else if(col == 1 && row == 0)
+			{
+				Log.d("B_INFO","Reset!");
+				_grid = new Grid(_width, _height);
+				_level.setGrid(_grid);
+				_level.reset();
+			}
+			else
+				_level.addEvent(_event);
+		}
+			
 		return result;
 	}
 	
@@ -86,7 +111,6 @@ public class Game extends Activity
 	public void startThread()
 	{
 		_mainThread.setRunning(true);
-		
 		try
 		{
 			_mainThread.start();
@@ -134,6 +158,7 @@ public class Game extends Activity
 		super.onPause();
 	}
 	
+
 	@Override 
 	protected void onStart()
 	{

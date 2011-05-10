@@ -10,7 +10,7 @@ public class GameThread extends Thread
 {
 	public final static int RUNNING = 0;
 	public final static int PAUSED = 1;
-	public final static int UPDATE_RATE = 30; //FIXME
+	public final static int UPDATE_RATE = Preferences.FPS; 
 	
     private Game _game;
     private boolean _run;
@@ -108,12 +108,11 @@ public class GameThread extends Thread
            		{
            			Debug.getMemoryInfo(_devInfo);
            			long privateMemory = _devInfo.getTotalPrivateDirty();
-           			long totalMemory = _devInfo.getTotalPss();
            			long currentGameTime = _game.gameTime();
            			
            			_game.getHud().clearDevString();
            			_game.getHud().appendDevString("FPS: " + Math.floor(((float)fpsCounter/((float)currentGameTime - (float)renderTime))*1000));
-           			_game.getHud().appendDevString("Memory: " + Math.floor((float)privateMemory/(float)totalMemory*100.0) + "%");
+           			_game.getHud().appendDevString("Memory: " + privateMemory + "kB");
 
            			fpsCounter = 0;
            			renderTime = currentGameTime;
