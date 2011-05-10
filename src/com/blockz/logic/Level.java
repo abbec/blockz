@@ -15,6 +15,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.blockz.LevelManager;
+import com.blockz.Menus;
 import com.blockz.MyEvent;
 import com.blockz.Preferences;
 import com.blockz.R;
@@ -187,6 +189,10 @@ public class Level
 	public void levelComplete()
 	{
 		Log.d("B_INFO", "Victory! You got points: " + _points);
+		
+		LevelManager.getInstance().setScore((int)_points);
+		Intent levelMenu = new Intent(_context, Menus.class);
+		_context.startActivity(levelMenu);
 	}
 	public boolean isLevelComplete()
 	{
