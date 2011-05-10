@@ -37,7 +37,7 @@ public class Menus extends Activity {
 
 		_levelMenu = new LevelMenu(this, this, _width, _height);
 		_event = new MyEvent();
-		MyGestureListener mgl = new MyGestureListener(_event); 
+		MyGestureListener mgl = new MyGestureListener(_event,_grid); 
 		
 		gd = new GestureDetector(mgl);
 		setContentView(_levelMenu);

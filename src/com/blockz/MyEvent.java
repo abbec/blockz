@@ -4,7 +4,7 @@ import com.blockz.logic.Coordinate;
 
 public class MyEvent {
 	private int _direction;
-	private Coordinate _coordinate;
+	private Coordinate _coordinate, _playerDestination;
 	private boolean _showArrows = false;
 	
 	public boolean isShowArrows() {
@@ -25,6 +25,13 @@ public class MyEvent {
 	public void setCoordinate(Coordinate coordinate) {
 		_coordinate = coordinate;
 	} 
-	
+	public void setPlayerDestination(Coordinate c)
+	{
+		_playerDestination = c;
+	}
+	public Coordinate getPlayerDestination()
+	{
+		return _playerDestination;
+	}
 
 }

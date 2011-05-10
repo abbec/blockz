@@ -84,25 +84,22 @@ public class Level
 		
 		updatePlayingTime(gameTime);
 		if(_currentEvent != null)
-		{
+		{			
+			Log.d("E_INFO","Player dest: " + _currentEvent.getPlayerDestination().toString());
+			Log.d("E_INFO","Player coord: " + _grid.getPlayer().getPosition().toString());
 			//Gridcoordinates
 			col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
 			row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
-			Vector<Coordinate> tempPath = _player.moveTo(new Coordinate(row,col));
+
+			Vector<Coordinate> tempPath = _player.moveTo(_currentEvent.getPlayerDestination());
 			if(tempPath.size() > 0 && !_player.getMoving())
 			{
-				Move movePlayer = new Move(_player.getPosition(),_player.moveTo(new Coordinate(row,col)),_grid,gameTime,true);
+				Move movePlayer = new Move(_player.getPosition(),tempPath,_grid,gameTime,true);
 				_moveList.add(movePlayer);
 				_player.setMoving(true);
 			}
-			Log.d("B_INFO","Level Class: Column number: "+col);
-			Log.d("B_INFO","Level Class: Row number:"+row);
-
 			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN && !_grid.getMovable(row, col).getMoving() )
 			{
-				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
-				//Log.d("B_INFO", CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()).toString());
-				//Stoppa in ett Move-objekt i Levels move-lista, skicka med row, col
 				Coordinate finalDestination = CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection());
 				if(!finalDestination.equals(new Coordinate(row,col)))
 				{	
@@ -119,17 +116,16 @@ public class Level
 		//for-loop som går igenom move-lista, kollar om de är onTheMove (uppdatera offset) 
 		if(_moveList != null)
 		{
-			for (int i = 0; i < _moveList.size(); i++)
+			if( _moveList.size() > 0)
 			{
-			
-				if(_moveList.get(i).isMoving())
-				{
-					_moveList.get(i).move(gameTime);
 				
+			
+				if(_moveList.getFirst().isMoving())
+				{
+					_moveList.getFirst().move(gameTime);
 				}
 				else
-					//Kolla upp om indexen blir förskjutna
-					_moveList.remove(i);
+					_moveList.remove(0);
 			}
 		}
 		
