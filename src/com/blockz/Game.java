@@ -1,5 +1,7 @@
 package com.blockz;
 
+import junit.framework.Assert;
+
 import com.blockz.graphics.*;
 import com.blockz.logic.*;
 
@@ -24,12 +26,20 @@ public class Game extends Activity
 	private MyEvent _event;
 	private Grid _grid;
 	private int _width, _height;
+	private int _levelID;
 	
 	/**
 	 * Called when the activity is created.
 	 */
 	public void onCreate(Bundle savedInstanceState)
 	{
+
+		//TODO: Set correct numbers in assert
+		//_levelID = getIntent().getExtras().getInt("level");
+		_levelID = LevelManager.getInstance().getLevel();
+		Log.d("B_INFO", "id: " + _levelID);
+		//Assert.assertTrue(_levelID > 0 && _levelID < 11);		
+		
 		init();
 		super.onCreate(savedInstanceState);
 	}
@@ -54,7 +64,41 @@ public class Game extends Activity
 		setContentView(_scene);
 		gd = new GestureDetector(mgl);
 		
-		_level = new Level(this, _scene, _grid, R.drawable.level2);
+		
+		switch(_levelID) {
+			case 1:
+				_levelID = R.drawable.level1;
+				break;
+			case 2:
+				_levelID = R.drawable.level2;
+				break;
+			case 3:
+				_levelID = R.drawable.level3;
+				break;
+			case 4:
+				_levelID = R.drawable.level4;
+				break;
+			case 5:
+				_levelID = R.drawable.level5;
+				break;
+			case 6:
+				_levelID = R.drawable.level6;
+				break;
+			case 7:
+				_levelID = R.drawable.level7;
+				break;
+			case 8:
+				_levelID = R.drawable.level8;
+				break;
+			case 9:
+				_levelID = R.drawable.level9;
+				break;
+			case 10:
+				_levelID = R.drawable.level10;
+				break;
+		}
+		
+		_level = new Level(this, _scene, _grid, _levelID);
 		_mainThread = new GameThread(this);
 		setPauseFlag(false);
 		
@@ -153,6 +197,7 @@ public class Game extends Activity
 		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
 		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("playedTime", _level.getPlayedTime()).commit();
+	
 		setPauseFlag(true);
 		//_mainThread.pause();
 		super.onPause();

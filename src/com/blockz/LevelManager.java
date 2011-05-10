@@ -16,6 +16,15 @@ import junit.framework.Assert;
  */
 public class LevelManager 
 {
+	private static final LevelManager INSTANCE = new LevelManager();
+	
+	public static LevelManager getInstance() {
+	//	if(INSTANCE != null)
+			return INSTANCE;
+	//	else
+	//		return new LevelManager();
+	}
+
 	/**
 	 * Creates a save slot with the objects needed to create/load a save file.
 	 */
@@ -97,19 +106,30 @@ public class LevelManager
 	private int _currentLevel;
 	private static File _dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/blockz");
 	
+	private LevelManager() {}
+	
 	/**
 	 * Constructor for the LevelManager.
 	 * @param saveSlot to be handled by the LevelManager.
 	 */
-	public LevelManager(SaveSlot saveSlot)
-	{
-		
+//	public LevelManager(SaveSlot saveSlot)
+//	{
+//		
+//		_saveSlot = saveSlot;
+//		
+//		File sdCard = Environment.getExternalStorageDirectory();
+//		_dir = new File(sdCard.getAbsolutePath() + "/blockz");
+//	}
+//	
+	public void setSaveSlot(SaveSlot saveSlot){
 		_saveSlot = saveSlot;
 		
 		File sdCard = Environment.getExternalStorageDirectory();
 		_dir = new File(sdCard.getAbsolutePath() + "/blockz");
 	}
 	
+
+
 	/**
 	 * Saves progress to the SD card in the slot associated with the <code>LevelManager</code>.
 	 */
