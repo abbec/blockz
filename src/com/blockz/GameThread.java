@@ -10,7 +10,7 @@ public class GameThread extends Thread
 {
 	public final static int RUNNING = 0;
 	public final static int PAUSED = 1;
-	public final static int UPDATE_RATE = 30; //FIXME
+	public final static int UPDATE_RATE = Preferences.FPS; 
 	
     private Game _game;
     private boolean _run;

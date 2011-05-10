@@ -1,5 +1,7 @@
 package com.blockz.graphics;
 
+import com.blockz.Preferences;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +11,7 @@ import android.graphics.Rect;
 
 public class AnimatedSprite extends Sprite
 {
-	 private final int FPS = 20;
+	 private final int FPS = Preferences.ANIM_FPS;
 	 
 	private int _updateTime;
 	
