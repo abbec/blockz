@@ -77,6 +77,12 @@ public class Grid implements Iterable<Cell>
 		return _gridArray[r][c].getMovable();
 	}
 	
+	public Player getPlayer(int r, int c)
+	{
+		Assert.assertTrue("Row or col outside cell range!", r < 8 && c < 12);
+		
+		return (Player)_gridArray[r][c].getPlayer();
+	}
 	public void setPlayer(int r, int c, Player p) {
 		Assert.assertTrue("Row or col outside cell range!", r < 8 && c < 12);
 		
