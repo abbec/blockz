@@ -5,7 +5,6 @@ package com.blockz.logic;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Vector;
 
 import junit.framework.Assert;
 import android.content.Context;
@@ -15,8 +14,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.blockz.LevelManager;
-import com.blockz.Menus;
 import com.blockz.MyEvent;
 import com.blockz.Preferences;
 import com.blockz.R;
@@ -87,16 +84,10 @@ public class Level
 		updatePlayingTime(gameTime);
 		if(_currentEvent != null)
 		{
-			//Gridcoordinates
+			//GRIDCOORDINATES
 			col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
 			row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
-			Vector<Coordinate> tempPath = _player.moveTo(new Coordinate(row,col));
-			if(tempPath.size() > 0 && !_player.getMoving())
-			{
-				Move movePlayer = new Move(_player.getPosition(),_player.moveTo(new Coordinate(row,col)),_grid,gameTime,true);
-				_moveList.add(movePlayer);
-				_player.setMoving(true);
-			}
+
 			Log.d("B_INFO","Level Class: Column number: "+col);
 			Log.d("B_INFO","Level Class: Row number:"+row);
 
@@ -189,10 +180,6 @@ public class Level
 	public void levelComplete()
 	{
 		Log.d("B_INFO", "Victory! You got points: " + _points);
-		
-		LevelManager.getInstance().setScore((int)_points);
-		Intent levelMenu = new Intent(_context, Menus.class);
-		_context.startActivity(levelMenu);
 	}
 	public boolean isLevelComplete()
 	{
@@ -207,10 +194,13 @@ public class Level
 			Cell c = it.next();
 			Block b = c.getFixed();
 			
+			if(b == null || c == null)
+				return false;
 			if(b.getType() == Item.GOAL && !c.hasMovable())
 			{
 				return false;
 			}
+	
 			
 		}
 			levelComplete();
@@ -220,10 +210,10 @@ public class Level
 	
 	public void reset()
 	{
-		//Resets the blocks
+		//Resets the blocksf
 		
 		updatePoints(100.0);
-		readLevel(_levelResourceNumber);
+		readLevel(R.drawable.level5);
 	}
 	public void addEvent(MyEvent ev)
 	{
@@ -340,16 +330,16 @@ public class Level
 						_player.setPosition(pos);
 						_grid.setPlayer(row,col,_player);
 						Log.d("B_INFO","Player pos: "+ _player.getPosition().x+" "+_player.getPosition().y);
-						_grid.setCostG(row,col,10);
+						
 					}
 					else
 					{
 						MovableBlock m = new MovableBlock(drawableValue);
 						_grid.setMovable(row,col,m);
-						_grid.setCostG(row,col,10000);
 					}
 					GroundBlock g = new GroundBlock(R.drawable.grass);
 					_grid.setFixed(row,col,g);
+					_grid.setCostG(row,col,10000);
 				}
 				else
 				{
