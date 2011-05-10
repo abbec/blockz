@@ -65,7 +65,9 @@ public class Move {
 		_grid = g;
 		_lastUpdate = currentTime;
 		_isActor = a;
-		_speed = 20;
+		int dist = (int) Math.sqrt(Math.pow(_start.x - _end.x, 2)+ Math.pow(_start.y - _end.y,2));
+		int minDist = (dist <= 4 ? 4 : dist);
+		_speed *= minDist;
 	}
 	
 	public void moveActor(long currentTime)
@@ -97,7 +99,7 @@ public class Move {
 						_end = new Coordinate(tempCoord.x,tempCoord.y);
 						
 						_offsetY = _end.x - _start.x;
-						_offsetX = _end.y - _start.y;	
+						_offsetX = _end.y - _start.y;
 					}
 					else
 					{

@@ -334,15 +334,16 @@ public class Level
 						_player.setPosition(pos);
 						_grid.setPlayer(row,col,_player);
 						Log.d("B_INFO","Player pos: "+ _player.getPosition().x+" "+_player.getPosition().y);
+						_grid.setCostG(row,col,10);
 					}
 					else
 					{
 						MovableBlock m = new MovableBlock(drawableValue);
 						_grid.setMovable(row,col,m);
+						_grid.setCostG(row,col,10000);
 					}
 					GroundBlock g = new GroundBlock(R.drawable.grass);
 					_grid.setFixed(row,col,g);
-					_grid.setCostG(row,col,10000);
 				}
 				else
 				{
