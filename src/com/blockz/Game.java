@@ -6,6 +6,7 @@ import com.blockz.graphics.*;
 import com.blockz.logic.*;
 
 import android.app.Activity;
+import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -197,7 +198,6 @@ public class Game extends Activity
 		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
 		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("playedTime", _level.getPlayedTime()).commit();
-	
 		setPauseFlag(true);
 		//_mainThread.pause();
 		super.onPause();
