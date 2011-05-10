@@ -417,8 +417,11 @@ public class LevelManager
 					case XmlPullParser.START_TAG:
 					{	
 						int levelId = parser.getAttributeIntValue(0, -1);
-						int r = parser.getAttributeIntValue("", "row", 0);
+					/*	int r = parser.getAttributeIntValue("", "row", 0);
 						int c = parser.getAttributeIntValue("", "col", 0);
+					*/
+						int r = parser.getAttributeIntValue(1, 0);
+						int c = parser.getAttributeIntValue(2,0);
 						
 						Assert.assertTrue("Node at line " + parser.getLineNumber() + " has no level attribute! Please fix xml file!", levelId != -1);
 						
@@ -470,7 +473,7 @@ public class LevelManager
 	 */
 	public int getLevel(int row, int col)
 	{
-		List <Node<LevelNode> > levelList = _levelTree.preOrderList();
+		List <Node<LevelNode> > levelList = _levelTree.postOrderList();
 		int r, c;
 		for (int i = 0; i < levelList.size(); i++)
 		{
@@ -482,7 +485,53 @@ public class LevelManager
 				return levelList.get(i).getData().getLevel();
 			}
 		}
-		
 		return -1;
 	}
+	
+	
+	/* getRow returnerar vilken rad levelId har 
+	 * @param int är levelId
+	 * 
+	 */
+	
+	public int getRow(int levelId)
+	{
+		List <Node<LevelNode> > levelList = _levelTree.postOrderList();
+		int l;
+		
+		for (int i = 0; i < levelList.size(); i++)
+		{
+			l = levelList.get(i).getData().getLevel();
+			
+			if(l == levelId)
+			{
+				return levelList.get(i).getData().getRow();
+			}
+		}
+		return -1;
+	}
+	
+
+	/* getCol returnerar vilken kolumn levelId har 
+	 * @param int är levelId
+	 * 
+	 */
+	
+	public int getCol(int levelId)
+	{
+		List <Node<LevelNode> > levelList = _levelTree.postOrderList();
+		int l;
+		
+		for (int i = 0; i < levelList.size(); i++)
+		{
+			l = levelList.get(i).getData().getLevel();
+			
+			if(l == levelId)
+			{
+				return levelList.get(i).getData().getCol();
+			}
+		}
+		return -1;
+	}
+	
 }	
