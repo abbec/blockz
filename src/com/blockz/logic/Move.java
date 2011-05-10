@@ -2,6 +2,8 @@ package com.blockz.logic;
 
 import java.util.Vector;
 import android.util.Log;
+import com.blockz.Preferences;
+import android.R;
 
 public class Move {
 	
@@ -9,10 +11,10 @@ public class Move {
 	private boolean _isMoving = true;
 	private Grid _grid;
 	private long _lastUpdate;
-	private int _fps = 40;
-	private int _speed = 5;
+	private int _speed = Preferences.SPEED;
+	private int _fps = Preferences.FPS;
 	private int _direction, _offsetX, _offsetY;
-	private Vector<Coordinate> _coordinates;
+	private Vector<Coordinate> _endCoordinates;
 	private boolean _isActor = false;
 	
 	
@@ -52,9 +54,14 @@ public class Move {
 		}
 	}
 	
-	public Move(Vector<Coordinate> p, Grid g, long currentTime, boolean a)
-	{
-		_coordinates = new Vector<Coordinate>(p);
+	public Move(Coordinate start, Vector<Coordinate> p, Grid g, long currentTime, boolean a)
+	{	
+		_start = start;
+		_endCoordinates = new Vector<Coordinate>(p);
+		_end = _endCoordinates.firstElement();
+		_endCoordinates.remove(0);
+		_offsetY = _end.x - _start.x;
+		_offsetX = _end.y - _start.y;
 		_grid = g;
 		_lastUpdate = currentTime;
 		_isActor = a;
@@ -64,16 +71,45 @@ public class Move {
 	public void moveActor(long currentTime)
 	{
 		if (currentTime - _lastUpdate > (1000/_fps))
-		{			
-			/*
-			 * Vill plocka första och andra koordinaten i vektor. Få ut en riktning från dessa. 
-			 * Sen hämta gubben ur första koordinaten, sätta offset om offset > width/height. 
-			 * Placera gubben i andra koordinaten och ta bort den första. 
-			 * Om andra koordinaten är en coordinate-flagga isMoving()=false så ska vi inte göra nåt mer.
-			 * 
-			 * Skapa en moveActor o en moveBlock, som kallas från move-funktionen (man skickar in en bool om det är en actor eller block)
-			 * */
+		{	
 			
+			Log.d("M_INFO", "Start: " + _start.toString());
+			Log.d("M_INFO", "End: " + _end.toString());
+			
+			Coordinate offset = _grid.getPlayer(_start.x, _start.y).getOffset();
+			Coordinate nextOffset = new Coordinate(offset.x,offset.y);
+			nextOffset.add(new Coordinate(_speed*_offsetX,_speed*_offsetY));
+			
+			if(!_start.equals(_end))
+			{
+				if(nextOffset.x >= _grid.getCellHeight() || nextOffset.x <= -1*_grid.getCellHeight() || nextOffset.y >= _grid.getCellWidth() || nextOffset.y <= -1*_grid.getCellWidth() )
+				{
+
+					_grid.getPlayer(_start.x, _start.y).setOffset(new Coordinate(0,0));
+					_grid.setPlayer(_end.x, _end.y, _grid.getPlayer(_start.x, _start.y));
+					_grid.setPlayer(_start.x, _start.y, null);
+					
+					if(_endCoordinates.size() > 0)
+					{
+						_start = _end;
+						Coordinate tempCoord = _endCoordinates.firstElement();
+						_endCoordinates.remove(0);
+						_end = new Coordinate(tempCoord.x,tempCoord.y);
+						
+						_offsetY = _end.x - _start.x;
+						_offsetX = _end.y - _start.y;	
+					}
+					else
+					{
+						_grid.getPlayer(_end.x, _end.y).setMoving(false);
+						_grid.getPlayer(_end.x, _end.y).setPosition(_end);
+						_isMoving = false;
+					}
+				}
+				else
+					_grid.getPlayer(_start.x, _start.y).setOffset(nextOffset);
+				
+			}
 		}
 	}
 	
@@ -122,9 +158,9 @@ public class Move {
 	
 	public void move(long currentTime)
 	{
-		//if(_isActor)
-			//moveActor(currentTime);
-		//else
+		if(_isActor)
+			moveActor(currentTime);
+		else
 			moveBlock(currentTime);
 		
 		
