@@ -14,6 +14,7 @@ public class Grid implements Iterable<Cell>
 
 	private Cell[][] _gridArray;
 	private int _cellWidth, _cellHeight;
+	private Player _player;
 	
 	public Grid(int screenWidth, int screenHeight)
 	{
@@ -83,9 +84,13 @@ public class Grid implements Iterable<Cell>
 		
 		return (Player)_gridArray[r][c].getPlayer();
 	}
+	public Player getPlayer()
+	{
+		return _player;
+	}
 	public void setPlayer(int r, int c, Player p) {
 		Assert.assertTrue("Row or col outside cell range!", r < 8 && c < 12);
-		
+		_player = p;
 		_gridArray[r][c].setPlayer(p);
 		
 	}

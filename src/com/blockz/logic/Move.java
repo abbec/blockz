@@ -88,8 +88,10 @@ public class Move {
 				{
 
 					_grid.getPlayer(_start.x, _start.y).setOffset(new Coordinate(0,0));
-					_grid.setPlayer(_end.x, _end.y, _grid.getPlayer(_start.x, _start.y));
+					Player tempPlayer = _grid.getPlayer(_start.x, _start.y);
 					_grid.setPlayer(_start.x, _start.y, null);
+					_grid.setPlayer(_end.x, _end.y, tempPlayer);
+					
 					
 					if(_endCoordinates.size() > 0)
 					{

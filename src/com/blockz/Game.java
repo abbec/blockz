@@ -50,9 +50,10 @@ public class Game extends Activity
 		
 		_scene = new Scene(this, this, _grid.getCellWidth(), _grid.getCellHeight());
 		_event = new MyEvent();
-		MyGestureListener mgl = new MyGestureListener(_event); 
+		MyGestureListener mgl = new MyGestureListener(_event,_grid); 
 		setContentView(_scene);
 		gd = new GestureDetector(mgl);
+		gd.setIsLongpressEnabled(false);
 		
 		_level = new Level(this, _scene, _grid, R.drawable.level2);
 		_mainThread = new GameThread(this);
