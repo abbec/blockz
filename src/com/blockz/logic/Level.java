@@ -5,6 +5,7 @@ package com.blockz.logic;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Vector;
 
 import junit.framework.Assert;
 import android.content.Context;
@@ -84,10 +85,16 @@ public class Level
 		updatePlayingTime(gameTime);
 		if(_currentEvent != null)
 		{
-			//GRIDCOORDINATES
+			//Gridcoordinates
 			col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
 			row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
-
+			Vector<Coordinate> tempPath = _player.moveTo(new Coordinate(row,col));
+			if(tempPath.size() > 0 && !_player.getMoving())
+			{
+				Move movePlayer = new Move(_player.getPosition(),_player.moveTo(new Coordinate(row,col)),_grid,gameTime,true);
+				_moveList.add(movePlayer);
+				_player.setMoving(true);
+			}
 			Log.d("B_INFO","Level Class: Column number: "+col);
 			Log.d("B_INFO","Level Class: Row number:"+row);
 
@@ -327,16 +334,16 @@ public class Level
 						_player.setPosition(pos);
 						_grid.setPlayer(row,col,_player);
 						Log.d("B_INFO","Player pos: "+ _player.getPosition().x+" "+_player.getPosition().y);
-						
+						_grid.setCostG(row,col,10);
 					}
 					else
 					{
 						MovableBlock m = new MovableBlock(drawableValue);
 						_grid.setMovable(row,col,m);
+						_grid.setCostG(row,col,10000);
 					}
 					GroundBlock g = new GroundBlock(R.drawable.grass);
 					_grid.setFixed(row,col,g);
-					_grid.setCostG(row,col,10000);
 				}
 				else
 				{

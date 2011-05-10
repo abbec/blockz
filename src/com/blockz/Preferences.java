@@ -3,7 +3,7 @@ package com.blockz;
 public final class Preferences 
 {
 	public static final int FPS = 40;
-	public static final int SPEED = 15;
+	public static final int SPEED = 5;
 	public static final int ANIM_FPS = 20;
 	
 	//Används i Level.java som startpoäng

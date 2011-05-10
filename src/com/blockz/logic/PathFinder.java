@@ -34,7 +34,7 @@ public class PathFinder{
 		openList.clear();
 		_path.clear();
 		
-		Log.d("B_INFO","StartPos!:" + startPos.x + "," +startPos.y);
+		Log.d("B_INFO","StartPos x:" + startPos.x + " y:" +startPos.y);
 
 		setAllH(endPos);
 		
@@ -64,7 +64,7 @@ public class PathFinder{
 		{
 			// Get the cell with smallest F cost and add it to the closed list and remove it from the openList.
 			closedList.addElement(currentCell);
-			Log.d("B_INFO","Current Cell: " + currentCell.getPosition().toString());
+			//Log.d("B_INFO","Current Cell: " + currentCell.getPosition().toString());
 			openList.remove(getSmallestCost(openList));
 			
 			// Check the in this case the four adjacency cells for smallest F.
