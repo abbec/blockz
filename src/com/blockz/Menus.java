@@ -46,7 +46,7 @@ public class Menus extends Activity {
 		lm = LevelManager.getInstance();
 		//lm = new LevelManager(new SaveSlot(3, "hej"));
 		
-		lm.setSaveSlot(new SaveSlot(3, "hej"));
+		lm.setSaveSlot(this, new SaveSlot(3, "hej"));
 		//lm.load();
 		
 		gd = new GestureDetector(mgl);
@@ -71,7 +71,7 @@ public class Menus extends Activity {
 				_levelMenu.drawBackground();
 
 				lm.setLevel(2); 
-				Log.d("B_INFO", "set level to: " + lm.getLevel());
+				Log.d("B_INFO", "set level to: " + lm.getCurrentLevel());
 				Intent intent = new Intent(this, Game.class);
 				//TODO:put the level that is choosen
 				// intent.putExtra("level", 2); 
