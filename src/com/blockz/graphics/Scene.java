@@ -16,10 +16,12 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.blockz.Game;
+import com.blockz.R;
 import com.blockz.logic.Block;
 import com.blockz.logic.Cell;
 import com.blockz.logic.Coordinate;
 import com.blockz.logic.Grid;
+import com.blockz.logic.GroundBlock;
 import com.blockz.logic.MovableItem;
 
 /**
@@ -87,6 +89,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
     {
     	
     	// Lock the canvas to begin editing its pixels
+
     	synchronized (_surfHolder)
     	{
 	    	Canvas canvas = _surfHolder.lockCanvas();
@@ -103,8 +106,14 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		pixelCoord = renderList.getPixelCoords(it);
 	    		cell = it.next();
 	    		
+	    		
 	    		// Render the fixed block
+	    		//FIXME: b is null
 	    		b = cell.getFixed();
+	    		
+	    		if(b == null)
+	    			b = new GroundBlock(R.drawable.stone);
+	    			
 	    		s = _spriteTable.get(b.getSpriteID());
 	    		
 	    		s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);
@@ -130,14 +139,10 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		if (cell.hasPlayer())
 	    		{
 		    		mv = cell.getPlayer();
-		    		if (mv.hasOffset())
-		    		{
-		    			overDraw.add(new OverDraw(mv,pixelCoord));
-		    		}
-		    		else
+		    		if (mv.shallRender())
 		    		{
 		    			s = _spriteTable.get(mv.getSpriteID());
-		    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);		    			
+		    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);
 		    		}
 	    		}
 	    			
