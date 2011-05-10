@@ -1,13 +1,73 @@
 package com.blockz;
 
+import com.blockz.logic.Grid;
+import com.blockz.menu.LevelMenu;
+
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class Menus extends Activity {
+	private LevelMenu _levelMenu;
+	private MyEvent _event;
+	private GestureDetector gd;
+	private Grid _grid;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+    	init();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
     }
+    
+    private void init()
+	{
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		Display display = getWindowManager().getDefaultDisplay();
+		int _width = display.getWidth();
+		int _height = display.getHeight();
+		_grid = new Grid(_width, _height);
+
+		_levelMenu = new LevelMenu(this, this, _width, _height);
+		_event = new MyEvent();
+		MyGestureListener mgl = new MyGestureListener(_event); 
+		
+		gd = new GestureDetector(mgl);
+		setContentView(_levelMenu);
+	}
+    
+    @Override
+	public boolean dispatchTouchEvent(MotionEvent ev)
+	{
+		boolean result;
+		result = gd.onTouchEvent(ev);
+		if(result)
+		{
+			int col = (int) Math.floor(_event.getCoordinate().x/_grid.getCellWidth());
+			int row = (int) Math.floor(_event.getCoordinate().y/_grid.getCellHeight());
+			
+			_levelMenu.updatePosition(row, col);
+			_levelMenu.drawBackground();
+		}
+			
+		return result;
+	}
+	
+    
+   /**
+    * Called when the surface is ready
+    */
+	public void start()
+	{
+		//TODO : Set default startposition for choosen level
+		_levelMenu.updatePosition(2, 4);
+		_levelMenu.drawBackground();
+	}
 }

@@ -17,9 +17,14 @@ public abstract class Menu extends SurfaceView implements SurfaceHolder.Callback
 	protected Bitmap _menu;
 	protected SurfaceHolder  _surfHolder;
 	private Menus _menus;
+	protected int _screenWidth;
+	protected int _screenHeight;
 	
 	public Menu(Context context, Menus menus, int screenWidth, int screenHeight) {
 		super(context);
+		
+		_screenWidth = screenWidth;
+		_screenHeight = screenHeight;
 		
 	   	_menus = menus;
 		_surfHolder = getHolder();
@@ -50,7 +55,7 @@ public abstract class Menu extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) 
     {
-    	//_menus.start();
+    	_menus.start();
     
     }
  
