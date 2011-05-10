@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.blockz.MyEvent;
+import com.blockz.Preferences;
 import com.blockz.R;
 import com.blockz.graphics.Scene;
 
@@ -39,7 +40,7 @@ public class Level
 	private Player _player;
 	private long playingTime = 0;
 	private Grid _grid;
-	private double _points = 999;
+	private double _points = Preferences.POINTS;
 	private LinkedList<Move> _moveList;
 	private boolean _levelComplete = false;
 	private int _playedTime = 0;

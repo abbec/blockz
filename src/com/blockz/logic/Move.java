@@ -1,13 +1,17 @@
 package com.blockz.logic;
 
+import com.blockz.Preferences;
+
+import android.R;
+
 public class Move {
 	
 	private Coordinate _start, _end, _currentGridCoordinate, _currentPixelCoordinate;
 	private boolean _isMoving = true;
 	private Grid _grid;
 	private long _lastUpdate;
-	private int _fps = 40;
-	private int _speed = 15;
+	private int _speed = Preferences.SPEED;
+	private int _fps = Preferences.FPS;
 	private int _direction, _offsetX, _offsetY;
 	
 	public Move(Coordinate start, Coordinate end, Grid grid, long currentTime, int direction)
