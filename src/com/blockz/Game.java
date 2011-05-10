@@ -4,6 +4,7 @@ import com.blockz.graphics.*;
 import com.blockz.logic.*;
 
 import android.app.Activity;
+import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -41,6 +42,8 @@ public class Game extends Activity
 	{
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		LevelManager lm = new LevelManager(this, new LevelManager.SaveSlot(1, "Abbe"));		
 		
 		// Get screen size
 		Display display = getWindowManager().getDefaultDisplay();
