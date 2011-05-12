@@ -138,12 +138,16 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		// Render the player.
 	    		if (cell.hasPlayer())
 	    		{
-		    		mv = cell.getPlayer();
-		    		if (mv.shallRender())
-		    		{
-		    			s = _spriteTable.get(mv.getSpriteID());
-		    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);
-		    		}
+	    			mv = cell.getPlayer();
+	    			if (mv.hasOffset())
+	    			{
+	    				overDraw.add(new OverDraw(mv,pixelCoord));
+	    			}
+	    			else
+	    			{
+	    				s = _spriteTable.get(mv.getSpriteID());
+	    				s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);
+	    			}
 	    		}
 	    			
 	    	}
