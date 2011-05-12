@@ -38,20 +38,21 @@ public final class R {
         public static final int level7=0x7f020018;
         public static final int level8=0x7f020019;
         public static final int level9=0x7f02001a;
-        public static final int levelmenu=0x7f02001b;
-        public static final int loadgamebtn=0x7f02001c;
-        public static final int mainpage_w_big_btn=0x7f02001d;
-        public static final int mainpage_w_btn=0x7f02001e;
-        public static final int newgamebtn=0x7f02001f;
-        public static final int pause=0x7f020020;
-        public static final int reset=0x7f020021;
-        public static final int sand=0x7f020022;
-        public static final int sprites=0x7f020023;
-        public static final int startmenu=0x7f020024;
-        public static final int stone=0x7f020025;
-        public static final int stones=0x7f020026;
-        public static final int water=0x7f020027;
-        public static final int wateranim=0x7f020028;
+        public static final int level_select=0x7f02001b;
+        public static final int levelmenu=0x7f02001c;
+        public static final int loadgamebtn=0x7f02001d;
+        public static final int mainpage_w_big_btn=0x7f02001e;
+        public static final int mainpage_w_btn=0x7f02001f;
+        public static final int newgamebtn=0x7f020020;
+        public static final int pause=0x7f020021;
+        public static final int reset=0x7f020022;
+        public static final int sand=0x7f020023;
+        public static final int sprites=0x7f020024;
+        public static final int startmenu=0x7f020025;
+        public static final int stone=0x7f020026;
+        public static final int stones=0x7f020027;
+        public static final int water=0x7f020028;
+        public static final int wateranim=0x7f020029;
     }
     public static final class layout {
         public static final int main=0x7f030000;

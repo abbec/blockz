@@ -23,13 +23,14 @@ import junit.framework.Assert;
  */
 public class LevelManager 
 {
-	private static final LevelManager INSTANCE = new LevelManager();
+	private static LevelManager INSTANCE = null;
 	
-	public static LevelManager getInstance() {
-	//	if(INSTANCE != null)
-			return INSTANCE;
-	//	else
-	//		return new LevelManager();
+	public static LevelManager getInstance() 
+	{
+		if(INSTANCE == null)
+			INSTANCE = new LevelManager();
+	
+		return INSTANCE;
 	}
 
 	/**
@@ -115,36 +116,18 @@ public class LevelManager
 	private Tree<LevelNode> _levelTree;
 	private static File _dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/blockz");
 	
-	private LevelManager() {}
+	private LevelManager() 
+	{
+		_levelTree = new Tree<LevelNode>();
+	}
 	
-	/**
-	 * Constructor for the LevelManager.
-	 * @param saveSlot to be handled by the LevelManager.
-	 */
-//	public LevelManager(SaveSlot saveSlot)
-//	{
-//		
-//		_saveSlot = saveSlot;
-//		
-//		File sdCard = Environment.getExternalStorageDirectory();
-//		_dir = new File(sdCard.getAbsolutePath() + "/blockz");
-//	}
-//	
-	public void setSaveSlot(Context c, SaveSlot saveSlot){
+	public void setSaveSlot(Context c, SaveSlot saveSlot)
+	{
 		_saveSlot = saveSlot;
 		_context = c;
-		
-		File sdCard = Environment.getExternalStorageDirectory();
-		_dir = new File(sdCard.getAbsolutePath() + "/blockz");
-		
-		_levelTree = new Tree<LevelNode>();
-		
-		// Read level XML
 		readLevelXml();
 	}
 	
-
-
 	/**
 	 * Set the {@link Context} 
 	 * @param c the {@link Context} to be set
@@ -411,6 +394,7 @@ public class LevelManager
 			
 			// Add as tree root
 			_levelTree.setRoot(node);
+			_currentLevel = node.getData();
 			
 			eventType = parser.next();
 			while (eventType != XmlPullParser.END_DOCUMENT)
@@ -479,21 +463,12 @@ public class LevelManager
 		
 		Node<LevelNode> root = _levelTree.getRoot();
 		
-		return findLevel(root, row, col).getData();
+		Node<LevelNode> res = findLevel(root, row, col);
 		
-		/*List <Node<LevelNode> > levelList = _levelTree.postOrderList();
-		int r, c;
-		for (int i = 0; i < levelList.size(); i++)
-		{
-			c = levelList.get(i).getData().getCol();
-			r = levelList.get(i).getData().getRow();
-			
-			if(r == row && c == col)
-			{
-				return levelList.get(i).getData().getLevel();
-			}
-		}
-		return -1;*/
+		if (res != null)
+			return res.getData();
+		else
+			return null;
 	}
 	
 	private Node<LevelNode> findLevel(Node<LevelNode> element, int r, int c)
