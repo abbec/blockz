@@ -1,7 +1,5 @@
 package com.blockz;
 
-import java.nio.ByteOrder;
-
 import android.os.Debug;
 import android.util.Log;
 
@@ -115,8 +113,6 @@ public class GameThread extends Thread
            			_game.getHud().clearDevString();
            			_game.getHud().appendDevString("FPS: " + Math.floor(((float)fpsCounter/((float)currentGameTime - (float)renderTime))*1000));
            			_game.getHud().appendDevString("Memory: " + privateMemory + "kB");
-           			String boString = ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN ? "Little endian" : "Big endian";
-           			_game.getHud().appendDevString("ByteOrder: " + boString);
 
            			fpsCounter = 0;
            			renderTime = currentGameTime;
