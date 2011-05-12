@@ -111,7 +111,7 @@ public class LevelManager
 	private static final String FILENAME = "save.bz";
 	private SaveSlot _saveSlot;
 	private Context _context;
-	private int _currentLevel;
+	private LevelNode _currentLevel;
 	private Tree<LevelNode> _levelTree;
 	private static File _dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/blockz");
 	
@@ -297,8 +297,6 @@ public class LevelManager
 		SaveSlot[] slots = new SaveSlot[5];
 		
 		File saveFile = new File(_dir, FILENAME);
-		int tempInt = 0;
-		String tempString = "";
 		
 		try
 		{
@@ -333,18 +331,18 @@ public class LevelManager
 	
 	/**
 	 * Sets the level.
-	 * @param level to be set.
+	 * @param n The level node to be set as current.
 	 */
-	public void setLevel(int level)
+	public void setLevel(LevelNode n)
 	{
-		_currentLevel = level;
+		_currentLevel = n;
 	}
 	
 	/**
 	 * Gets the level.
 	 * @return the current level.
 	 */
-	public int getCurrentLevel()
+	public LevelNode getCurrentLevel()
 	{
 		return _currentLevel;
 	}
@@ -353,9 +351,9 @@ public class LevelManager
 	 * Set current score.
 	 * @param score the integer score value.
 	 */
-	public void setScore(int score)
+	public void updateScore(int score)
 	{
-		_saveSlot.setScore(score);
+		_saveSlot.setScore(_saveSlot.getScore() + score);
 	}
 	
 	/**
@@ -472,13 +470,18 @@ public class LevelManager
 	}
 
 	/**
-	 * getLevel returns levelId of level at row, col. if none is found, -1 is returned
+	 * Get a LevelNode at grid position row, col.
 	 * @param row, col are the row and col of the cell on levelSelect
-	 * 
+	 * @return the LevelNode at row, col. If none is found it returns null.
 	 */
-	public int getLevel(int row, int col)
+	public LevelNode getLevel(int row, int col)
 	{
-		List <Node<LevelNode> > levelList = _levelTree.postOrderList();
+		
+		Node<LevelNode> root = _levelTree.getRoot();
+		
+		return findLevel(root, row, col).getData();
+		
+		/*List <Node<LevelNode> > levelList = _levelTree.postOrderList();
 		int r, c;
 		for (int i = 0; i < levelList.size(); i++)
 		{
@@ -490,100 +493,49 @@ public class LevelManager
 				return levelList.get(i).getData().getLevel();
 			}
 		}
-		return -1;
+		return -1;*/
 	}
 	
-	
-	/**
-	 * getRow returns row number in cell coordinates for levelId 
-	 * @param row, col in cellcoordinates
-	 * 
-	 */
-	
-	public int getRow(int levelId)
+	private Node<LevelNode> findLevel(Node<LevelNode> element, int r, int c)
 	{
-		List <Node<LevelNode> > levelList = _levelTree.postOrderList();
-		int l;
-		
-		for (int i = 0; i < levelList.size(); i++)
+		for (Node<LevelNode> data : element.getChildren())
 		{
-			l = levelList.get(i).getData().getLevel();
-			
-			if(l == levelId)
-			{
-				return levelList.get(i).getData().getRow();
-			}
-		}
-		return -1;
+			if (!(data.getData().getRow() == r && data.getData().getCol() == c))
+				return findLevel(data, r, c);
+			else
+				return data; 
+				
+		} 
+		
+		return null;
 	}
 	
-
-	/**
-	 *  getCol returns column number in cell coordinates for levelId 
-	 * @param row, col in cellcoordinates
-	 * 
-	 */
-	
-	public int getCol(int levelId)
+	public boolean isPlayable(LevelNode n)
 	{
-		List <Node<LevelNode> > levelList = _levelTree.postOrderList();
-		int l;
-		
-		for (int i = 0; i < levelList.size(); i++)
-		{
-			l = levelList.get(i).getData().getLevel();
-			
-			if(l == levelId)
-			{
-				return levelList.get(i).getData().getCol();
-			}
-		}
-		return -1;
+		Node<LevelNode> root = _levelTree.getRoot();
+		return findIsPlayable(root, n);
 	}
 	
-	/**
-	 * returns true if level is marked as cleared, 
-	 * returns false if level is not cleared or not found
-	 * @param ID for level 
-	 */
-	public boolean isCleared(int levelId)
-	{
-		List <Node<LevelNode> > levelList = _levelTree.postOrderList();
-		int l;
-		
-		for (int i = 0; i < levelList.size(); i++)
+	private boolean findIsPlayable(Node<LevelNode> element, LevelNode ln)
+	{	
+		for (Node<LevelNode> data : element.getChildren())
 		{
-			l = levelList.get(i).getData().getLevel();
-			
-			if(l == levelId)
-			{
-				return levelList.get(i).getData().isCleared();
-			}
+			if (data.getData() != ln)
+				return findIsPlayable(data, ln);
+			else
+				return element.getData().isCleared();
 		}
-		return false;	
+		
+		return false;
 	}
+	
 	/**
 	 * sets Level as completed if level is not found, nothing is done
 	 * @param ID for level to set as cleared
 	 */
-	public void setCleared(int levelId)
+	public void clearLevel()
 	{
-		List <Node<LevelNode> > levelList = _levelTree.postOrderList();
-		int l;
-		
-		for (int i = 0; i < levelList.size(); i++)
-		{
-			l = levelList.get(i).getData().getLevel();
-			
-			if(l == levelId)
-			{	
-				levelList.get(i).getData().setCleared();
-				return;
-			}
-		}
-		return;	
+		_currentLevel.setCleared();
 	}
-	
-	
 	
 }	
