@@ -8,6 +8,7 @@ public abstract class Item
 	public final static int PLAYER = 2;
 	public final static int MOVABLE = 3;
 	public final static int GOAL = 4;
+	public final static int ARROW = 5;
 	
 	private int _spriteID;
 	private boolean _render;

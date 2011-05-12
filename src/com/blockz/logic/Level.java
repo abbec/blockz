@@ -117,13 +117,8 @@ public class Level
 						_moveList.add(new Move(new Coordinate(row, col), finalDestination, _grid, gameTime, _currentEvent.getDirection()));
 					}
 				}
-				else if(_grid.hasMovable(row,col) &&_currentEvent.getDirection() == Constant.UNKNOWN && _currentEvent.isShowArrows())
-				{
-					Log.d("B_INFO","Level Class: Visa pilar");
-				}
 		    }
 			_currentEvent = null;
-			
 		}
 		//for-loop som går igenom move-lista, kollar om de är onTheMove (uppdatera offset) 
 		if(_moveList != null)
@@ -224,10 +219,8 @@ public class Level
 				{
 					return false;
 				}
-			}
-	
-			
-		}		
+			}	
+		}
 		levelComplete();
 		return true; //All goals has a moveable
 		
@@ -264,6 +257,9 @@ public class Level
 	 */
 	private void readLevel(int resourceNumber)
 	{
+		_scene.addSprite(R.drawable.arrow, Scene.ANIMATED_SPRITE);
+		
+		
 		_levelImage = BitmapFactory.decodeResource(_context.getResources(), resourceNumber);
 		for(int col = 0; col < 12; col++)
 		{
