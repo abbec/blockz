@@ -88,6 +88,9 @@ public class MyGestureListener extends SimpleOnGestureListener
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) 
 	{
+		int col = (int) Math.floor(_event.getCoordinate().x/_grid.getCellWidth());
+		int row = (int) Math.floor(_event.getCoordinate().y/_grid.getCellHeight());
+		
 		if(_grid.hasMovable(row,col))
 		{
 			_event.setShowArrows(false);
@@ -150,5 +153,10 @@ public class MyGestureListener extends SimpleOnGestureListener
 		}
 
 		return false;
+	}
+	
+	public void setGrid(Grid newgrid)
+	{
+		_grid = newgrid;
 	}
 }

@@ -7,6 +7,7 @@ public class MyEvent {
 	private Coordinate _coordinate, _playerDestination;
 	private boolean _showArrows = false;
 	
+	
 	public boolean isShowArrows() {
 		return _showArrows;
 	}
@@ -33,5 +34,4 @@ public class MyEvent {
 	{
 		return _playerDestination;
 	}
-
 }
