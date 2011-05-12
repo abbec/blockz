@@ -6,6 +6,8 @@ import com.blockz.menu.LevelMenu;
 import com.blockz.menu.StartMenu;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -90,11 +92,12 @@ public class Menus extends Activity {
 			{
 				_startMenu.drawBackground();
 				if(col >= 0 && col <= 3 && row >= 2 && row <= 3){
-					Log.d("B_INFO", "NEW GAME!");
+					_menuState = LEVELMENU;
+					setContentView(_levelMenu);
 				} else if (col >= 0 && col <= 3 && row >= 4 && row <= 5){
-					Log.d("B_INFO", "LOAD GAME!");
+					Log.d("B_INFO", "Load game");
 				} else if (col >= 8 && col <= 12 && row >= 2 && row <= 3){
-					Log.d("B_INFO", "ABOUT!");
+					aboutDialog();
 				} else if (col >= 8 && col <= 12 && row >= 4 && row <= 5){
 					this.finish();
 				}
@@ -120,5 +123,17 @@ public class Menus extends Activity {
 		{
 			_startMenu.drawBackground();
 		}
+	}
+	
+	private void aboutDialog() {
+		AlertDialog ad = new AlertDialog.Builder(this).create();
+		ad.setTitle("About Blockz");
+		ad.setMessage("Once upon a time there was a slow loris named Lorry. He lived in an old oak tree in a very rainy forest far far away. Because of the climate, it was necessary to carry an umbrella most of the time. One day when Lorry was bored, he imagined that he was a part of a circus. Lorry's act was to balance a diamond on a spinning umbrella (this was a very cool act). The diamant was a dear treasure that he had inherited from his great great great great grandfather who was once the master of the forest. The legend said that whoever owned the diamond could take control of the whole forest and the traps that was hidden within. Unfortunately, Lorry was kind of ditsy, and during his great act he dropped the diamond and it landed on a passing bird. By the time Lorry discovered that the diamond has disappeared, the bird had already flown into the deepest part of the forest...");
+		ad.setButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				return;
+			}
+		});
+		ad.show();
 	}
 }
