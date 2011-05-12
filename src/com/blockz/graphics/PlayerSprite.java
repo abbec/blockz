@@ -93,7 +93,7 @@ public class PlayerSprite extends Sprite
 
     	
 
-    	Log.d("A_INFO","row: " + row);
+    	//Log.d("A_INFO","row: " + row);
     	_sRectangle.top = _singleHeight*row;
     	_sRectangle.bottom = _singleHeight + _singleHeight*row;
     	

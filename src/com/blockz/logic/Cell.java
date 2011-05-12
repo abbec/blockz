@@ -74,6 +74,11 @@ public class Cell
 		return _f;
 	}
 	
+	public boolean hasFixed()
+	{
+		return _fixed != null;
+	}
+	
 	public boolean hasMovable()
 	{
 		return _movable != null;
@@ -85,10 +90,14 @@ public class Cell
 	
 	public boolean fixedIsWall()
 	{
-		return _fixed.getType() == Item.WALL; 
+		if (_fixed == null)
+			return false;
+		else
+			return _fixed.getType() == Item.WALL; 
 	}
 
-	public void setParent(Cell _parent) {
+	public void setParent(Cell _parent) 
+	{
 		this._parent = _parent;
 	}
 

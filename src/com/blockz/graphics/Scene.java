@@ -100,7 +100,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    	Coordinate pixelCoord;
 	    	Sprite s;
 	    	LinkedList<OverDraw> overDraw = new LinkedList<OverDraw>();
-	    	
+	    	Sprite ground = _spriteTable.get(renderList.getGround());
 	    	Iterator<Cell> it = renderList.iterator();
 	    	
 
@@ -108,19 +108,16 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    	{
 	    		pixelCoord = renderList.getPixelCoords(it);
 	    		cell = it.next();
+	    		ground.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime, 0xff3dacb6);
 	    		
-	    		
-	    		// Render the fixed block
-	    		//FIXME: b is null
-	    		b = cell.getFixed();
-	    		
-	    		if(b == null)
-	    			b = new GroundBlock(R.drawable.stone);
+	    		if (cell.hasFixed())
+	    		{
+	    			b = cell.getFixed();
 	    			
-	    		s = _spriteTable.get(b.getSpriteID());
+	    			s = _spriteTable.get(b.getSpriteID());
 	    		
-	    		s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime,7);
-	    		
+	    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime,7);
+	    		}
 	    		
 	    		// Render the movable block
 	    		if (cell.hasMovable())

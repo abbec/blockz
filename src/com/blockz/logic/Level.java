@@ -258,111 +258,116 @@ public class Level
 		{
 			for(int row = 0; row < 8; row++)
 			{
-				 int pixelValue =_levelImage.getPixel(col ,row);
-				 int drawableValue =-1;
-				 int staticInt =-1;
-				 boolean isBlockMovable = false;
-				 boolean isPlayer = false;
-				 boolean isGroundBlock = false;
-				 boolean isGoalBlock = false;
-				 switch (pixelValue) {
-					case GRASS:
-						drawableValue =  R.drawable.grass;
-						staticInt = Scene.STATIC_SPRITE;
-						isBlockMovable = false;
-						isGroundBlock = true;
-						break;
-					case STONE_FIXED:
-						drawableValue =  R.drawable.stone;
-						staticInt =	Scene.STATIC_SPRITE;
-						isBlockMovable = false;
-						break;
-					case STONE_MOVABLE:
-						drawableValue =  R.drawable.block;
-						staticInt =	Scene.STATIC_SPRITE;
-						isBlockMovable = true;
-						break;
-					case WATER:
-						drawableValue =  R.drawable.water;
-						staticInt =	Scene.STATIC_SPRITE;
-						isBlockMovable = false;
-						break;
-					case GOAL:
-						drawableValue =  R.drawable.goal;
-						staticInt =	Scene.STATIC_SPRITE;
-						isBlockMovable = false;
-						isGoalBlock = true;
-						break;
-					case START:	
-						drawableValue =  R.drawable.indianaslowlori;
-						staticInt =	Scene.PLAYER_SPRITE;
-						isBlockMovable = true;
-						isPlayer = true;
-						break;
-					case HUD:
-						drawableValue =  R.drawable.grass2;
-						staticInt =	Scene.STATIC_SPRITE;
-						isBlockMovable = false;
-						break;
-		            default:
-		            	drawableValue =  R.drawable.fuglyblock;
-		            	staticInt =	Scene.STATIC_SPRITE;
-		            	isBlockMovable = false;
-		            	break;
-		        }
-
-				_scene.addSprite(drawableValue, staticInt);
+				int pixelValue =_levelImage.getPixel(col ,row);
+				int drawableValue =-1;
+				int staticInt =-1;
 				
-				if(!isBlockMovable)
+				if (row == 0 && col == 0)
 				{
-					Block b;
-					if(isGroundBlock)
-					{
-						b = new GroundBlock(R.drawable.grass2);
-						_grid.setCostG(row,col,10);
-					}
-					else if(isGoalBlock)
-					{
-						b = new GoalBlock(R.drawable.goal);
-						
-						_grid.setCostG(row,col,10);
-					}
-					else
-					{
-						b = new WallBlock(drawableValue);
-						_grid.setCostG(row,col,10000);
-					}
-					_grid.setFixed(row,col,b);
-				}
-				else if(isBlockMovable)
-				{
-					if(isPlayer)
-					{
-						Log.d("B_INFO","Player created..");
-						_player = new Player(_grid,drawableValue);
-						Coordinate pos  = new Coordinate(row,col);
-						_player.setPosition(pos);
-						_grid.setPlayer(row,col,_player);
-						Log.d("B_INFO","Player pos: "+ _player.getPosition().x+" "+_player.getPosition().y);
-						_grid.setCostG(row,col,10);
-					}
-					else
-					{
-						MovableBlock m = new MovableBlock(drawableValue);
-						_grid.setMovable(row,col,m);
-						_grid.setCostG(row,col,10000);
-					}
-					GroundBlock g = new GroundBlock(R.drawable.grass2);
-					_grid.setFixed(row,col,g);
+					drawableValue = R.drawable.grass2;
+					
+					_grid.setGround(drawableValue);
+					_scene.addSprite(drawableValue, Scene.STATIC_SPRITE);
 				}
 				else
 				{
-					Assert.assertTrue("Level Class: Wrong Movable constant",false);
-				}
+					 boolean isBlockMovable = false;
+					 boolean isPlayer = false;
+					 boolean isGoalBlock = false;
+					 switch (pixelValue) {
+						case GRASS:
+							break;
+						case STONE_FIXED:
+							drawableValue =  R.drawable.stone;
+							staticInt =	Scene.STATIC_SPRITE;
+							isBlockMovable = false;
+							break;
+						case STONE_MOVABLE:
+							drawableValue =  R.drawable.block;
+							staticInt =	Scene.STATIC_SPRITE;
+							isBlockMovable = true;
+							break;
+						case WATER:
+							drawableValue =  R.drawable.water;
+							staticInt =	Scene.STATIC_SPRITE;
+							isBlockMovable = false;
+							break;
+						case GOAL:
+							drawableValue =  R.drawable.goal;
+							staticInt =	Scene.STATIC_SPRITE;
+							isBlockMovable = false;
+							isGoalBlock = true;
+							break;
+						case START:	
+							drawableValue =  R.drawable.indianaslowlori;
+							staticInt =	Scene.PLAYER_SPRITE;
+							isBlockMovable = true;
+							isPlayer = true;
+							break;
+						case HUD:
+							drawableValue =  R.drawable.grass2;
+							staticInt =	Scene.STATIC_SPRITE;
+							isBlockMovable = false;
+							break;
+			            default:
+			            	drawableValue =  R.drawable.fuglyblock;
+			            	staticInt =	Scene.STATIC_SPRITE;
+			            	isBlockMovable = false;
+			            	break;
+			        }
+					
+					if (pixelValue != GRASS)
+					{
+						
+						_scene.addSprite(drawableValue, staticInt);
+						
+						if(!isBlockMovable)
+						{
+							Block b;
+							if(isGoalBlock)
+							{
+								b = new GoalBlock(R.drawable.goal);
+								
+								_grid.setCostG(row,col,10);
+							}
+							else
+							{
+								b = new WallBlock(drawableValue);
+								_grid.setCostG(row,col,10000);
+							}
+							_grid.setFixed(row,col,b);
+						}
+						else if(isBlockMovable)
+						{
+							if(isPlayer)
+							{
+								Log.d("B_INFO","Player created..");
+								_player = new Player(_grid,drawableValue);
+								Coordinate pos  = new Coordinate(row,col);
+								_player.setPosition(pos);
+								_grid.setPlayer(row,col,_player);
+								Log.d("B_INFO","Player pos: "+ _player.getPosition().x+" "+_player.getPosition().y);
+								_grid.setCostG(row,col,10);
+							}
+							else
+							{
+								MovableBlock m = new MovableBlock(drawableValue);
+								_grid.setMovable(row,col,m);
+								_grid.setCostG(row,col,10000);
+							}
+						}
+						else
+						{
+							Assert.assertTrue("Level Class: Wrong Movable constant",false);
+						}
+					}
+					else
+					{
+						_grid.setCostG(row,col,10);
+					}
 				
-
+				}
 			}
-		}
-		
+		}	
 	}	
 }
