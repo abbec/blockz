@@ -6,6 +6,8 @@ import com.blockz.menu.LevelMenu;
 import com.blockz.menu.StartMenu;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,9 +75,9 @@ public class Menus extends Activity {
 
 			if(_menuState == LEVELMENU)
 			{
-				int level = lm.getLevel(row, col);
-				if(level > -1) {
-
+				LevelNode level = lm.getLevel(row, col);
+				if(level != null && lm.isPlayable(level))
+				{
 					_levelMenu.updatePosition(row, col);
 					_levelMenu.drawBackground();
 					Log.d("B_INFO", "Level: " + level);
@@ -89,6 +91,17 @@ public class Menus extends Activity {
 			else if(_menuState == STARTMENU)
 			{
 				_startMenu.drawBackground();
+				if(col >= 0 && col <= 3 && row >= 2 && row <= 3){
+					_menuState = LEVELMENU;
+					setContentView(_levelMenu);
+				} else if (col >= 0 && col <= 3 && row >= 4 && row <= 5){
+					Log.d("B_INFO", "Load game");
+				} else if (col >= 8 && col <= 12 && row >= 2 && row <= 3){
+					aboutDialog();
+				} else if (col >= 8 && col <= 12 && row >= 4 && row <= 5){
+					this.finish();
+				}
+				
 			}
 		}
 		return result;
@@ -110,5 +123,17 @@ public class Menus extends Activity {
 		{
 			_startMenu.drawBackground();
 		}
+	}
+	
+	private void aboutDialog() {
+		AlertDialog ad = new AlertDialog.Builder(this).create();
+		ad.setTitle("About Blockz");
+		ad.setMessage("Once upon a time there was a slow loris named Lorry. He lived in an old oak tree in a very rainy forest far far away. Because of the climate, it was necessary to carry an umbrella most of the time. One day when Lorry was bored, he imagined that he was a part of a circus. Lorry's act was to balance a diamond on a spinning umbrella (this was a very cool act). The diamant was a dear treasure that he had inherited from his great great great great grandfather who was once the master of the forest. The legend said that whoever owned the diamond could take control of the whole forest and the traps that was hidden within. Unfortunately, Lorry was kind of ditsy, and during his great act he dropped the diamond and it landed on a passing bird. By the time Lorry discovered that the diamond has disappeared, the bird had already flown into the deepest part of the forest...");
+		ad.setButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				return;
+			}
+		});
+		ad.show();
 	}
 }
