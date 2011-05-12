@@ -5,7 +5,7 @@ import com.blockz.logic.Coordinate;
 public class MyEvent {
 	private int _direction;
 	private Coordinate _coordinate, _playerDestination;
-	private boolean _showArrows = false;
+	private boolean _showArrows = false, _isTap = false;
 	
 	
 	public boolean isShowArrows() {
@@ -33,5 +33,13 @@ public class MyEvent {
 	public Coordinate getPlayerDestination()
 	{
 		return _playerDestination;
+	}
+	public boolean isTap()
+	{
+		return _isTap;
+	}
+	public void setTap(boolean b)
+	{
+		_isTap = b;
 	}
 }

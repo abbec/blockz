@@ -85,36 +85,44 @@ public class Level
 		_levelComplete = isLevelComplete();
 		
 		updatePlayingTime(gameTime);
-		if(_currentEvent != null)
+		if(_currentEvent != null && !_currentEvent.isTap())
 		{			
-			Log.d("E_INFO","Player dest: " + _currentEvent.getPlayerDestination().toString());
-			Log.d("E_INFO","Player coord: " + _grid.getPlayer().getPosition().toString());
-			//Gridcoordinates
-			col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
-			row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
+			if(_moveList != null && _moveList.size() < 1)
+		    {
+				//Gridcoordinates
+				col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
+				row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
+				
+				Vector<Coordinate> tempPath = new Vector<Coordinate>();
+				
+				if(_player.getPosition().equals(_currentEvent.getPlayerDestination()))
+					 tempPath.add(_player.moveTo(_currentEvent.getPlayerDestination()).lastElement());
+				else
+					tempPath = _player.moveTo(_currentEvent.getPlayerDestination());
 
-			Vector<Coordinate> tempPath = _player.moveTo(_currentEvent.getPlayerDestination());
-			_player.setLookDirection(_currentEvent.getDirection());
-			if(tempPath.size() > 0 && !_player.getMoving())
-			{
-				Move movePlayer = new Move(_player.getPosition(),tempPath,_grid,gameTime,true);
-				_moveList.add(movePlayer);
-				_player.setMoving(true);
-			}
-			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN && !_grid.getMovable(row, col).getMoving() )
-			{
-				Coordinate finalDestination = CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection());
-				if(!finalDestination.equals(new Coordinate(row,col)))
-				{	
-					_grid.getMovable(row, col).setMoving(true);
-					_moveList.add(new Move(new Coordinate(row, col), finalDestination, _grid, gameTime, _currentEvent.getDirection()));
+				_player.setLookDirection(_currentEvent.getDirection());
+				if(tempPath.size() > 0 && !_player.getMoving())
+				{
+					Move movePlayer = new Move(_player.getPosition(),tempPath,_grid,gameTime,true);
+					_moveList.add(movePlayer);
+					_player.setMoving(true);
 				}
-			}
-			else if(_grid.hasMovable(row,col) &&_currentEvent.getDirection() == Constant.UNKNOWN && _currentEvent.isShowArrows())
-			{
-				Log.d("B_INFO","Level Class: Visa pilar");
-			}
+				if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN && !_grid.getMovable(row, col).getMoving() )
+				{
+					Coordinate finalDestination = CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection());
+					if(!finalDestination.equals(new Coordinate(row,col)))
+					{	
+						_grid.getMovable(row, col).setMoving(true);
+						_moveList.add(new Move(new Coordinate(row, col), finalDestination, _grid, gameTime, _currentEvent.getDirection()));
+					}
+				}
+				else if(_grid.hasMovable(row,col) &&_currentEvent.getDirection() == Constant.UNKNOWN && _currentEvent.isShowArrows())
+				{
+					Log.d("B_INFO","Level Class: Visa pilar");
+				}
+		    }
 			_currentEvent = null;
+			
 		}
 		//for-loop som går igenom move-lista, kollar om de är onTheMove (uppdatera offset) 
 		if(_moveList != null)
