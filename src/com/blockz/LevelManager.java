@@ -483,7 +483,7 @@ public class LevelManager
 			return element;
 		
 		for (Node<LevelNode> data : element.getChildren())
-				return findLevel(data, r, c);
+			findLevel(data, r, c);
 		
 		return null;
 	}
