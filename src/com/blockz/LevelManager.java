@@ -402,8 +402,13 @@ public class LevelManager
 			}
 			
 			// Set the root
+			//Node<LevelNode> node = new Node<LevelNode>(new LevelNode(parser.getAttributeIntValue(0, -1), false,
+														//parser.getAttributeIntValue("", "row", 0), parser.getAttributeIntValue("", "col", 0)));
+			
 			Node<LevelNode> node = new Node<LevelNode>(new LevelNode(parser.getAttributeIntValue(0, -1), false,
-														parser.getAttributeIntValue("", "row", 0), parser.getAttributeIntValue("", "col", 0)));
+									parser.getAttributeIntValue(1, 0), parser.getAttributeIntValue(2, 0)));
+			
+
 			parents.add(node);
 			
 			// Add as tree root
@@ -533,5 +538,50 @@ public class LevelManager
 		}
 		return -1;
 	}
+	
+	/*
+	 * returns true if level is marked as cleared, 
+	 * returns false if level is not cleared or not found
+	 * @param ID for level 
+	 */
+	public boolean isCleared(int levelId)
+	{
+		List <Node<LevelNode> > levelList = _levelTree.postOrderList();
+		int l;
+		
+		for (int i = 0; i < levelList.size(); i++)
+		{
+			l = levelList.get(i).getData().getLevel();
+			
+			if(l == levelId)
+			{
+				return levelList.get(i).getData().isCleared();
+			}
+		}
+		return false;	
+	}
+	/*
+	 * sets Level as completed if level is not found, nothing is done
+	 * @param ID for level to set as cleared
+	 */
+	public void setCleared(int levelId)
+	{
+		List <Node<LevelNode> > levelList = _levelTree.postOrderList();
+		int l;
+		
+		for (int i = 0; i < levelList.size(); i++)
+		{
+			l = levelList.get(i).getData().getLevel();
+			
+			if(l == levelId)
+			{	
+				levelList.get(i).getData().setCleared();
+				return;
+			}
+		}
+		return;	
+	}
+	
+	
 	
 }	
