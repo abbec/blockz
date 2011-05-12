@@ -275,7 +275,7 @@ public class LevelManager
 	 * 
 	 * @return An array with five save slots. A save slot has the name "Empty" if it is empty.
 	 */
-	public static SaveSlot[] getSaveSlots()
+	public SaveSlot[] getSaveSlots()
 	{
 		SaveSlot[] slots = new SaveSlot[5];
 		
@@ -303,6 +303,7 @@ public class LevelManager
 		catch (FileNotFoundException fnfe)
 		{
 			Log.d("B_INFO", "No file found... a new one will be created on save().");
+			return null;
 		}
 		catch (InputMismatchException ime)
 		{
