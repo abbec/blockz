@@ -1,6 +1,7 @@
 package com.blockz;
 import java.util.Vector;
 
+import com.blockz.logic.Arrow;
 import com.blockz.logic.Constant;
 import com.blockz.logic.Coordinate;
 import com.blockz.logic.Grid;
@@ -37,10 +38,11 @@ public class MyGestureListener extends SimpleOnGestureListener
 			//hämta grannar som inte har fixed.
 			
 		//Log.d("E_INFO", "Press!");
-		_event.setShowArrows(false);
 		_availableCoord = null;
 		_event.setCoordinate(new Coordinate((int)e.getRawX(), (int)e.getRawY()));
 		_event.setDirection(Constant.UNKNOWN);
+		_event.setTap(true);
+		//removeArrows();
 		_event.setTap(true);
 		return true;
 	}
@@ -80,9 +82,30 @@ public class MyGestureListener extends SimpleOnGestureListener
 				pathCheck = _grid.getPlayer().moveTo(_availableCoord.get(i)).lastElement();
 				if(!_availableCoord.get(i).equals(pathCheck))
 					_availableCoord.set(i, null);
+				else
+				{
+					int arrowDir = R.drawable.arrow;
+					switch(i)
+					{
+						case 0: 
+							arrowDir = R.drawable.arrows_down;
+							break;
+						case 1:
+							arrowDir = R.drawable.arrows_up;
+							break;
+						case 2:
+							arrowDir = R.drawable.arrows_right;
+							break;
+						case 3: 
+							arrowDir = R.drawable.arrows_left;
+							break;
+					}	
+					
+					Arrow newArrow = new Arrow(arrowDir);
+					_grid.getCell(_availableCoord.get(i).x, _availableCoord.get(i).y).setArrow(newArrow);
+				}	
 			}
 		}
-		_event.setShowArrows(true);
 		_event.setDirection(Constant.UNKNOWN);
 		return false;
 	}
@@ -92,6 +115,8 @@ public class MyGestureListener extends SimpleOnGestureListener
 	{
 		int col = (int) Math.floor(_event.getCoordinate().x/_grid.getCellWidth());
 		int row = (int) Math.floor(_event.getCoordinate().y/_grid.getCellHeight());
+		
+		removeArrows();
 		_event.setTap(false);
 		if(_grid.hasMovable(row,col))
 		{
@@ -155,6 +180,16 @@ public class MyGestureListener extends SimpleOnGestureListener
 		}
 
 		return false;
+	}
+	public void removeArrows()
+	{
+		for(int i =0; i < _availableCoord.size(); i++)
+		{
+			if(_availableCoord.get(i) != null)
+			{
+				_grid.getCell(_availableCoord.get(i).x, _availableCoord.get(i).y).setArrow(null);
+			}
+		}
 	}
 	
 	public void setGrid(Grid newgrid)

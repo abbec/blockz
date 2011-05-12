@@ -11,6 +11,8 @@ public class Cell
 	private Player _player;
 	private Cell _parent;
 	private Coordinate _position;
+	private Arrow _arrow;
+	
 	public Cell()
 	{
 	}
@@ -38,6 +40,14 @@ public class Cell
 	public Player getPlayer()
 	{
 		return _player;
+	}
+	public Arrow getArrow()
+	{
+		return _arrow;
+	}
+	public void setArrow(Arrow a)
+	{
+		_arrow = a;
 	}
 	public void setMovable(MovableItem it) 
 	{		
@@ -87,6 +97,11 @@ public class Cell
 	{
 		return _player != null;
 	}
+	public boolean hasArrow()
+	{
+		return _arrow != null;
+	}
+	
 	
 	public boolean fixedIsWall()
 	{
@@ -96,7 +111,7 @@ public class Cell
 			return _fixed.getType() == Item.WALL; 
 	}
 
-	public void setParent(Cell _parent) 
+	public void setParent(Cell _parent)
 	{
 		this._parent = _parent;
 	}

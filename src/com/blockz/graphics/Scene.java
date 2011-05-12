@@ -17,6 +17,7 @@ import android.view.SurfaceView;
 
 import com.blockz.Game;
 import com.blockz.R;
+import com.blockz.logic.Arrow;
 import com.blockz.logic.Block;
 import com.blockz.logic.Cell;
 import com.blockz.logic.Coordinate;
@@ -110,13 +111,22 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		cell = it.next();
 	    		ground.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime, 0xff3dacb6);
 	    		
-	    		if (cell.hasFixed())
+	    		
+	    		if(cell.hasFixed())
 	    		{
 	    			b = cell.getFixed();
 	    			
 	    			s = _spriteTable.get(b.getSpriteID());
 	    		
 	    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime,7);
+	    		}
+	    		//render arrow
+	    		if (cell.hasArrow())
+	    		{
+	    			Arrow arrow = cell.getArrow();
+	    			
+	    			s = _spriteTable.get(arrow.getSpriteID());
+	    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime, 0);
 	    		}
 	    		
 	    		// Render the movable block
