@@ -8,8 +8,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.util.Log;
 
-public class AnimatedSprite extends Sprite
+public class PlayerSprite extends Sprite
 {
 	 private final int FPS = Preferences.ANIM_FPS;
 	 
@@ -31,7 +32,7 @@ public class AnimatedSprite extends Sprite
      * 
      * Animated sprite that animates a block, for example a character.
      */
-    public AnimatedSprite(int typeID, Context context, int width, int height)
+    public PlayerSprite(int typeID, Context context, int width, int height)
     {
     	super(typeID, context, width, height);
     	
@@ -55,19 +56,47 @@ public class AnimatedSprite extends Sprite
     }
     
     
-    public void update(long gameTime) 
+    public void update(long gameTime,int dir) 
     {
-        if(gameTime > _frameTimer + _updateTime ) 
-        {
-            _frameTimer = gameTime;
-            _currentFrame++;
+    	int row = 0;
+    	//Log.d("A_INFO","Dir: " + dir);
+    	if(dir < 5)
+    	{
+        	switch(dir)
+        	{
+        		case 0: row = 3;break;
+        		case 1: row = 1;break;
+        		case 2: row = 0;break;
+        		case 3: row = 2;break;
+        	}
+    		if(gameTime > _frameTimer + _updateTime ) 
+    		{
+    			_frameTimer = gameTime;
+    			_currentFrame++;
      
-            if(_currentFrame >= _noFrames) 
-            {
-                _currentFrame = 0;
-            }
-        }
-     
+    			if(_currentFrame >= _noFrames) 
+    			{
+    				_currentFrame = 0;
+    			}
+    		}
+    	}
+    	else
+    	{
+        	switch(dir)
+        	{
+        		case 5: row = 3;break;
+        		case 6: row = 2;break;
+        		case 7: row = 0;break;
+        		case 8: row = 1;break;
+        	}  		
+    	}
+
+    	
+
+    	Log.d("A_INFO","row: " + row);
+    	_sRectangle.top = _singleHeight*row;
+    	_sRectangle.bottom = _singleHeight + _singleHeight*row;
+    	
         _sRectangle.left = _currentFrame * _singleWidth;
         _sRectangle.right = _sRectangle.left + _singleWidth;
     }
@@ -75,7 +104,7 @@ public class AnimatedSprite extends Sprite
     public void draw(Canvas canvas, int x, int y, long gameTime,int dir) 
     {
     	// Update the sprite
-    	update(gameTime);
+    	update(gameTime,dir);
     	
         Rect dest = new Rect(x, y, x+_singleWidth, y+_singleHeight);
      

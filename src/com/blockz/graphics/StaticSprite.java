@@ -18,7 +18,7 @@ public class StaticSprite extends Sprite
 		super(typeID, context, width, height); 
 	}
 	@Override
-	public void draw(Canvas canvas,int x, int y, long gameTime) 
+	public void draw(Canvas canvas,int x, int y, long gameTime,int dir) 
 	{
 		// TODO Auto-generated method stub
 

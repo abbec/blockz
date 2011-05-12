@@ -12,6 +12,7 @@ public class Player extends Actor
 	private Coordinate _position;
 	private PathFinder _pathfinder;
 	private Vector<Coordinate> _path;
+	private int _dir,_lookDir;
 	/**
 	 * @param c - Coordinate;
 	 * @param spriteID - Player type;
@@ -38,6 +39,23 @@ public class Player extends Actor
 	public void setPosition(Coordinate pos)
 	{
 		_position = pos;
+	}
+	
+	public void setDirection(int dir)
+	{
+		_dir = dir;
+	}
+	public int getDirection()
+	{
+		return _dir;
+	}
+	public void setLookDirection(int d)
+	{
+		_lookDir = d;
+	}
+	public int getLookDirection()
+	{
+		return _lookDir;
 	}
 	public Coordinate getPosition()
 	{

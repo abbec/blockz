@@ -33,6 +33,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 {
 	public final static int STATIC_SPRITE = 0;
 	public final static int ANIMATED_SPRITE = 1;
+	public final static int PLAYER_SPRITE = 2;
 	
 	private int _spriteWidth, _spriteHeight;
 	
@@ -73,13 +74,13 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 				_spriteTable.put(spriteId, new StaticSprite(spriteId,_context, _spriteWidth, _spriteHeight));
 			else if (type == ANIMATED_SPRITE)
 				_spriteTable.put(spriteId, new AnimatedSprite(spriteId,_context, _spriteWidth, _spriteHeight));
+			else if (type == PLAYER_SPRITE)
+				_spriteTable.put(spriteId, new PlayerSprite(spriteId,_context, _spriteWidth, _spriteHeight));
 			else
 				Assert.assertTrue("This sprite type does not exist!", false);
 		}
 			
 	}
-	
-	
 	
 	/**
 	 * Draws to the surface what has been flagged for render in the level grid.
@@ -118,7 +119,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    			
 	    		s = _spriteTable.get(b.getSpriteID());
 	    		
-	    		s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);
+	    		s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime,7);
 	    		
 	    		
 	    		// Render the movable block
@@ -128,27 +129,27 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 		    		
 		    		if(mv.hasOffset())
 		    		{
-		    			overDraw.add(new OverDraw(mv,pixelCoord));
+		    			overDraw.add(new OverDraw(mv,pixelCoord,7));
 		    		}
 		    		else
 		    		{
 		    			s = _spriteTable.get(mv.getSpriteID());
-			    		s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);	    		
+			    		s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime,7);	    		
 		    		}
 	    		}
 	    		
 	    		// Render the player.
 	    		if (cell.hasPlayer())
 	    		{
-		    		mv = cell.getPlayer();
-		    		if (mv.hasOffset())
+	    			mv = cell.getPlayer();
+	    			if (mv.getMoving())
 	    			{
-	    				overDraw.add(new OverDraw(mv,pixelCoord));
+	    				overDraw.add(new OverDraw(mv,pixelCoord,cell.getPlayer().getDirection()));
 	    			}
 	    			else
 	    			{
 	    				s = _spriteTable.get(mv.getSpriteID());
-	    				s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);
+	    				s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime,cell.getPlayer().getLookDirection()+5);
 	    			}
 	    		}
 	    			
@@ -162,7 +163,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		pixelCoord = od._pixelCoord;
 	    		pixelCoord.add(od._item.getOffset());
     			s = _spriteTable.get(od._item.getSpriteID());
-    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime);	    		
+    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime,od._dir);	    		
 	    	}
 	    	
 	    
@@ -184,7 +185,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
     public void drawPause(Canvas canvas)
     {
     	StaticSprite _pause = new StaticSprite(R.drawable.pause, _context, 40, 40);
-    	_pause.draw(canvas, 50, 50, 0);
+    	_pause.draw(canvas, 50, 50, 0,7);
     }
     
     @Override
@@ -210,10 +211,11 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
     {
     	public MovableItem _item;
     	public Coordinate _pixelCoord;
+    	public int _dir =0;
     	
-    	public OverDraw(MovableItem item, Coordinate c)
+    	public OverDraw(MovableItem item, Coordinate c, int dir)
     	{
-    		_item = item; _pixelCoord = c;
+    		_item = item; _pixelCoord = c; _dir = dir;
     	}
     }
     
