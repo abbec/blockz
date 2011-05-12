@@ -6,7 +6,7 @@ public class Cell
 {
 	
 	private int _f, _g, _h;
-	private Block _fixed;
+	public Block _fixed;
 	private MovableItem _movable;
 	private Player _player;
 	private Cell _parent;

@@ -20,6 +20,22 @@ public class Tree<T>
 		_root = root;
 	}
 	
+	public String preOrderString()
+	{
+		StringBuilder s = new StringBuilder();
+		visitPreOrderString(_root, s);
+		
+		return s.toString();
+	}
+	
+	private void visitPreOrderString(Node<T> element, StringBuilder s)
+	{
+		s.append("[" + element.toString() + "]\n");
+		
+        for (Node<T> data : element.getChildren()) 
+            visitPreOrderString(data, s);
+	}
+		
 	public List<Node<T> > preOrderList()
 	{
 		List<Node<T> > list = new ArrayList<Node<T> >();
@@ -49,7 +65,7 @@ public class Tree<T>
 	private void postOrder(Node<T> element, List<Node<T>> list)
 	{
 		for (Node<T> data : element.getChildren()) 
-            preOrder(data, list);
+            postOrder(data, list);
 		
 		list.add(element);
 	}

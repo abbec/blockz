@@ -1,9 +1,12 @@
 package com.blockz;
 
+import junit.framework.Assert;
+
 import com.blockz.graphics.*;
 import com.blockz.logic.*;
 
 import android.app.Activity;
+import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -24,12 +27,20 @@ public class Game extends Activity
 	private MyEvent _event;
 	private Grid _grid;
 	private int _width, _height;
+	private int _levelID;
 	
 	/**
 	 * Called when the activity is created.
 	 */
 	public void onCreate(Bundle savedInstanceState)
 	{
+
+		//TODO: Set correct numbers in assert
+		//_levelID = getIntent().getExtras().getInt("level");
+		_levelID = LevelManager.getInstance().getCurrentLevel();
+		Log.d("B_INFO", "id: " + _levelID);
+		//Assert.assertTrue(_levelID > 0 && _levelID < 11);		
+		
 		init();
 		super.onCreate(savedInstanceState);
 	}
@@ -50,12 +61,45 @@ public class Game extends Activity
 		
 		_scene = new Scene(this, this, _grid.getCellWidth(), _grid.getCellHeight());
 		_event = new MyEvent();
+		MyGestureListener mgl = new MyGestureListener(_event); 
 		setContentView(_scene);
-		MyGestureListener mgl = new MyGestureListener(_event,_grid);
 		gd = new GestureDetector(mgl);
-		gd.setIsLongpressEnabled(false);
 		
-		_level = new Level(this, _scene, _grid, R.drawable.level2);
+		
+		switch(_levelID) {
+			case 1:
+				_levelID = R.drawable.level1;
+				break;
+			case 2:
+				_levelID = R.drawable.level2;
+				break;
+			case 3:
+				_levelID = R.drawable.level3;
+				break;
+			case 4:
+				_levelID = R.drawable.level4;
+				break;
+			case 5:
+				_levelID = R.drawable.level5;
+				break;
+			case 6:
+				_levelID = R.drawable.level6;
+				break;
+			case 7:
+				_levelID = R.drawable.level7;
+				break;
+			case 8:
+				_levelID = R.drawable.level8;
+				break;
+			case 9:
+				_levelID = R.drawable.level9;
+				break;
+			case 10:
+				_levelID = R.drawable.level10;
+				break;
+		}
+		
+		_level = new Level(this, _scene, _grid, _levelID);
 		_mainThread = new GameThread(this);
 		setPauseFlag(false);
 		
@@ -87,9 +131,6 @@ public class Game extends Activity
 				_grid = new Grid(_width, _height);
 				_level.setGrid(_grid);
 				_level.reset();
-				MyGestureListener mgl = new MyGestureListener(_event,_grid);
-				gd = new GestureDetector(mgl);
-				gd.setIsLongpressEnabled(false);
 			}
 			else
 				_level.addEvent(_event);
