@@ -101,7 +101,7 @@ public class Move {
 			if(!_start.equals(_end))
 			{
 				_grid.getPlayer(_start.x, _start.y).setDirection(calculateDirection());
-				Log.d("A_INFO", "c_dir: " + calculateDirection());
+				
 				if(nextOffset.x >= _grid.getCellHeight() || nextOffset.x <= -1*_grid.getCellHeight() || nextOffset.y >= _grid.getCellWidth() || nextOffset.y <= -1*_grid.getCellWidth() )
 				{
 
@@ -132,6 +132,12 @@ public class Move {
 				else
 					_grid.getPlayer(_start.x, _start.y).setOffset(nextOffset);
 				
+			}
+			else
+			{
+				_grid.getPlayer(_end.x, _end.y).setPosition(_end);
+				_grid.getPlayer(_end.x, _end.y).setMoving(false);
+				_isMoving = false;
 			}
 		}
 	}

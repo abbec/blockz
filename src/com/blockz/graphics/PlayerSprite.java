@@ -59,7 +59,6 @@ public class PlayerSprite extends Sprite
     public void update(long gameTime,int dir) 
     {
     	int row = 0;
-    	//Log.d("A_INFO","Dir: " + dir);
     	if(dir < 5)
     	{
         	switch(dir)
@@ -90,10 +89,6 @@ public class PlayerSprite extends Sprite
         		case 8: row = 1;break;
         	}  		
     	}
-
-    	
-
-    	//Log.d("A_INFO","row: " + row);
     	_sRectangle.top = _singleHeight*row;
     	_sRectangle.bottom = _singleHeight + _singleHeight*row;
     	

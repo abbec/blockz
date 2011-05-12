@@ -33,80 +33,79 @@ public class PathFinder{
 		closedList.clear();
 		openList.clear();
 		_path.clear();
-		
-		Log.d("B_INFO","StartPos x:" + startPos.x + " y:" +startPos.y);
-
-		setAllH(endPos);
-		
-
-		Cell currentCell = _grid.getCell(startPos.x,startPos.y);
-		Cell endCell = _grid.getCell(endPos.x,endPos.y);
-
-		Vector<Cell> neighbors = new Vector<Cell>();
-
-		//Kolla om neighbors går att gå på.
-		
-		endCell = checkNeighbors(endCell);
-		setAllH(endCell.getPosition());
-		Log.d("B_INFO", "Endcell_Changed:" + endCell.toString());
-		//Semi-ful fix för att fixa blockerad endCell-path
-		boolean blockedEndCell = false;
-		if (endCell.getG() != 10)
-		{
-			blockedEndCell = true;
-		}
-		
-		
-		//Add start position to the openList.
-		openList.addElement(currentCell);
-		Log.d("B_INFO","EndCellPos: " + endCell.getPosition().toString());
-		while( (currentCell.getPosition().x != endCell.getPosition().x  || currentCell.getPosition().y != endCell.getPosition().y) && openList.size() > 0)
-		{
-			// Get the cell with smallest F cost and add it to the closed list and remove it from the openList.
-			closedList.addElement(currentCell);
-			//Log.d("B_INFO","Current Cell: " + currentCell.getPosition().toString());
-			openList.remove(getSmallestCost(openList));
+			Log.d("B_INFO","StartPos x:" + startPos.x + " y:" +startPos.y);
+	
+			setAllH(endPos);
 			
-			// Check the in this case the four adjacency cells for smallest F.
-			neighbors = getNeighbors(_grid, currentCell.getPosition());
+	
+			Cell currentCell = _grid.getCell(startPos.x,startPos.y);
+			Cell endCell = _grid.getCell(endPos.x,endPos.y);
+	
+			Vector<Cell> neighbors = new Vector<Cell>();
+	
+			//Kolla om neighbors går att gå på.
 			
-			Iterator<Cell> itr = neighbors.iterator();
-			Cell c = new Cell();
-			while(itr.hasNext())
+			endCell = checkNeighbors(endCell);
+			setAllH(endCell.getPosition());
+			Log.d("B_INFO", "Endcell_Changed:" + endCell.toString());
+			//Semi-ful fix för att fixa blockerad endCell-path
+			boolean blockedEndCell = false;
+			if (endCell.getG() != 10)
 			{
-				c = itr.next();
-				if ( c.getH() == 10 && blockedEndCell && c.getG() == 10)
+				blockedEndCell = true;
+			}
+			
+			
+			//Add start position to the openList.
+			openList.addElement(currentCell);
+			Log.d("B_INFO","EndCellPos: " + endCell.getPosition().toString());
+			while( (currentCell.getPosition().x != endCell.getPosition().x  || currentCell.getPosition().y != endCell.getPosition().y) && openList.size() > 0)
+			{
+				// Get the cell with smallest F cost and add it to the closed list and remove it from the openList.
+				closedList.addElement(currentCell);
+				//Log.d("B_INFO","Current Cell: " + currentCell.getPosition().toString());
+				openList.remove(getSmallestCost(openList));
+				
+				// Check the in this case the four adjacency cells for smallest F.
+				neighbors = getNeighbors(_grid, currentCell.getPosition());
+				
+				Iterator<Cell> itr = neighbors.iterator();
+				Cell c = new Cell();
+				while(itr.hasNext())
 				{
-					endCell = c;
-					openList.addElement(endCell);
-					endCell.setParent(currentCell);
-					blockedEndCell = false;
-					break;
+					c = itr.next();
+					if ( c.getH() == 10 && blockedEndCell && c.getG() == 10)
+					{
+						endCell = c;
+						openList.addElement(endCell);
+						endCell.setParent(currentCell);
+						blockedEndCell = false;
+						break;
+					}
+					else if( c.getG() == 10 && !inClosedList(c) && !inOpenList(c))
+					{
+						openList.addElement(c);
+						c.setParent(currentCell);
+					}
 				}
-				else if( c.getG() == 10 && !inClosedList(c) && !inOpenList(c))
+				if ( openList.size()>0)
 				{
-					openList.addElement(c);
-					c.setParent(currentCell);
+					currentCell = openList.get(getSmallestCost(openList));
 				}
+				neighbors.clear();
 			}
-			if ( openList.size()>0)
+			Log.d("B_INFO","Done with closedListsize = " + closedList.size());
+			
+			while(endCell.getPosition().x != startPos.x || endCell.getPosition().y != startPos.y)
 			{
-				currentCell = openList.get(getSmallestCost(openList));
+				if (!blockedEndCell)
+				{
+					_path.insertElementAt(endCell.getPosition(), 0);
+				}
+				endCell = endCell.getParent();
 			}
-			neighbors.clear();
-		}
-		Log.d("B_INFO","Done with closedListsize = " + closedList.size());
-		
-		while(endCell.getPosition().x != startPos.x || endCell.getPosition().y != startPos.y)
-		{
-			if (!blockedEndCell)
-			{
-				_path.insertElementAt(endCell.getPosition(), 0);
-			}
-			endCell = endCell.getParent();
-		}
-		
-		return _path;
+			
+			return _path;	
 	}
 	public void setAllH(Coordinate endPos)
 	{

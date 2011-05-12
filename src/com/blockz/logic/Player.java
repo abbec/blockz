@@ -32,8 +32,10 @@ public class Player extends Actor
 	public Vector<Coordinate> moveTo(Coordinate endPos)
 	{
 		Log.d("B_INFO","MoveTO!");
-		_path = _pathfinder.calculatePath(_position,endPos);
-		Log.d("B_INFO","PATHSIZE!" + _path.size());
+		if(endPos.equals(_position))
+			_path.add(_position);
+		else
+			_path = _pathfinder.calculatePath(_position,endPos);
 		return _path;
 	}
 	public void setPosition(Coordinate pos)

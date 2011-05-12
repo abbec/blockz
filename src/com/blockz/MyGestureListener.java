@@ -38,8 +38,10 @@ public class MyGestureListener extends SimpleOnGestureListener
 			
 		//Log.d("E_INFO", "Press!");
 		_event.setShowArrows(false);
+		_availableCoord = null;
 		_event.setCoordinate(new Coordinate((int)e.getRawX(), (int)e.getRawY()));
 		_event.setDirection(Constant.UNKNOWN);
+		_event.setTap(true);
 		return true;
 	}
 	
@@ -90,7 +92,7 @@ public class MyGestureListener extends SimpleOnGestureListener
 	{
 		int col = (int) Math.floor(_event.getCoordinate().x/_grid.getCellWidth());
 		int row = (int) Math.floor(_event.getCoordinate().y/_grid.getCellHeight());
-		
+		_event.setTap(false);
 		if(_grid.hasMovable(row,col))
 		{
 			_event.setShowArrows(false);
