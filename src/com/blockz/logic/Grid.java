@@ -1,6 +1,9 @@
 package com.blockz.logic;
 
+import com.blockz.R;
 import java.util.Iterator;
+
+import com.blockz.graphics.StaticSprite;
 
 import junit.framework.Assert;
 
@@ -15,6 +18,7 @@ public class Grid implements Iterable<Cell>
 	private Cell[][] _gridArray;
 	private int _cellWidth, _cellHeight;
 	private Player _player;
+	private int _groundSprite;
 	
 	public Grid(int screenWidth, int screenHeight)
 	{
@@ -30,6 +34,8 @@ public class Grid implements Iterable<Cell>
 		
 		_cellWidth = (int) Math.ceil(screenWidth/12.0);
 		_cellHeight = (int) Math.ceil(screenHeight/8.0);
+		
+		_groundSprite = R.drawable.grass2;
 	}
 	
 	/**
@@ -38,6 +44,16 @@ public class Grid implements Iterable<Cell>
 	public int getCellWidth() 
 	{
 		return _cellWidth;
+	}
+	
+	public void setGround(int groundValue)
+	{
+		_groundSprite = groundValue;
+	}
+	
+	public int getGround()
+	{
+		return _groundSprite;
 	}
 	
 	/**
