@@ -28,6 +28,7 @@ public class Game extends Activity
 	private Grid _grid;
 	private int _width, _height;
 	private int _levelID;
+	private boolean _pauseFlag;
 	
 	/**
 	 * Called when the activity is created.
@@ -119,7 +120,8 @@ public class Game extends Activity
 			
 			if(col == 0 && row == 0)
 			{
-				Log.d("B_INFO","Pause!");
+					Log.d("B_INFO","Pause!");
+					pause();
 			/*	_mainThread.pause();
 				
 				pauseMenu = new PauseMenu();
@@ -202,9 +204,29 @@ public class Game extends Activity
 		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
 		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("playedTime", _level.getPlayedTime()).commit();
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("points", (int) _level.getPoints()).commit();
 		setPauseFlag(true);
 		//_mainThread.pause();
 		super.onPause();
+	}
+	
+	protected void pause()
+	{
+		if(!_pauseFlag)
+		{
+		_mainThread.pause();
+		_pauseFlag = true;
+		}
+		else 
+		{
+			_mainThread.unPause();
+			_pauseFlag = false;
+		}
+	}
+	
+	public boolean getPauseFlag()
+	{
+		return _pauseFlag;
 	}
 	
 
@@ -236,10 +258,13 @@ public class Game extends Activity
 	{
 		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("flag", false)) {
 			_level.setPlayedTime(PreferenceManager.getDefaultSharedPreferences(this).getInt("playedTime", 0));
+			_level.setPoints((PreferenceManager.getDefaultSharedPreferences(this).getInt("points", 999)));
+			
 			//_mainThread.unPause();
 		} else {
 			_level.setPlayedTime(0);
 			_gameStart = System.currentTimeMillis();
+			_level.setPoints(999.0);
 		}
 		
 		super.onResume();

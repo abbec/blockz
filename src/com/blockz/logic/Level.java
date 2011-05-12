@@ -86,13 +86,17 @@ public class Level
 		
 		updatePlayingTime(gameTime);
 		if(_currentEvent != null)
-		{			
+		{
 			Log.d("E_INFO","Player dest: " + _currentEvent.getPlayerDestination().toString());
 			Log.d("E_INFO","Player coord: " + _grid.getPlayer().getPosition().toString());
-			//Gridcoordinates
+			
+			//GRIDCOORDINATES
 			col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
 			row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
 
+			Log.d("B_INFO","Level Class: Column number: "+col);
+			Log.d("B_INFO","Level Class: Row number:"+row);
+			
 			Vector<Coordinate> tempPath = _player.moveTo(_currentEvent.getPlayerDestination());
 			if(tempPath.size() > 0 && !_player.getMoving())
 			{
@@ -102,6 +106,9 @@ public class Level
 			}
 			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN && !_grid.getMovable(row, col).getMoving() )
 			{
+				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
+				//Log.d("B_INFO", CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()).toString());
+				//Stoppa in ett Move-objekt i Levels move-lista, skicka med row, col
 				Coordinate finalDestination = CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection());
 				if(!finalDestination.equals(new Coordinate(row,col)))
 				{	
@@ -159,6 +166,11 @@ public class Level
 			_points = 0;
 	}
 	
+	public void setPoints(double points)
+	{
+		_points = points;
+	}
+	
 
 	public double getPoints() 
 	{
@@ -185,7 +197,7 @@ public class Level
 		Log.d("B_INFO", "Victory! You got points: " + _points);
 		LevelManager.getInstance().setScore((int)_points);
 		Intent levelMenu = new Intent(_context, Menus.class);
-		_context.startActivity(levelMenu);
+		_context.startActivity(levelMenu);	
 	}
 	public boolean isLevelComplete()
 	{
@@ -346,6 +358,7 @@ public class Level
 					}
 					GroundBlock g = new GroundBlock(R.drawable.grass);
 					_grid.setFixed(row,col,g);
+					
 				}
 				else
 				{

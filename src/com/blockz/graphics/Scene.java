@@ -79,6 +79,8 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 			
 	}
 	
+	
+	
 	/**
 	 * Draws to the surface what has been flagged for render in the level grid.
 	 * 
@@ -138,8 +140,8 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		// Render the player.
 	    		if (cell.hasPlayer())
 	    		{
-	    			mv = cell.getPlayer();
-	    			if (mv.hasOffset())
+		    		mv = cell.getPlayer();
+		    		if (mv.hasOffset())
 	    			{
 	    				overDraw.add(new OverDraw(mv,pixelCoord));
 	    			}
@@ -165,12 +167,24 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    	
 	    
 	    	
-	    	_game.getHud().setPoints(_game.getLevel().getPoints());
-	    	_game.getHud().draw(canvas);	
+	    	
+	    	if(_game.getPauseFlag())
+	    		drawPause(canvas);
+	    	else
+	    	{
+	    		_game.getHud().setPoints(_game.getLevel().getPoints());
+		    	_game.getHud().draw(canvas);
+	    	}
 	    		    	
 	    	// Unlock the canvas to show the screen
 	    	_surfHolder.unlockCanvasAndPost(canvas);
     	}
+    }
+    
+    public void drawPause(Canvas canvas)
+    {
+    	StaticSprite _pause = new StaticSprite(R.drawable.pause, _context, 40, 40);
+    	_pause.draw(canvas, 50, 50, 0);
     }
     
     @Override
