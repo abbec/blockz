@@ -46,8 +46,8 @@ public class Menus extends Activity {
 		int _height = display.getHeight();
 		_grid = new Grid(_width, _height);
 
-		_levelMenu = new LevelMenu(this, this, _width, _height);
-		_startMenu = new StartMenu(this, this, _width, _height);
+		_levelMenu = new LevelMenu(this, this, _width, _height, R.drawable.level_select);
+		_startMenu = new StartMenu(this, this, _width, _height, R.drawable.mainpage_w_big_btn);
 		_menuState = STARTMENU;
 		_event = new MyEvent();
 		MyGestureListener mgl = new MyGestureListener(_event, _grid); 

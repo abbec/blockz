@@ -17,25 +17,10 @@ import android.util.Log;
 public class StartMenu extends Menu{
 	private Context _context;
 
-	public StartMenu(Context context, Menus menus, int screenWidth, int screenHeight)
+	public StartMenu(Context context, Menus menus, int screenWidth, int screenHeight, int typeID)
 	{
-		super(context,  menus, screenWidth, screenHeight);
-    	_context = context;
-    	_menu = BitmapFactory.decodeResource(_context.getResources(), R.drawable.mainpage_w_big_btn);
-    
-    	
-    	//TODO : LÄGG I SUPERKLASSEN
-    	float scaleWidth = ((float) screenWidth)/_menu.getWidth();
-    	float scaleHeight = ((float) screenHeight)/_menu.getHeight();
-    	
-    	// Create a matrix for the manipulation
-    	Matrix matrix = new Matrix();
-    	// Resize the bit map
-    	
-    	matrix.postScale(scaleWidth, scaleHeight);
+		super(context,  menus, screenWidth, screenHeight, typeID);
 
-    	// Recreate the new Bitmap
-    	_menu = Bitmap.createBitmap(_menu, 0, 0, _menu.getWidth(), _menu.getHeight(), matrix, true);
 	}
 
 	@Override

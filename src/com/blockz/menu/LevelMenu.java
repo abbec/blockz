@@ -19,11 +19,10 @@ public class LevelMenu extends Menu
 	private int _playerRow; 
 	
 
-	public LevelMenu(Context context, Menus menus, int screenWidth, int screenHeight)
+	public LevelMenu(Context context, Menus menus, int screenWidth, int screenHeight, int typeID)
 	{
-		super(context,  menus, screenWidth, screenHeight);
+		super(context,  menus, screenWidth, screenHeight, typeID);
     	_context = context;
-    	_menu = BitmapFactory.decodeResource(_context.getResources(), R.drawable.levelmenu);
     	_player = BitmapFactory.decodeResource(_context.getResources(), R.drawable.gubbe);
 	}
 
