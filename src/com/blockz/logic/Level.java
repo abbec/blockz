@@ -189,7 +189,9 @@ public class Level
 	public void levelComplete()
 	{
 		Log.d("B_INFO", "Victory! You got points: " + _points);
-		LevelManager.getInstance().updateScore((int)_points);
+		LevelManager lm = LevelManager.getInstance(); 
+		lm.updateScore((int)_points);
+		lm.clearLevel();
 		Intent levelMenu = new Intent(_context, Menus.class);
 		_context.startActivity(levelMenu);
 	}
@@ -222,7 +224,7 @@ public class Level
 	
 	public void reset()
 	{
-		//Resets the blocksf
+		//Resets the blocks
 		
 		updatePoints(100.0);
 		readLevel(_levelResourceNumber);
@@ -249,7 +251,7 @@ public class Level
 	 * readLevel() reads a level as resource and populates the _grid with fixed and movable blocks.
 	 * @param int with the resource number to a level
 	 */
-	public void readLevel(int resourceNumber)
+	private void readLevel(int resourceNumber)
 	{
 		_levelImage = BitmapFactory.decodeResource(_context.getResources(), resourceNumber);
 		for(int col = 0; col < 12; col++)

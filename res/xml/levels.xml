@@ -9,7 +9,6 @@
 			</level>
 		</level>
 	</level>
-	
 	<level id="3" row="3" col="3">
 		<level id="5" row="1" col="4">
 			<level id="7" row="6" col="9">
@@ -20,8 +19,5 @@
 				</level>
 			</level>
 		</level>
-	</level>
-		
-
-	
+	</level>	
 </level>
