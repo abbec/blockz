@@ -197,10 +197,13 @@ public class Level
 			Cell c = it.next();
 			Block b = c.getFixed();
 			
+			if(b == null || c == null)
+				return false;
 			if(b.getType() == Item.GOAL && !c.hasMovable())
 			{
 				return false;
 			}
+	
 			
 		}
 			levelComplete();
@@ -210,10 +213,10 @@ public class Level
 	
 	public void reset()
 	{
-		//Resets the blocks
+		//Resets the blocksf
 		
 		updatePoints(100.0);
-		readLevel(_levelResourceNumber);
+		readLevel(R.drawable.level5);
 	}
 	public void addEvent(MyEvent ev)
 	{
