@@ -15,6 +15,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.blockz.LevelManager;
+import com.blockz.Menus;
 import com.blockz.MyEvent;
 import com.blockz.Preferences;
 import com.blockz.R;
@@ -118,8 +120,6 @@ public class Level
 		{
 			if( _moveList.size() > 0)
 			{
-				
-			
 				if(_moveList.getFirst().isMoving())
 				{
 					_moveList.getFirst().move(gameTime);
@@ -183,6 +183,9 @@ public class Level
 	public void levelComplete()
 	{
 		Log.d("B_INFO", "Victory! You got points: " + _points);
+		LevelManager.getInstance().setScore((int)_points);
+		Intent levelMenu = new Intent(_context, Menus.class);
+		_context.startActivity(levelMenu);
 	}
 	public boolean isLevelComplete()
 	{
@@ -216,7 +219,7 @@ public class Level
 		//Resets the blocksf
 		
 		updatePoints(100.0);
-		readLevel(R.drawable.level5);
+		readLevel(_levelResourceNumber);
 	}
 	public void addEvent(MyEvent ev)
 	{
