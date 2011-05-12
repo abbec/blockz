@@ -73,9 +73,9 @@ public class Menus extends Activity {
 
 			if(_menuState == LEVELMENU)
 			{
-				int level = lm.getLevel(row, col);
-				if(level > -1) {
-
+				LevelNode level = lm.getLevel(row, col);
+				if(level != null && lm.isPlayable(level))
+				{
 					_levelMenu.updatePosition(row, col);
 					_levelMenu.drawBackground();
 					Log.d("B_INFO", "Level: " + level);

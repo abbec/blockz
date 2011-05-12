@@ -89,8 +89,7 @@ public class Level
 		{			
 			Log.d("E_INFO","Player dest: " + _currentEvent.getPlayerDestination().toString());
 			Log.d("E_INFO","Player coord: " + _grid.getPlayer().getPosition().toString());
-			
-			//GRIDCOORDINATES
+			//Gridcoordinates
 			col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
 			row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
 
@@ -195,9 +194,9 @@ public class Level
 	public void levelComplete()
 	{
 		Log.d("B_INFO", "Victory! You got points: " + _points);
-		LevelManager.getInstance().setScore((int)_points);
+		LevelManager.getInstance().updateScore((int)_points);
 		Intent levelMenu = new Intent(_context, Menus.class);
-		_context.startActivity(levelMenu);	
+		_context.startActivity(levelMenu);
 	}
 	public boolean isLevelComplete()
 	{
@@ -358,7 +357,6 @@ public class Level
 					}
 					GroundBlock g = new GroundBlock(R.drawable.grass);
 					_grid.setFixed(row,col,g);
-					
 				}
 				else
 				{
