@@ -1,10 +1,5 @@
 package com.blockz;
 
-import com.blockz.LevelManager.SaveSlot;
-import com.blockz.logic.Grid;
-import com.blockz.menu.LevelMenu;
-import com.blockz.menu.StartMenu;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,6 +11,11 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.blockz.LevelManager.SaveSlot;
+import com.blockz.logic.Grid;
+import com.blockz.menu.LevelMenu;
+import com.blockz.menu.StartMenu;
 
 public class Menus extends Activity {
 	private LevelMenu _levelMenu;
@@ -46,8 +46,8 @@ public class Menus extends Activity {
 		int _height = display.getHeight();
 		_grid = new Grid(_width, _height);
 
-		_levelMenu = new LevelMenu(this, this, _width, _height, R.drawable.level_select);
-		_startMenu = new StartMenu(this, this, _width, _height, R.drawable.mainpage_w_big_btn);
+		_levelMenu = new LevelMenu(this, this, _width, _height);
+		_startMenu = new StartMenu(this, this, _width, _height);
 		_menuState = STARTMENU;
 		_event = new MyEvent();
 		MyGestureListener mgl = new MyGestureListener(_event, _grid); 
@@ -60,6 +60,7 @@ public class Menus extends Activity {
 
 		gd = new GestureDetector(mgl);
 		setContentView(_startMenu);
+		
 	}
 
 	@Override
