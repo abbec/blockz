@@ -3,6 +3,7 @@ package com.blockz;
 import com.blockz.LevelManager.SaveSlot;
 import com.blockz.logic.Grid;
 import com.blockz.menu.LevelMenu;
+import com.blockz.menu.StartMenu;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,20 +17,24 @@ import android.view.WindowManager;
 
 public class Menus extends Activity {
 	private LevelMenu _levelMenu;
+	private StartMenu _startMenu;
+	private int _menuState;
+	private static int STARTMENU = 0;
+	private static int LEVELMENU = 1;
 	private MyEvent _event;
 	private GestureDetector gd;
 	private Grid _grid;
 	private LevelManager lm;
-	
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
 
-    	init();
-        super.onCreate(savedInstanceState);
-    }
-    
-    private void init()
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+
+		init();
+		super.onCreate(savedInstanceState);
+	}
+
+	private void init()
 	{
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -40,20 +45,22 @@ public class Menus extends Activity {
 		_grid = new Grid(_width, _height);
 
 		_levelMenu = new LevelMenu(this, this, _width, _height);
+		_startMenu = new StartMenu(this, this, _width, _height);
+		_menuState = STARTMENU;
 		_event = new MyEvent();
-		MyGestureListener mgl = new MyGestureListener(_event,_grid);
-		
+		MyGestureListener mgl = new MyGestureListener(_event, _grid); 
+
 		lm = LevelManager.getInstance();
 		//lm = new LevelManager(new SaveSlot(3, "hej"));
-		
+
 		lm.setSaveSlot(this, new SaveSlot(3, "hej"));
 		//lm.load();
-		
+
 		gd = new GestureDetector(mgl);
-		setContentView(_levelMenu);
+		setContentView(_startMenu);
 	}
-    
-    @Override
+
+	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev)
 	{
 		boolean result;
@@ -62,34 +69,46 @@ public class Menus extends Activity {
 		{
 			int col = (int) Math.floor(_event.getCoordinate().x/_grid.getCellWidth());
 			int row = (int) Math.floor(_event.getCoordinate().y/_grid.getCellHeight());
-			
+			Log.d("B_INFO", "col: " + col + "row: " + row);
 
-			//TODO : Check if level exist at col,row and the level is allowed
-			//if(true)
-			//{
-				_levelMenu.updatePosition(row, col);
-				_levelMenu.drawBackground();
+			if(_menuState == LEVELMENU)
+			{
+				int level = lm.getLevel(row, col);
+				if(level > -1) {
 
-				lm.setLevel(2); 
-				Log.d("B_INFO", "set level to: " + lm.getCurrentLevel());
-				Intent intent = new Intent(this, Game.class);
-				//TODO:put the level that is choosen
-				// intent.putExtra("level", 2); 
-			     startActivity(intent);
-
-			//}
+					_levelMenu.updatePosition(row, col);
+					_levelMenu.drawBackground();
+					Log.d("B_INFO", "Level: " + level);
+					lm.setLevel(level); 
+					Log.d("B_INFO", "set level to: " + lm.getCurrentLevel());
+					Intent intent = new Intent(this, Game.class);
+					//TODO:put the level that is choosen
+					startActivity(intent);
+				}
+			}
+			else if(_menuState == STARTMENU)
+			{
+				_startMenu.drawBackground();
+			}
 		}
 		return result;
 	}
-	
-    
-   /**
-    * Called when the surface is ready
-    */
+
+
+	/**
+	 * Called when the surface is ready
+	 */
 	public void start()
 	{
 		//TODO : Set default startposition for choosen level
-		_levelMenu.updatePosition(2, 4);
-		_levelMenu.drawBackground();
+		if(_menuState == LEVELMENU)
+		{
+			_levelMenu.updatePosition(2, 4);
+			_levelMenu.drawBackground();
+		}
+		else if(_menuState == STARTMENU)
+		{
+			_startMenu.drawBackground();
+		}
 	}
 }
