@@ -4,9 +4,13 @@
 package com.blockz.menu;
 
 import com.blockz.Menus;
+import com.blockz.R;
+
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -19,16 +23,32 @@ public abstract class Menu extends SurfaceView implements SurfaceHolder.Callback
 	private Menus _menus;
 	protected int _screenWidth;
 	protected int _screenHeight;
+	private Context _context;
 	
-	public Menu(Context context, Menus menus, int screenWidth, int screenHeight) {
+	public Menu(Context context, Menus menus, int screenWidth, int screenHeight, int typeID) {
 		super(context);
-		
+		_context = context;
 		_screenWidth = screenWidth;
 		_screenHeight = screenHeight;
 		
 	   	_menus = menus;
 		_surfHolder = getHolder();
 		_surfHolder.addCallback(this);	
+    	
+    	_menu = BitmapFactory.decodeResource(_context.getResources(), typeID);
+    
+    	//TODO : LÄGG I SUPERKLASSEN
+    	float scaleWidth = ((float) screenWidth)/_menu.getWidth();
+    	float scaleHeight = ((float) screenHeight)/_menu.getHeight();
+    	
+    	// Create a matrix for the manipulation
+    	Matrix matrix = new Matrix();
+    	// Resize the bit map
+    	
+    	matrix.postScale(scaleWidth, scaleHeight);
+
+    	// Recreate the new Bitmap
+    	_menu = Bitmap.createBitmap(_menu, 0, 0, _menu.getWidth(), _menu.getHeight(), matrix, true);
 	}
 
 	public abstract void draw(Canvas c);
