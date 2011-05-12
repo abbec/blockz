@@ -464,7 +464,8 @@ public class LevelManager
 		
 		Node<LevelNode> root = _levelTree.getRoot();
 		
-		Node<LevelNode> res = findLevel(root, row, col);
+		Node<LevelNode> res = null;
+		findLevel(root, row, col, res);
 		
 		if (res != null)
 			Log.d("B_XML", "Found node at "+ row + ", " + col + " : " + res.toString());
@@ -477,15 +478,15 @@ public class LevelManager
 			return null;
 	}
 	
-	private Node<LevelNode> findLevel(Node<LevelNode> element, int r, int c)
+	private void findLevel(Node<LevelNode> element, int r, int c, Node<LevelNode> res)
 	{
 		if (element.getData().getRow() == r && element.getData().getCol() == c)
-			return element;
-		
-		for (Node<LevelNode> data : element.getChildren())
-			findLevel(data, r, c);
-		
-		return null;
+			res = element;
+		else
+		{
+			for (Node<LevelNode> data : element.getChildren())
+				findLevel(data, r, c, res);
+		}
 	}
 	
 	public boolean isPlayable(LevelNode n)
