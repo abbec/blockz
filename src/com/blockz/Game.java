@@ -70,7 +70,7 @@ public class Game extends Activity
 		
 		switch(_levelID) {
 			case 1:
-				_levelID = R.drawable.level1;
+				_levelID = R.drawable.level2;
 				break;
 			case 2:
 				_levelID = R.drawable.level2;
@@ -137,6 +137,7 @@ public class Game extends Activity
 				MyGestureListener mgl = new MyGestureListener(_event,_grid);
 				gd = new GestureDetector(mgl);
 				gd.setIsLongpressEnabled(false);
+				_event.setPlayerDestination(_grid.getPlayer().getPosition());
 			}
 			else
 				_level.addEvent(_event);

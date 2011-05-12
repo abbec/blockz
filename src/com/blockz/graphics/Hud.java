@@ -37,8 +37,8 @@ public class Hud
 
 	public void draw(Canvas canvas)
 	{
-		_pause.draw(canvas, 0, 0, 0);
-		_reset.draw(canvas, _cellWidth, 0, 0);
+		_pause.draw(canvas, 0, 0, 0,5);
+		_reset.draw(canvas, _cellWidth, 0, 0,5);
 		
 		Paint paint = new Paint();
 		

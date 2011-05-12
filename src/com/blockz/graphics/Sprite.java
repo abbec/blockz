@@ -34,6 +34,6 @@ public abstract class Sprite
         _sprite = Bitmap.createBitmap(origSprite, 0, 0, origSprite.getWidth(), origSprite.getHeight(), matrix, true);
 	}
 	
-	public abstract void draw(Canvas c, int x, int y, long gameTime);	
+	public abstract void draw(Canvas c, int x, int y, long gameTime,int Dir);	
 		
 }

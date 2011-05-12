@@ -93,10 +93,8 @@ public class Level
 			col = (int) Math.floor(_currentEvent.getCoordinate().x/_grid.getCellWidth());
 			row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
 
-			Log.d("B_INFO","Level Class: Column number: "+col);
-			Log.d("B_INFO","Level Class: Row number:"+row);
-			
 			Vector<Coordinate> tempPath = _player.moveTo(_currentEvent.getPlayerDestination());
+			_player.setLookDirection(_currentEvent.getDirection());
 			if(tempPath.size() > 0 && !_player.getMoving())
 			{
 				Move movePlayer = new Move(_player.getPosition(),tempPath,_grid,gameTime,true);
@@ -105,9 +103,6 @@ public class Level
 			}
 			if(_grid.hasMovable(row,col) && _currentEvent.getDirection() != Constant.UNKNOWN && !_grid.getMovable(row, col).getMoving() )
 			{
-				Log.d("B_INFO","Level Class: Flyttar block i riktning: " + _currentEvent.getDirection());
-				//Log.d("B_INFO", CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection()).toString());
-				//Stoppa in ett Move-objekt i Levels move-lista, skicka med row, col
 				Coordinate finalDestination = CollisionHandler.calculateDestination(_grid, row, col, _currentEvent.getDirection());
 				if(!finalDestination.equals(new Coordinate(row,col)))
 				{	
@@ -297,13 +292,13 @@ public class Level
 						isGoalBlock = true;
 						break;
 					case START:	
-						drawableValue =  R.drawable.gubbe;
-						staticInt =	Scene.STATIC_SPRITE;
+						drawableValue =  R.drawable.indianaslowlori;
+						staticInt =	Scene.PLAYER_SPRITE;
 						isBlockMovable = true;
 						isPlayer = true;
 						break;
 					case HUD:
-						drawableValue =  R.drawable.grass;
+						drawableValue =  R.drawable.grass2;
 						staticInt =	Scene.STATIC_SPRITE;
 						isBlockMovable = false;
 						break;
@@ -321,7 +316,7 @@ public class Level
 					Block b;
 					if(isGroundBlock)
 					{
-						b = new GroundBlock(R.drawable.grass);
+						b = new GroundBlock(R.drawable.grass2);
 						_grid.setCostG(row,col,10);
 					}
 					else if(isGoalBlock)
@@ -355,7 +350,7 @@ public class Level
 						_grid.setMovable(row,col,m);
 						_grid.setCostG(row,col,10000);
 					}
-					GroundBlock g = new GroundBlock(R.drawable.grass);
+					GroundBlock g = new GroundBlock(R.drawable.grass2);
 					_grid.setFixed(row,col,g);
 				}
 				else

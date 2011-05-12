@@ -35,7 +35,7 @@ public class Cell
 	{
 		return _movable;
 	}
-	public MovableItem getPlayer()
+	public Player getPlayer()
 	{
 		return _player;
 	}

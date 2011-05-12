@@ -67,9 +67,25 @@ public class Move {
 		_isActor = a;
 		int dist = (int) Math.sqrt(Math.pow(_start.x - _end.x, 2)+ Math.pow(_start.y - _end.y,2));
 		int minDist = (dist <= 4 ? 4 : dist);
+		_speed = Preferences.PLAYER_SPEED;
 		_speed *= minDist;
 	}
 	
+	public int calculateDirection()
+	{
+		int d = 7;
+		switch(_offsetY)
+		{
+			case	-1: d = 0;break;
+			case	 1: d = 2;break;
+		}
+		switch(_offsetX)
+		{
+			case   	-1: d = 1;break;
+			case  	 1: d = 3;break;
+		}
+		return d;
+	}
 	public void moveActor(long currentTime)
 	{
 		if (currentTime - _lastUpdate > (1000/_fps))
@@ -84,6 +100,8 @@ public class Move {
 			
 			if(!_start.equals(_end))
 			{
+				_grid.getPlayer(_start.x, _start.y).setDirection(calculateDirection());
+				Log.d("A_INFO", "c_dir: " + calculateDirection());
 				if(nextOffset.x >= _grid.getCellHeight() || nextOffset.x <= -1*_grid.getCellHeight() || nextOffset.y >= _grid.getCellWidth() || nextOffset.y <= -1*_grid.getCellWidth() )
 				{
 
@@ -102,6 +120,7 @@ public class Move {
 						
 						_offsetY = _end.x - _start.x;
 						_offsetX = _end.y - _start.y;
+						
 					}
 					else
 					{
