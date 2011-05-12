@@ -41,7 +41,7 @@ public class Menus extends Activity {
 
 		_levelMenu = new LevelMenu(this, this, _width, _height);
 		_event = new MyEvent();
-		MyGestureListener mgl = new MyGestureListener(_event); 
+		MyGestureListener mgl = new MyGestureListener(_event,_grid);
 		
 		lm = LevelManager.getInstance();
 		//lm = new LevelManager(new SaveSlot(3, "hej"));
