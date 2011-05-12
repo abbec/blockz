@@ -32,6 +32,7 @@ public class Level
 	public final static int STONE_MOVABLE = Color.RED;
 	public final static int HUD = Color.BLACK;
 	public final static int GRASS = Color.GREEN;
+	public final static int SAND = Color.MAGENTA;
 	public final static int WATER = Color.BLUE;
 	public final static int GOAL = Color.WHITE;
 	public final static int START = Color.CYAN;
@@ -214,19 +215,21 @@ public class Level
 			//Coordinate tempCoord = _grid.getGridCoords(it);
 			//_grid.getCell(tempCoord.x, tempCoord.y);
 			Cell c = it.next();
-			Block b = c.getFixed();
 			
-			if(b == null || c == null)
-				return false;
-			if(b.getType() == Item.GOAL && !c.hasMovable())
+			if (c.hasFixed())
 			{
-				return false;
+				Block b = c.getFixed();
+			
+				if(b.getType() == Item.GOAL && !c.hasMovable())
+				{
+					return false;
+				}
 			}
 	
 			
-		}
-			levelComplete();
-			return true; //All goals has a moveable
+		}		
+		levelComplete();
+		return true; //All goals has a moveable
 		
 	}
 	
@@ -272,7 +275,15 @@ public class Level
 				
 				if (row == 0 && col == 0)
 				{
-					drawableValue = R.drawable.grass2;
+					switch (pixelValue)
+					{
+						case SAND:
+							drawableValue = R.drawable.sand;
+							break;
+						default:
+							drawableValue = R.drawable.grass2;
+							
+					}
 					
 					_grid.setGround(drawableValue);
 					_scene.addSprite(drawableValue, Scene.STATIC_SPRITE);
