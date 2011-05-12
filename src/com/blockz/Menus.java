@@ -1,5 +1,8 @@
 package com.blockz;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.blockz.LevelManager.SaveSlot;
 import com.blockz.logic.Grid;
 import com.blockz.menu.LevelMenu;
@@ -16,6 +19,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class Menus extends Activity {
 	private LevelMenu _levelMenu;
@@ -27,6 +32,7 @@ public class Menus extends Activity {
 	private GestureDetector gd;
 	private Grid _grid;
 	private LevelManager lm;
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -60,6 +66,7 @@ public class Menus extends Activity {
 
 		gd = new GestureDetector(mgl);
 		setContentView(_startMenu);
+
 	}
 
 	@Override
@@ -93,15 +100,16 @@ public class Menus extends Activity {
 				_startMenu.drawBackground();
 				if(col >= 0 && col <= 3 && row >= 2 && row <= 3){
 					_menuState = LEVELMENU;
-					setContentView(_levelMenu);
+				//	setContentView(_levelMenu);
+					newGame();
 				} else if (col >= 0 && col <= 3 && row >= 4 && row <= 5){
-					Log.d("B_INFO", "Load game");
+					loadGame();
 				} else if (col >= 8 && col <= 12 && row >= 2 && row <= 3){
 					aboutDialog();
 				} else if (col >= 8 && col <= 12 && row >= 4 && row <= 5){
 					this.finish();
 				}
-				
+
 			}
 		}
 		return result;
@@ -124,7 +132,7 @@ public class Menus extends Activity {
 			_startMenu.drawBackground();
 		}
 	}
-	
+
 	private void aboutDialog() {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
 		ad.setTitle("About Blockz");
@@ -135,5 +143,102 @@ public class Menus extends Activity {
 			}
 		});
 		ad.show();
+	}
+
+
+	private void loadGame()
+	{
+		SaveSlot[] slots = lm.getSaveSlots();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	
+		if(slots != null)
+		{
+			CharSequence[] items = new CharSequence[slots.length];
+			builder.setTitle("Select slot");
+			
+			for(int i = 0; i < slots.length; i++) {
+				items[i] = slots[i].getName();
+			}
+			builder.setItems(items, new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog, int item) {
+			    	//TODO : START GAME with loaded slot.
+			    }
+			});
+
+		}
+		else 
+		{
+			builder.setTitle("No saved slots");
+			AlertDialog alert = builder.create();
+			alert.setButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					return;
+				}
+			});
+		}
+
+		AlertDialog alert = builder.create();
+		alert.setButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				return;
+			}
+		});
+		alert.show();
+	}
+
+	
+	private void newGame()
+	{
+		SaveSlot[] slots = lm.getSaveSlots();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
+		if(slots != null)
+		{
+			CharSequence[] items = new CharSequence[slots.length];
+			builder.setTitle("Select slot");
+			
+			for(int i = 0; i < slots.length; i++) {
+				items[i] = slots[i].getName();
+			}
+			
+			builder.setItems(items, new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog, int item) {
+			    	showInputDialog();
+			    }
+			});
+			
+			AlertDialog alert = builder.create();
+			alert.show();
+		}
+		else 
+		{
+			Log.d("B_INFO", "else!");
+		}
+	}
+	
+	private void showInputDialog() 
+	{
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		alert.setTitle("Start new game");
+		alert.setMessage("Enter name: ");
+		
+		final EditText input = new EditText(this);
+		alert.setView(input);
+		alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {  
+		    public void onClick(DialogInterface dialog, int whichButton) {  
+		        String value = input.getText().toString();
+		        lm.setSaveSlot(getApplicationContext(), new SaveSlot(1, value));
+		        lm.save();
+		        return;                  
+		       }  
+		     });  
+
+		    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) {
+		            return;   
+		        }
+		    });
+
+		alert.show();
 	}
 }
