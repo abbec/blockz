@@ -6,7 +6,6 @@ import com.blockz.graphics.*;
 import com.blockz.logic.*;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -39,7 +38,7 @@ public class Game extends Activity
 
 		//TODO: Set correct numbers in assert
 		//_levelID = getIntent().getExtras().getInt("level");
-		_levelID = 1;//LevelManager.getInstance().getCurrentLevel().getLevel();
+		_levelID = LevelManager.getInstance().getCurrentLevel().getLevel();
 		Log.d("B_INFO", "id: " + _levelID);
 		//Assert.assertTrue(_levelID > 0 && _levelID < 11);		
 		
@@ -71,7 +70,7 @@ public class Game extends Activity
 		
 		switch(_levelID) {
 			case 1:
-				_levelID = R.drawable.level1;
+				_levelID = R.drawable.level2;
 				break;
 			case 2:
 				_levelID = R.drawable.level2;
@@ -119,48 +118,6 @@ public class Game extends Activity
 			int col = (int) Math.floor(_event.getCoordinate().x/_grid.getCellWidth());
 			int row = (int) Math.floor(_event.getCoordinate().y/_grid.getCellHeight());
 			
-			
-			if(_pauseFlag)
-			{
-				if(row == 2 && (col == 4 || col == 5 || col == 6 || col == 7))
-				{
-						Log.d("B_INFO","Continue");
-						pause();
-			
-				}
-				
-				else if(row == 3 && (col == 4 || col == 5 || col == 6 || col == 7))
-				{
-						Log.d("B_INFO","Restart");
-						Log.d("B_INFO","Reset!");
-						_grid = new Grid(_width, _height);
-						_level.setGrid(_grid);
-						_level.reset();
-						MyGestureListener mgl = new MyGestureListener(_event,_grid);
-						gd = new GestureDetector(mgl);
-						gd.setIsLongpressEnabled(false);
-						pause();
-			
-				}
-				else if(row == 4 && (col == 4 || col == 5 || col == 6 || col == 7))
-				{
-						Log.d("B_INFO","World map");
-						Intent intent = new Intent(this, Menus.class);
-						intent.putExtra("state", 1);
-						pause();
-						startActivity(intent);
-			
-				}
-				else if(row == 5 && (col == 4 || col == 5 || col == 6 || col == 7))
-				{
-						Log.d("B_INFO","Main menu");
-						//pause();
-			
-				}
-				
-			}
-			else
-			{
 			if(col == 0 && row == 0)
 			{
 					Log.d("B_INFO","Pause!");
@@ -180,13 +137,10 @@ public class Game extends Activity
 				MyGestureListener mgl = new MyGestureListener(_event,_grid);
 				gd = new GestureDetector(mgl);
 				gd.setIsLongpressEnabled(false);
+				_event.setPlayerDestination(_grid.getPlayer().getPosition());
 			}
 			else
 				_level.addEvent(_event);
-			
-			}
-			
-			
 		}
 			
 		return result;
