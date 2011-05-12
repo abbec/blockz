@@ -182,7 +182,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
     public void drawPause(Canvas canvas)
     {
     	StaticSprite _pause = new StaticSprite(R.drawable.pause, _context, 40, 40);
-    	_pause.draw(canvas, 50, 50, 0,7);
+    	_pause.draw(canvas, 40, 40, 0,7);
     }
     
     @Override
