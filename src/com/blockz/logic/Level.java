@@ -86,7 +86,7 @@ public class Level
 		
 		updatePlayingTime(gameTime);
 		if(_currentEvent != null)
-		{
+		{			
 			Log.d("E_INFO","Player dest: " + _currentEvent.getPlayerDestination().toString());
 			Log.d("E_INFO","Player coord: " + _grid.getPlayer().getPosition().toString());
 			

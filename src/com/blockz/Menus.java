@@ -89,6 +89,16 @@ public class Menus extends Activity {
 			else if(_menuState == STARTMENU)
 			{
 				_startMenu.drawBackground();
+				if(col >= 0 && col <= 3 && row >= 2 && row <= 3){
+					Log.d("B_INFO", "NEW GAME!");
+				} else if (col >= 0 && col <= 3 && row >= 4 && row <= 5){
+					Log.d("B_INFO", "LOAD GAME!");
+				} else if (col >= 8 && col <= 12 && row >= 2 && row <= 3){
+					Log.d("B_INFO", "ABOUT!");
+				} else if (col >= 8 && col <= 12 && row >= 4 && row <= 5){
+					this.finish();
+				}
+				
 			}
 		}
 		return result;
