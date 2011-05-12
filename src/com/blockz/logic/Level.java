@@ -297,7 +297,7 @@ public class Level
 						case GRASS:
 							break;
 						case STONE_FIXED:
-							drawableValue =  R.drawable.stone;
+							drawableValue =  R.drawable.tree0001;
 							staticInt =	Scene.STATIC_SPRITE;
 							isBlockMovable = false;
 							break;
@@ -312,7 +312,7 @@ public class Level
 							isBlockMovable = false;
 							break;
 						case GOAL:
-							drawableValue =  R.drawable.goal;
+							drawableValue =  R.drawable.goal1;
 							staticInt =	Scene.STATIC_SPRITE;
 							isBlockMovable = false;
 							isGoalBlock = true;
@@ -345,7 +345,7 @@ public class Level
 							Block b;
 							if(isGoalBlock)
 							{
-								b = new GoalBlock(R.drawable.goal);
+								b = new GoalBlock(R.drawable.goal1);
 								
 								_grid.setCostG(row,col,10);
 							}
