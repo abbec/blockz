@@ -46,14 +46,15 @@ public final class R {
         public static final int mainpage_w_btn=0x7f020020;
         public static final int newgamebtn=0x7f020021;
         public static final int pause=0x7f020022;
-        public static final int reset=0x7f020023;
-        public static final int sand=0x7f020024;
-        public static final int sprites=0x7f020025;
-        public static final int startmenu=0x7f020026;
-        public static final int stone=0x7f020027;
-        public static final int stones=0x7f020028;
-        public static final int water=0x7f020029;
-        public static final int wateranim=0x7f02002a;
+        public static final int pausemenu=0x7f020023;
+        public static final int reset=0x7f020024;
+        public static final int sand=0x7f020025;
+        public static final int sprites=0x7f020026;
+        public static final int startmenu=0x7f020027;
+        public static final int stone=0x7f020028;
+        public static final int stones=0x7f020029;
+        public static final int water=0x7f02002a;
+        public static final int wateranim=0x7f02002b;
     }
     public static final class layout {
         public static final int main=0x7f030000;
