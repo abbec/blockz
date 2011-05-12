@@ -471,7 +471,7 @@ public class LevelManager
 		Log.d("B_XML", "Tree in preorder: " + _levelTree.preOrderString());
 	}
 
-	/*
+	/**
 	 * getLevel returns levelId of level at row, col. if none is found, -1 is returned
 	 * @param row, col are the row and col of the cell on levelSelect
 	 * 
@@ -494,8 +494,9 @@ public class LevelManager
 	}
 	
 	
-	/* getRow returnerar vilken rad levelId har 
-	 * @param int är levelId
+	/**
+	 * getRow returns row number in cell coordinates for levelId 
+	 * @param row, col in cellcoordinates
 	 * 
 	 */
 	
@@ -517,8 +518,9 @@ public class LevelManager
 	}
 	
 
-	/* getCol returnerar vilken kolumn levelId har 
-	 * @param int är levelId
+	/**
+	 *  getCol returns column number in cell coordinates for levelId 
+	 * @param row, col in cellcoordinates
 	 * 
 	 */
 	
@@ -539,7 +541,7 @@ public class LevelManager
 		return -1;
 	}
 	
-	/*
+	/**
 	 * returns true if level is marked as cleared, 
 	 * returns false if level is not cleared or not found
 	 * @param ID for level 
@@ -560,7 +562,7 @@ public class LevelManager
 		}
 		return false;	
 	}
-	/*
+	/**
 	 * sets Level as completed if level is not found, nothing is done
 	 * @param ID for level to set as cleared
 	 */
