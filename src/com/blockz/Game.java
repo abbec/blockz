@@ -50,8 +50,8 @@ public class Game extends Activity
 		
 		_scene = new Scene(this, this, _grid.getCellWidth(), _grid.getCellHeight());
 		_event = new MyEvent();
-		MyGestureListener mgl = new MyGestureListener(_event,_grid); 
 		setContentView(_scene);
+		MyGestureListener mgl = new MyGestureListener(_event,_grid);
 		gd = new GestureDetector(mgl);
 		gd.setIsLongpressEnabled(false);
 		
@@ -87,6 +87,9 @@ public class Game extends Activity
 				_grid = new Grid(_width, _height);
 				_level.setGrid(_grid);
 				_level.reset();
+				MyGestureListener mgl = new MyGestureListener(_event,_grid);
+				gd = new GestureDetector(mgl);
+				gd.setIsLongpressEnabled(false);
 			}
 			else
 				_level.addEvent(_event);
