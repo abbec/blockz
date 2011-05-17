@@ -35,13 +35,14 @@ public final class R {
         public static final int level8=0x7f020015;
         public static final int level9=0x7f020016;
         public static final int level_select=0x7f020017;
-        public static final int mainpage_w_big_btn=0x7f020018;
-        public static final int pause=0x7f020019;
-        public static final int reset=0x7f02001a;
-        public static final int sand=0x7f02001b;
-        public static final int stone20001=0x7f02001c;
-        public static final int tree0001=0x7f02001d;
-        public static final int wateranim=0x7f02001e;
+        public static final int logo=0x7f020018;
+        public static final int mainpage_w_big_btn=0x7f020019;
+        public static final int pause=0x7f02001a;
+        public static final int reset=0x7f02001b;
+        public static final int sand=0x7f02001c;
+        public static final int stone20001=0x7f02001d;
+        public static final int tree0001=0x7f02001e;
+        public static final int wateranim=0x7f02001f;
     }
     public static final class id {
         public static final int levelselect=0x7f080002;
