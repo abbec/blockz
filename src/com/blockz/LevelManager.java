@@ -127,6 +127,11 @@ public class LevelManager
 		_currentLevel = null;
 	}
 	
+	public SaveSlot getSaveSlot()
+	{
+		return _saveSlot;
+	}
+	
 	public void setSaveSlot(Context c, SaveSlot saveSlot)
 	{
 		_saveSlot = saveSlot;
@@ -357,6 +362,11 @@ public class LevelManager
 		}
 		
 		return slots;
+	}
+	
+	public Tree<LevelNode> getTree()
+	{
+		return _levelTree;
 	}
 	
 	/**

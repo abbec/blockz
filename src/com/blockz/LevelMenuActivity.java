@@ -5,6 +5,8 @@ import com.blockz.menu.LevelMenu;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -53,10 +55,13 @@ public class LevelMenuActivity extends Activity {
 
 		_levelMenu = new LevelMenu(this, this, _width, _height, R.drawable.level_select);
 		
-		
 		if(LevelManager.getInstance().getCurrentLevel() != null)
 		{
 			_levelMenu.updatePosition(LevelManager.getInstance().getCurrentLevel().getRow(), LevelManager.getInstance().getCurrentLevel().getCol());
+		}
+		else if(LevelManager.getInstance().getSaveSlot().getLastClearedLevel() != 0)
+		{
+		//	_levelMenu.updatePosition(LevelManager.getInstance().)
 		}
 		else
 		{
@@ -68,6 +73,7 @@ public class LevelMenuActivity extends Activity {
 		lm = LevelManager.getInstance();
 
 		gd = new GestureDetector(mgl);
+		
 		setContentView(_levelMenu);
 
 	}
