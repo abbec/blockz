@@ -160,10 +160,10 @@ public class LevelManager
 				
 				while(saveslot != _saveSlot.getId())
 				{
-					buffer += sc.nextLine(); // Newline and name
-					buffer += sc.nextLine(); // Points
-					buffer += sc.nextLine(); // Cleared levels
-					buffer += sc.nextLine(); // Last cleared level
+					buffer += sc.nextLine() + "\n"; // Newline and name
+					buffer += sc.nextLine() + "\n"; // Points
+					buffer += sc.nextLine() + "\n"; // Cleared levels
+					buffer += sc.nextLine() + "\n"; // Last cleared level
 					
 					buffer += saveslot = sc.nextInt(); // Read a new slot
 				}
@@ -278,6 +278,7 @@ public class LevelManager
 	public SaveSlot[] getSaveSlots()
 	{
 		SaveSlot[] slots = new SaveSlot[5];
+		Log.d("B_INFO", "length: "+  slots.length);
 		
 		File saveFile = new File(_dir, FILENAME);
 		
@@ -285,6 +286,8 @@ public class LevelManager
 		{
 			Scanner sc = new Scanner(saveFile);
 			int i = 0;
+			
+			
 			
 			while (sc.hasNext())
 			{
@@ -296,7 +299,7 @@ public class LevelManager
 				sc.nextLine(); // FIXME: Row with cleared levels
 				
 				slots[i].setLastClearedLevel(sc.nextInt());
-				
+				Log.d("B_INFO", "i in lm"+  i);
 				i++;
 			}
 		}
