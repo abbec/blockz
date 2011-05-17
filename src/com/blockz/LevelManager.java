@@ -283,10 +283,15 @@ public class LevelManager
 			_saveSlot.setScore(sc.nextInt());
 			sc.nextLine();
 			
+			Scanner intScanner = new Scanner(sc.nextLine());
+			
 			// Read cleared levels
-			while (sc.hasNextInt())
+			while (intScanner.hasNextInt())
 			{
-				_saveSlot.addClearedLevel(sc.nextInt());
+				int level = intScanner.nextInt();
+				
+				if (level != 0)
+					_saveSlot.addClearedLevel(level);
 			}
 			sc.nextLine();
 			
@@ -417,7 +422,7 @@ public class LevelManager
 			{
 				buffer += _saveSlot.getName() + "\n";
 				buffer += _saveSlot.getScore() + "\n";
-				buffer += "dummy data" + "\n";
+				buffer += "0" + "\n";
 				buffer += _saveSlot.getLastClearedLevel() + "\n";
 			}
 			else
