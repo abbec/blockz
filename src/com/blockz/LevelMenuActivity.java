@@ -63,7 +63,8 @@ public class LevelMenuActivity extends Activity {
 		}
 		else if(lastClearedLevel != 0)
 		{
-			_levelMenu.updatePosition(LevelManager.getInstance().getLevel(lastClearedLevel).getRow(), LevelManager.getInstance().getLevel(lastClearedLevel).getCol());
+			LevelNode ln = LevelManager.getInstance().getLevel(lastClearedLevel);
+			_levelMenu.updatePosition(ln.getRow(), ln.getCol());
 		}
 		else
 		{
