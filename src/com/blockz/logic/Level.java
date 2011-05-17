@@ -20,6 +20,7 @@ import com.blockz.LevelMenuActivity;
 import com.blockz.MyEvent;
 import com.blockz.Preferences;
 import com.blockz.R;
+import com.blockz.SoundManager;
 import com.blockz.graphics.Scene;
 
 /**
@@ -58,6 +59,9 @@ public class Level
 		readLevel(resourceNumber);
 		_moveList = new LinkedList<Move>();
 		_levelResourceNumber = resourceNumber;
+		
+		SoundManager.getInstance().setContext(_context);
+		SoundManager.getInstance().playMusic();
 	}
 	
 	public int getPlayedTime() {
@@ -195,6 +199,7 @@ public class Level
 	public void levelComplete()
 	{
 		Log.d("B_INFO", "Victory! You got points: " + _points);
+		SoundManager.getInstance().playWin();
 		LevelManager lm = LevelManager.getInstance(); 
 		lm.updateScore((int)_points);
 		lm.clearLevel();

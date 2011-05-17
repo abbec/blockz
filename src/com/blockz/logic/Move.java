@@ -3,6 +3,8 @@ package com.blockz.logic;
 import java.util.Vector;
 import android.util.Log;
 import com.blockz.Preferences;
+import com.blockz.SoundManager;
+
 import android.R;
 
 public class Move {
@@ -127,6 +129,7 @@ public class Move {
 						_grid.getPlayer(_end.x, _end.y).setMoving(false);
 						_grid.getPlayer(_end.x, _end.y).setPosition(_end);
 						_isMoving = false;
+						SoundManager.getInstance().playPunch();
 					}
 				}
 				else
@@ -182,6 +185,8 @@ public class Move {
 				else
 					_grid.getMovable(_start.x, _start.y).setOffset(nextOffset);
 			}
+			else
+				SoundManager.getInstance().playWallhit();
 		}
 	}
 	

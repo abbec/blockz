@@ -199,6 +199,7 @@ public class Game extends Activity
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("points", (int) _level.getPoints()).commit();
 		setPauseFlag(true);
 		//_mainThread.pause();
+		SoundManager.getInstance().pausMusic();
 		super.onPause();
 	}
 	
@@ -280,6 +281,7 @@ public class Game extends Activity
 			_level.setPoints(999.0);
 		}
 		
+		SoundManager.getInstance().resumeMusic();
 		super.onResume();
 	}
 
