@@ -203,6 +203,7 @@ public class Level
 		LevelManager lm = LevelManager.getInstance(); 
 		lm.updateScore((int)_points);
 		lm.clearLevel();
+		lm.save();
 		Intent levelMenu = new Intent(_context, LevelMenuActivity.class);
 		_context.startActivity(levelMenu);
 	}

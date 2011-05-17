@@ -92,6 +92,10 @@ public class LevelMenuActivity extends Activity {
 				Intent intent = new Intent(this, Game.class);
 				startActivity(intent);
 			}
+			else if(row>4 && row <8 && col >0 && col <3)
+			{
+				finish();
+			}
 
 		}
 		return result;
@@ -103,7 +107,6 @@ public class LevelMenuActivity extends Activity {
 	 */
 	public void start()
 	{
-		//TODO : Set default startposition for choosen level
 		_levelMenu.drawBackground();
 	}
 }

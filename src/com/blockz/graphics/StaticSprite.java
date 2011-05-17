@@ -20,8 +20,6 @@ public class StaticSprite extends Sprite
 	@Override
 	public void draw(Canvas canvas,int x, int y, long gameTime,int dir) 
 	{
-		// TODO Auto-generated method stub
-
 		canvas.drawBitmap(_sprite,x,y,null);
 	}
 

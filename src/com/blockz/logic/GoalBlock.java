@@ -23,7 +23,6 @@ public class GoalBlock extends Block
 	}
 	@Override
 	public Coordinate getOffset() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

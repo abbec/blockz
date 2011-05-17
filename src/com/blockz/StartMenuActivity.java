@@ -22,7 +22,7 @@ public class StartMenuActivity extends Activity {
 	private MyEvent _event;
 	private GestureDetector gd;
 	private Grid _grid;
-	private LevelManager lm;
+	private LevelManager _lm;
 
 
 	/** Called when the activity is first created. */
@@ -47,12 +47,8 @@ public class StartMenuActivity extends Activity {
 		_event = new MyEvent();
 		MyGestureListener mgl = new MyGestureListener(_event, _grid); 
 
-		lm = LevelManager.getInstance();
-		//lm = new LevelManager(new SaveSlot(3, "hej"));
-
-		//lm.setSaveSlot(this, new SaveSlot(3, "hej"));
-		//lm.load();
-
+		_lm = LevelManager.getInstance();
+		
 		gd = new GestureDetector(mgl);
 		setContentView(_startMenu);
 
@@ -107,20 +103,20 @@ public class StartMenuActivity extends Activity {
 
 	private void loadGame()
 	{
-		final SaveSlot[] slots = lm.getSaveSlots();
+		final SaveSlot[] slots = _lm.getSaveSlots();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	
-		if(slots != null) // TODO: kolla om alla tomma
+		
+		if(_lm.fileExists())
 		{
 			CharSequence[] items = new CharSequence[slots.length];
 			builder.setTitle("Select slot");
 			
 			for(int i = 0; i < slots.length; i++) {
-				items[i] = slots[i].getName();
+				items[i] = slots[i].getName() + " - " + slots[i].getScore() + " points";
 			}
 			builder.setItems(items, new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int item) {
-			    	lm.setSaveSlot(getApplicationContext(), slots[item]);
+			    	_lm.setSaveSlot(getApplicationContext(), slots[item]);
 			    	Intent loadGame = new Intent(getApplicationContext(), LevelMenuActivity.class);
 			    	startActivity(loadGame);
 			    }
@@ -139,7 +135,7 @@ public class StartMenuActivity extends Activity {
 		}
 
 		AlertDialog alert = builder.create();
-		alert.setButton("OK", new DialogInterface.OnClickListener() {
+		alert.setButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				return;
 			}
@@ -150,31 +146,24 @@ public class StartMenuActivity extends Activity {
 	
 	private void newGame()
 	{
-		SaveSlot[] slots = lm.getSaveSlots();
+		SaveSlot[] slots = _lm.getSaveSlots();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		
-		if(slots != null)
-		{
-			CharSequence[] items = new CharSequence[slots.length];
-			builder.setTitle("Select slot");
-			
-			for(int i = 0; i < slots.length; i++) {
-				items[i] = slots[i].getName();
-			}
-			
-			builder.setItems(items, new DialogInterface.OnClickListener() {
-			    public void onClick(DialogInterface dialog, int item) {
-			    	showInputDialog(item);
-			    }
-			});
-			
-			AlertDialog alert = builder.create();
-			alert.show();
+		CharSequence[] items = new CharSequence[slots.length];
+		builder.setTitle("Select slot");
+		
+		for(int i = 0; i < slots.length; i++) {
+			items[i] = slots[i].getName() + " - " + slots[i].getScore() + " points";
 		}
-		else 
-		{
-			Log.d("B_INFO", "else!");
-		}
+		
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int item) {
+		    	showInputDialog(item);
+		    }
+		});
+		
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 	
 	private void showInputDialog(final int item) 
@@ -188,19 +177,19 @@ public class StartMenuActivity extends Activity {
 		alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {  
 		    public void onClick(DialogInterface dialog, int whichButton) {  
 		        String value = input.getText().toString().replace("\n", "");
-		        lm.setSaveSlot(getApplicationContext(), new SaveSlot(item+1, value));
-		        lm.save();
+		        _lm.setSaveSlot(getApplicationContext(), new SaveSlot(item+1, value));
+		        _lm.save();
 		        Intent newGame = new Intent(getApplicationContext(), LevelMenuActivity.class);
 		    	startActivity(newGame);
 		        return;                  
-		       }  
-		     });  
+	       }  
+	     });  
 
-		    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int which) {
-		            return;   
-		        }
-		    });
+	    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	            return;   
+	        }
+	    });
 
 		alert.show();
 	}
