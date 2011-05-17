@@ -76,6 +76,10 @@ public class Node<T>
 		 return _data;
 	 }
 
+	 public void setData(T data)
+	 {
+		 _data = data;
+	 }
 	 
 	 public String toString()
 	 {

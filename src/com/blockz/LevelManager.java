@@ -161,9 +161,9 @@ public class LevelManager
 				while(saveslot != _saveSlot.getId())
 				{
 					buffer += sc.nextLine() + "\n"; // Newline and name
-					buffer += sc.nextLine() + "\n"; // Points
-					buffer += sc.nextLine() + "\n"; // Cleared levels
-					buffer += sc.nextLine() + "\n"; // Last cleared level
+					buffer += sc.nextLine()+ "\n"; // Points
+					buffer += sc.nextLine()+ "\n"; // Cleared levels
+					buffer += sc.nextLine()+ "\n"; // Last cleared level
 					
 					buffer += saveslot = sc.nextInt(); // Read a new slot
 				}
@@ -278,7 +278,6 @@ public class LevelManager
 	public SaveSlot[] getSaveSlots()
 	{
 		SaveSlot[] slots = new SaveSlot[5];
-		Log.d("B_INFO", "length: "+  slots.length);
 		
 		File saveFile = new File(_dir, FILENAME);
 		
@@ -286,8 +285,6 @@ public class LevelManager
 		{
 			Scanner sc = new Scanner(saveFile);
 			int i = 0;
-			
-			
 			
 			while (sc.hasNext())
 			{
@@ -299,7 +296,7 @@ public class LevelManager
 				sc.nextLine(); // FIXME: Row with cleared levels
 				
 				slots[i].setLastClearedLevel(sc.nextInt());
-				Log.d("B_INFO", "i in lm"+  i);
+				
 				i++;
 			}
 		}
@@ -385,10 +382,7 @@ public class LevelManager
 		{
 			int eventType = parser.getEventType();
 			while (eventType != XmlPullParser.START_TAG) // Find the root tag
-			{
 				eventType = parser.next();
-				Log.d("B_XML", "I loopen.");
-			}
 			
 			// Set the root
 			//Node<LevelNode> node = new Node<LevelNode>(new LevelNode(parser.getAttributeIntValue(0, -1), false,
@@ -412,9 +406,6 @@ public class LevelManager
 					case XmlPullParser.START_TAG:
 					{	
 						int levelId = parser.getAttributeIntValue(0, -1);
-					/*	int r = parser.getAttributeIntValue("", "row", 0);
-						int c = parser.getAttributeIntValue("", "col", 0);
-					*/
 						int r = parser.getAttributeIntValue(1, 0);
 						int c = parser.getAttributeIntValue(2,0);
 						
@@ -471,15 +462,15 @@ public class LevelManager
 		
 		Node<LevelNode> root = _levelTree.getRoot();
 		
-		Node<LevelNode> res = null;
+		Node<LevelNode> res = new Node<LevelNode>(new LevelNode(-1, false, 0, 0));
 		findLevel(root, row, col, res);
 		
-		if (res != null)
+		if (res.getData().getLevel() != -1)
 			Log.d("B_XML", "Found node at "+ row + ", " + col + " : " + res.toString());
 		else
 			Log.d("B_XML", "Node is null at "+ row + ", " + col);
 		
-		if (res != null)
+		if (res.getData().getLevel() != -1)
 			return res.getData();
 		else
 			return null;
@@ -488,7 +479,9 @@ public class LevelManager
 	private void findLevel(Node<LevelNode> element, int r, int c, Node<LevelNode> res)
 	{
 		if (element.getData().getRow() == r && element.getData().getCol() == c)
-			res = element;
+		{
+			res.setData(element.getData());
+		}
 		else
 		{
 			for (Node<LevelNode> data : element.getChildren())
@@ -496,27 +489,37 @@ public class LevelManager
 		}
 	}
 	
+	private class Result
+	{
+		public boolean res = false;
+	}
+	
 	public boolean isPlayable(LevelNode n)
 	{
 		Node<LevelNode> root = _levelTree.getRoot();
-		return findIsPlayable(root, n);
+						
+		Result res = new Result();
+		
+		findIsPlayable(root, n, res);
+		
+		return res.res;
 	}
 	
-	private boolean findIsPlayable(Node<LevelNode> element, LevelNode ln)
+	private void findIsPlayable(Node<LevelNode> element, LevelNode ln, Result res)
 	{	
 		
 		if (element.getData() == ln)
-			return true;
-		
-		for (Node<LevelNode> data : element.getChildren())
+			res.res = true;
+		else
 		{
-			if (data.getData() != ln)
-				return findIsPlayable(data, ln);
-			else
-				return element.getData().isCleared();
+			for (Node<LevelNode> data : element.getChildren())
+			{
+				if (data.getData() != ln)
+					findIsPlayable(data, ln, res);
+				else
+					res.res = element.getData().isCleared();
+			}
 		}
-		
-		return false;
 	}
 	
 	/**
