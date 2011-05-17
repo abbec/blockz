@@ -118,6 +118,7 @@ public class LevelManager
 	
 	private LevelManager() 
 	{
+		_currentLevel = null;
 		_levelTree = new Tree<LevelNode>();
 	}
 	
@@ -396,7 +397,7 @@ public class LevelManager
 			
 			// Add as tree root
 			_levelTree.setRoot(node);
-			_currentLevel = node.getData();
+			//_currentLevel = node.getData();
 			
 			eventType = parser.next();
 			while (eventType != XmlPullParser.END_DOCUMENT)
