@@ -64,6 +64,11 @@ public class LevelManager
 			return _id;
 		}
 		
+		public LinkedList<Integer> getClearedLevels()
+		{
+			return _clearedLevels;
+		}
+		
 		public String getName()
 		{
 			return _name;
@@ -178,7 +183,15 @@ public class LevelManager
 				sc.nextLine();
 				
 				// Cleared levels
-				buffer += "dummydata" + "\n";
+				Iterator<Integer> it = _saveSlot.getClearedLevels().iterator();
+				
+				while (it.hasNext())
+				{
+					buffer += it.next() + " ";
+				}
+				
+				 buffer += "\n";
+				
 				sc.nextLine();
 				
 				// Last cleared level
@@ -260,7 +273,11 @@ public class LevelManager
 			_saveSlot.setScore(sc.nextInt());
 			sc.nextLine();
 			
-			// TODO: Fix level tree
+			// Read cleared levels
+			while (sc.hasNextInt())
+			{
+				_saveSlot.addClearedLevel(sc.nextInt());
+			}
 			sc.nextLine();
 			
 			_saveSlot.setLastClearedLevel(sc.nextInt());
@@ -274,6 +291,24 @@ public class LevelManager
 		catch (InputMismatchException ime)
 		{
 			Log.e("B_INFO", "File corrupt...");
+		}
+		
+		// Rebuild tree
+		Iterator<Integer> it = _saveSlot.getClearedLevels().iterator();
+		
+		while (it.hasNext())
+		{
+			rebuildTree(_levelTree.getRoot(), it.next());
+		}
+	}
+	
+	private void rebuildTree(Node<LevelNode> element, int levelId)
+	{
+		if (element.getData().getLevel() == levelId)
+			element.getData().setCleared();
+		{
+			for (Node<LevelNode> data : element.getChildren()) 
+				rebuildTree(data, levelId);
 		}
 	}
 	
@@ -534,6 +569,7 @@ public class LevelManager
 	{
 		_currentLevel.setCleared();
 		_saveSlot.setLastClearedLevel(_currentLevel.getLevel());
+		_saveSlot.addClearedLevel(_currentLevel.getLevel());
 	}
 	
 }	
