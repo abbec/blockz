@@ -102,6 +102,7 @@ public class Game extends Activity
 		_mainThread = new GameThread(this);
 		setPauseFlag(false);
 		
+		SoundManager.getInstance().setContext(this);
 		_hud = new Hud(this, _width, _height, _grid.getCellWidth(), _grid.getCellHeight());
 	}
 	

@@ -88,21 +88,21 @@ public class MyGestureListener extends SimpleOnGestureListener
 					Coordinate arrowOffset = new Coordinate(0, 0);
 					switch(i)
 					{
-						case 0: 
+						case 1: 
 							arrowDir = R.drawable.arrows_up;
-							arrowOffset = new Coordinate(0,-40);
+							arrowOffset = new Coordinate(0,-120);
 							break;
-						case 1:
+						case 0:
 							arrowDir = R.drawable.arrows_down;
-							arrowOffset = new Coordinate(0,40);
+							arrowOffset = new Coordinate(0,120);
 							break;
-						case 2:
+						case 3:
 							arrowDir = R.drawable.arrows_left;
-							arrowOffset = new Coordinate(-40,0);
+							arrowOffset = new Coordinate(-120,0);
 							break;
-						case 3: 
+						case 2: 
 							arrowDir = R.drawable.arrows_right;
-							arrowOffset = new Coordinate(40,0);
+							arrowOffset = new Coordinate(120,0);
 							break;
 					}	
 					
