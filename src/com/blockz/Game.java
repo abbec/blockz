@@ -123,22 +123,12 @@ public class Game extends Activity
 			{
 					Log.d("B_INFO","Pause!");
 					pause();
-			/*	_mainThread.pause();
-				
-				pauseMenu = new PauseMenu();
-				pauseMenu.mainLoop(); */
-
+					PauseDialog myDialog = new PauseDialog(this, this);
+			        myDialog.show();
 			}
 			else if(col == 1 && row == 0)
 			{
-				Log.d("B_INFO","Reset!");
-				_grid = new Grid(_width, _height);
-				_level.setGrid(_grid);
-				_level.reset();
-				MyGestureListener mgl = new MyGestureListener(_event,_grid);
-				gd = new GestureDetector(mgl);
-				gd.setIsLongpressEnabled(false);
-				_event.setPlayerDestination(_grid.getPlayer().getPosition());
+				reset();
 			}
 			else
 				_level.addEvent(_event);
@@ -224,6 +214,17 @@ public class Game extends Activity
 			_mainThread.unPause();
 			_pauseFlag = false;
 		}
+	}
+	protected void reset()
+	{
+		Log.d("B_INFO","Reset!");
+		_grid = new Grid(_width, _height);
+		_level.setGrid(_grid);
+		_level.reset();
+		MyGestureListener mgl = new MyGestureListener(_event,_grid);
+		gd = new GestureDetector(mgl);
+		gd.setIsLongpressEnabled(false);
+		_event.setPlayerDestination(_grid.getPlayer().getPosition());
 	}
 	
 	public boolean getPauseFlag()
