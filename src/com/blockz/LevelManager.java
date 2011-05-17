@@ -74,6 +74,7 @@ public class LevelManager
 			return _currentScore;
 		}
 		
+		
 		public int getLastClearedLevel()
 		{
 			return _lastClearedLevel;
@@ -224,6 +225,12 @@ public class LevelManager
 			Assert.assertTrue("BAD LUCK... :)", false);
 		}
 			
+	}
+	
+	public boolean fileExists()
+	{
+		File saveFile = new File(_dir, FILENAME);
+		return saveFile.exists();
 	}
 	
 	/**

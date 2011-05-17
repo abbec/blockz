@@ -22,7 +22,6 @@ public class WallBlock extends Block {
 	
 	@Override
 	public Coordinate getOffset() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
