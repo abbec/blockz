@@ -309,8 +309,8 @@ public class Level
 							isBlockMovable = true;
 							break;
 						case WATER:
-							drawableValue =  R.drawable.water;
-							staticInt =	Scene.STATIC_SPRITE;
+							drawableValue =  R.drawable.wateranim;
+							staticInt =	Scene.ANIMATED_SPRITE;
 							isBlockMovable = false;
 							break;
 						case GOAL:
@@ -331,7 +331,7 @@ public class Level
 							isBlockMovable = false;
 							break;
 			            default:
-			            	drawableValue =  R.drawable.fuglyblock;
+			            	drawableValue =  R.drawable.grass2;
 			            	staticInt =	Scene.STATIC_SPRITE;
 			            	isBlockMovable = false;
 			            	break;
