@@ -99,9 +99,8 @@ public class Menus extends Activity {
 			{
 				_startMenu.drawBackground();
 				if(col >= 0 && col <= 3 && row >= 2 && row <= 3){
-					_menuState = LEVELMENU;
-				//	setContentView(_levelMenu);
 					newGame();
+					_menuState = LEVELMENU;
 				} else if (col >= 0 && col <= 3 && row >= 4 && row <= 5){
 					loadGame();
 				} else if (col >= 8 && col <= 12 && row >= 2 && row <= 3){
@@ -148,10 +147,10 @@ public class Menus extends Activity {
 
 	private void loadGame()
 	{
-		SaveSlot[] slots = lm.getSaveSlots();
+		final SaveSlot[] slots = lm.getSaveSlots();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	
-		if(slots != null)
+		if(slots != null) // TODO: kolla om alla tomma
 		{
 			CharSequence[] items = new CharSequence[slots.length];
 			builder.setTitle("Select slot");
@@ -161,7 +160,9 @@ public class Menus extends Activity {
 			}
 			builder.setItems(items, new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int item) {
-			    	//TODO : START GAME with loaded slot.
+			    	lm.setSaveSlot(getApplicationContext(), slots[item]);
+			    	Intent loadGame = new Intent(getApplicationContext(), Game.class);
+			    	startActivity(loadGame);
 			    }
 			});
 
@@ -203,7 +204,7 @@ public class Menus extends Activity {
 			
 			builder.setItems(items, new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int item) {
-			    	showInputDialog();
+			    	showInputDialog(item);
 			    }
 			});
 			
@@ -216,7 +217,7 @@ public class Menus extends Activity {
 		}
 	}
 	
-	private void showInputDialog() 
+	private void showInputDialog(final int item) 
 	{
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		alert.setTitle("Start new game");
@@ -227,8 +228,10 @@ public class Menus extends Activity {
 		alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {  
 		    public void onClick(DialogInterface dialog, int whichButton) {  
 		        String value = input.getText().toString();
-		        lm.setSaveSlot(getApplicationContext(), new SaveSlot(1, value));
+		        Log.d("B_INFO", "ITEM: " + item);
+		        lm.setSaveSlot(getApplicationContext(), new SaveSlot(item+1, value));
 		        lm.save();
+		        setContentView(_levelMenu);
 		        return;                  
 		       }  
 		     });  
