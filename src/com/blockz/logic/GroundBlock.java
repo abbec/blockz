@@ -21,4 +21,9 @@ public class GroundBlock extends Block
 	{
 	  return Item.GROUND;
 	}
+	@Override
+	public Coordinate getOffset() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

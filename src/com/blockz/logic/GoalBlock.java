@@ -21,4 +21,9 @@ public class GoalBlock extends Block
 	{
 	  return Item.GOAL;
 	}
+	@Override
+	public Coordinate getOffset() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

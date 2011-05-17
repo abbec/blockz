@@ -19,4 +19,10 @@ public class WallBlock extends Block {
 	{
 	  return Item.WALL;
 	}
+	
+	@Override
+	public Coordinate getOffset() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
