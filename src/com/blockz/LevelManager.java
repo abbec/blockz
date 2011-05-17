@@ -303,7 +303,11 @@ public class LevelManager
 		catch (FileNotFoundException fnfe)
 		{
 			Log.d("B_INFO", "No file found... a new one will be created on save().");
-			return null;
+			
+			for (int i=0; i<5; i++)
+			{
+				slots[i] = new SaveSlot((i+1), "Empty");
+			}
 		}
 		catch (InputMismatchException ime)
 		{
