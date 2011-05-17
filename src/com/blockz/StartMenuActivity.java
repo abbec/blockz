@@ -117,7 +117,6 @@ public class StartMenuActivity extends Activity {
 			builder.setItems(items, new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int item) {
 			    	_lm.setSaveSlot(getApplicationContext(), slots[item]);
-			    	
 			    	_lm.load();
 			    	Intent loadGame = new Intent(getApplicationContext(), LevelMenuActivity.class);
 			    	startActivity(loadGame);
@@ -180,6 +179,7 @@ public class StartMenuActivity extends Activity {
 		    public void onClick(DialogInterface dialog, int whichButton) {  
 		        String value = input.getText().toString().replace("\n", "");
 		        _lm.setSaveSlot(getApplicationContext(), new SaveSlot(item+1, value));
+		        _lm.setLevel(null);
 		        _lm.save();
 		        Intent newGame = new Intent(getApplicationContext(), LevelMenuActivity.class);
 		    	startActivity(newGame);
