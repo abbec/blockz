@@ -42,8 +42,9 @@ public class PauseDialog extends Dialog {
         @Override
         public void onClick(View v) {
             PauseDialog.this.dismiss();
-            _game.getLevel().reset();
+            _game.reset();
             _game.pause();
+            
         }
     }
 
