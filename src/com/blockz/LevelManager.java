@@ -74,7 +74,6 @@ public class LevelManager
 			return _currentScore;
 		}
 		
-		
 		public int getLastClearedLevel()
 		{
 			return _lastClearedLevel;
@@ -119,8 +118,8 @@ public class LevelManager
 	
 	private LevelManager() 
 	{
-		_currentLevel = null;
 		_levelTree = new Tree<LevelNode>();
+		_currentLevel = null;
 	}
 	
 	public void setSaveSlot(Context c, SaveSlot saveSlot)
@@ -508,25 +507,22 @@ public class LevelManager
 						
 		Result res = new Result();
 		
-		findIsPlayable(root, n, res);
+		findIsPlayable(root, root, n, res);
 		
 		return res.res;
 	}
 	
-	private void findIsPlayable(Node<LevelNode> element, LevelNode ln, Result res)
+	private void findIsPlayable(Node<LevelNode> element, Node<LevelNode> parent, LevelNode ln, Result res)
 	{	
 		
-		if (element.getData() == ln)
+		if (parent.getData() == ln)
 			res.res = true;
+		else if (element.getData() == ln)
+			res.res = parent.getData().isCleared();
 		else
 		{
 			for (Node<LevelNode> data : element.getChildren())
-			{
-				if (data.getData() != ln)
-					findIsPlayable(data, ln, res);
-				else
-					res.res = element.getData().isCleared();
-			}
+					findIsPlayable(data, element, ln, res);
 		}
 	}
 	
@@ -537,6 +533,7 @@ public class LevelManager
 	public void clearLevel()
 	{
 		_currentLevel.setCleared();
+		_saveSlot.setLastClearedLevel(_currentLevel.getLevel());
 	}
 	
 }	

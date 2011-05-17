@@ -207,6 +207,7 @@ public class Level
 		Intent levelMenu = new Intent(_context, LevelMenuActivity.class);
 		_context.startActivity(levelMenu);
 	}
+	
 	public boolean isLevelComplete()
 	{
 		if(onTheMove())
