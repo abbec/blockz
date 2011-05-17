@@ -1,11 +1,7 @@
 package com.blockz;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.blockz.LevelManager.SaveSlot;
 import com.blockz.logic.Grid;
-import com.blockz.menu.LevelMenu;
 import com.blockz.menu.StartMenu;
 
 import android.app.Activity;
@@ -20,14 +16,9 @@ import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
-public class Menus extends Activity {
-	private LevelMenu _levelMenu;
+public class StartMenuActivity extends Activity {
 	private StartMenu _startMenu;
-	private int _menuState;
-	private static int STARTMENU = 0;
-	private static int LEVELMENU = 1;
 	private MyEvent _event;
 	private GestureDetector gd;
 	private Grid _grid;
@@ -52,9 +43,7 @@ public class Menus extends Activity {
 		int _height = display.getHeight();
 		_grid = new Grid(_width, _height);
 
-		_levelMenu = new LevelMenu(this, this, _width, _height, R.drawable.level_select);
 		_startMenu = new StartMenu(this, this, _width, _height, R.drawable.mainpage_w_big_btn);
-		_menuState = STARTMENU;
 		_event = new MyEvent();
 		MyGestureListener mgl = new MyGestureListener(_event, _grid); 
 
@@ -80,35 +69,15 @@ public class Menus extends Activity {
 			int row = (int) Math.floor(_event.getCoordinate().y/_grid.getCellHeight());
 			Log.d("B_INFO", "col: " + col + "row: " + row);
 
-			if(_menuState == LEVELMENU)
-			{
-				LevelNode level = lm.getLevel(row, col);
-				if(level != null && lm.isPlayable(level))
-				{
-					_levelMenu.updatePosition(row, col);
-					_levelMenu.drawBackground();
-					Log.d("B_INFO", "Level: " + level);
-					lm.setLevel(level); 
-					Log.d("B_INFO", "set level to: " + lm.getCurrentLevel());
-					Intent intent = new Intent(this, Game.class);
-					//TODO:put the level that is choosen
-					startActivity(intent);
-				}
-			}
-			else if(_menuState == STARTMENU)
-			{
-				_startMenu.drawBackground();
-				if(col >= 0 && col <= 3 && row >= 2 && row <= 3){
-					newGame();
-					_menuState = LEVELMENU;
-				} else if (col >= 0 && col <= 3 && row >= 4 && row <= 5){
-					loadGame();
-				} else if (col >= 8 && col <= 12 && row >= 2 && row <= 3){
-					aboutDialog();
-				} else if (col >= 8 && col <= 12 && row >= 4 && row <= 5){
-					this.finish();
-				}
-
+			_startMenu.drawBackground();
+			if(col >= 0 && col <= 3 && row >= 2 && row <= 3){
+				newGame();
+			} else if (col >= 0 && col <= 3 && row >= 4 && row <= 5){
+				loadGame();
+			} else if (col >= 8 && col <= 12 && row >= 2 && row <= 3){
+				aboutDialog();
+			} else if (col >= 8 && col <= 12 && row >= 4 && row <= 5){
+				this.finish();
 			}
 		}
 		return result;
@@ -120,16 +89,7 @@ public class Menus extends Activity {
 	 */
 	public void start()
 	{
-		//TODO : Set default startposition for choosen level
-		if(_menuState == LEVELMENU)
-		{
-			_levelMenu.updatePosition(2, 4);
-			_levelMenu.drawBackground();
-		}
-		else if(_menuState == STARTMENU)
-		{
-			_startMenu.drawBackground();
-		}
+		_startMenu.drawBackground();
 	}
 
 	private void aboutDialog() {
@@ -161,7 +121,7 @@ public class Menus extends Activity {
 			builder.setItems(items, new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int item) {
 			    	lm.setSaveSlot(getApplicationContext(), slots[item]);
-			    	Intent loadGame = new Intent(getApplicationContext(), Game.class);
+			    	Intent loadGame = new Intent(getApplicationContext(), LevelMenuActivity.class);
 			    	startActivity(loadGame);
 			    }
 			});
@@ -231,7 +191,8 @@ public class Menus extends Activity {
 		        Log.d("B_INFO", "ITEM: " + item);
 		        lm.setSaveSlot(getApplicationContext(), new SaveSlot(item+1, value));
 		        lm.save();
-		        setContentView(_levelMenu);
+		        Intent newGame = new Intent(getApplicationContext(), LevelMenuActivity.class);
+		    	startActivity(newGame);
 		        return;                  
 		       }  
 		     });  

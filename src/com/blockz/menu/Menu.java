@@ -3,9 +3,6 @@
  */
 package com.blockz.menu;
 
-import com.blockz.Menus;
-import com.blockz.R;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,24 +17,22 @@ public abstract class Menu extends SurfaceView implements SurfaceHolder.Callback
 	
 	protected Bitmap _menu;
 	protected SurfaceHolder  _surfHolder;
-	private Menus _menus;
 	protected int _screenWidth;
 	protected int _screenHeight;
 	private Context _context;
 	
-	public Menu(Context context, Menus menus, int screenWidth, int screenHeight, int typeID) {
+	public Menu(Context context, int screenWidth, int screenHeight, int typeID) {
 		super(context);
 		_context = context;
 		_screenWidth = screenWidth;
 		_screenHeight = screenHeight;
 		
-	   	_menus = menus;
+	  
 		_surfHolder = getHolder();
 		_surfHolder.addCallback(this);	
     	
     	_menu = BitmapFactory.decodeResource(_context.getResources(), typeID);
     
-    	//TODO : LÄGG I SUPERKLASSEN
     	float scaleWidth = ((float) screenWidth)/_menu.getWidth();
     	float scaleHeight = ((float) screenHeight)/_menu.getHeight();
     	
@@ -50,8 +45,9 @@ public abstract class Menu extends SurfaceView implements SurfaceHolder.Callback
     	// Recreate the new Bitmap
     	_menu = Bitmap.createBitmap(_menu, 0, 0, _menu.getWidth(), _menu.getHeight(), matrix, true);
 	}
-
+	
 	public abstract void draw(Canvas c);
+	public abstract void start();
 
 	public void drawBackground()
     {	
@@ -75,14 +71,16 @@ public abstract class Menu extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) 
     {
-    	_menus.start();
-    
+    	start();
     }
  
-    @Override
+
+	@Override
     public void surfaceDestroyed(SurfaceHolder holder) 
     {
    
     }
+	
+	
 
 }
