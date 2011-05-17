@@ -1,7 +1,6 @@
 package com.blockz.menu;
 
-
-import com.blockz.Menus;
+import com.blockz.LevelMenuActivity;
 import com.blockz.R;
 import android.content.Context;
 
@@ -16,14 +15,16 @@ public class LevelMenu extends Menu
 	private Context _context;
 	private Bitmap _player;
 	private int _playerCol;
-	private int _playerRow; 
+	private int _playerRow;
+	private LevelMenuActivity _levelMenu;
 	
 
-	public LevelMenu(Context context, Menus menus, int screenWidth, int screenHeight, int typeID)
+	public LevelMenu(Context context, LevelMenuActivity menu, int screenWidth, int screenHeight, int typeID)
 	{
-		super(context,  menus, screenWidth, screenHeight, typeID);
+		super(context, screenWidth, screenHeight, typeID);
     	_context = context;
     	_player = BitmapFactory.decodeResource(_context.getResources(), R.drawable.gubbe);
+    	_levelMenu = menu;
 	}
 
 	@Override
@@ -37,4 +38,10 @@ public class LevelMenu extends Menu
 		_playerCol = col;
 		_playerRow = row;
 	}
+	
+	@Override
+	public void start() {
+		_levelMenu.start();
+	}
+
 }
