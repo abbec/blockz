@@ -42,7 +42,7 @@ public class LevelManager
 		private String _name;
 		private int _currentScore;
 		private int _lastClearedLevel;
-		private LinkedList<Integer> _clearedLevels;
+		private HashSet<Integer> _clearedLevels;
 		
 		/**
 		 * Constructor for a save slot.
@@ -56,7 +56,7 @@ public class LevelManager
 			_name = name;
 			_currentScore = 0;
 			_lastClearedLevel = 0;
-			_clearedLevels = new LinkedList<Integer>();
+			_clearedLevels = new HashSet<Integer>();
 		}
 
 		public int getId() 
@@ -64,7 +64,7 @@ public class LevelManager
 			return _id;
 		}
 		
-		public LinkedList<Integer> getClearedLevels()
+		public HashSet<Integer> getClearedLevels()
 		{
 			return _clearedLevels;
 		}
@@ -190,10 +190,15 @@ public class LevelManager
 				// Cleared levels
 				Iterator<Integer> it = _saveSlot.getClearedLevels().iterator();
 				
-				while (it.hasNext())
+				if (_saveSlot.getClearedLevels().size() > 0)
 				{
-					buffer += it.next() + " ";
+					while (it.hasNext())
+					{
+						buffer += it.next() + " ";
+					}
 				}
+				else
+					buffer += "0";
 				
 				 buffer += "\n";
 				
