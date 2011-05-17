@@ -55,13 +55,15 @@ public class LevelMenuActivity extends Activity {
 
 		_levelMenu = new LevelMenu(this, this, _width, _height, R.drawable.level_select);
 		
+		int lastClearedLevel = LevelManager.getInstance().getSaveSlot().getLastClearedLevel();
+		
 		if(LevelManager.getInstance().getCurrentLevel() != null)
 		{
 			_levelMenu.updatePosition(LevelManager.getInstance().getCurrentLevel().getRow(), LevelManager.getInstance().getCurrentLevel().getCol());
 		}
-		else if(LevelManager.getInstance().getSaveSlot().getLastClearedLevel() != 0)
+		else if(lastClearedLevel != 0)
 		{
-		//	_levelMenu.updatePosition(LevelManager.getInstance().)
+			_levelMenu.updatePosition(LevelManager.getInstance().getLevel(lastClearedLevel).getRow(), LevelManager.getInstance().getLevel(lastClearedLevel).getCol());
 		}
 		else
 		{
