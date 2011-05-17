@@ -32,6 +32,7 @@ public class LevelNode
 	{
 		return _col;
 	}
+	
 	public void setCleared()
 	{
 		_cleared = true;
