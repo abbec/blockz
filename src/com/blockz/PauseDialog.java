@@ -29,6 +29,10 @@ public class PauseDialog extends Dialog {
         btnContinue.setOnClickListener(new resumeListener());
         Button btnRestart = (Button) findViewById(R.id.restart);
         btnRestart.setOnClickListener(new restartListener());
+        Button btnLevelSelect = (Button) findViewById(R.id.levelselect);
+        btnLevelSelect.setOnClickListener(new levelSelectListener());
+        Button btnMainMenu = (Button) findViewById(R.id.mainmenu);
+        btnMainMenu.setOnClickListener(new mainMenuListener());
     }
 
     private class resumeListener implements android.view.View.OnClickListener {
@@ -43,6 +47,24 @@ public class PauseDialog extends Dialog {
         public void onClick(View v) {
             PauseDialog.this.dismiss();
             _game.reset();
+            _game.pause();
+            
+        }
+    }
+    private class levelSelectListener implements android.view.View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            PauseDialog.this.dismiss();
+            _game.gotoLevelSelect();
+            _game.pause();
+            
+        }
+    }
+    private class mainMenuListener implements android.view.View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            PauseDialog.this.dismiss();
+            _game.gotoMain();
             _game.pause();
             
         }

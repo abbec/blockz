@@ -226,6 +226,16 @@ public class Game extends Activity
 		gd.setIsLongpressEnabled(false);
 		_event.setPlayerDestination(_grid.getPlayer().getPosition());
 	}
+	public void gotoLevelSelect()
+	{
+		Intent levelSelect = new Intent(getApplicationContext(), LevelMenuActivity.class);
+    	startActivity(levelSelect);
+	}
+	public void gotoMain()
+	{
+		Intent main = new Intent(getApplicationContext(), StartMenuActivity.class);
+    	startActivity(main);
+	}
 	
 	public boolean getPauseFlag()
 	{
