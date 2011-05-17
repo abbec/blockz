@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="app_name">Blockz</string>
+<string name="resume">Resume</string>
+<string name="restart">Restart</string>
+<string name="levelselect">Level Select</string>
+<string name="mainmenu">Main Menu</string>
+<string name="gamepaused">Game Paused</string>
+</resources>
