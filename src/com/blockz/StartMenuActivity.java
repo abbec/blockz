@@ -50,7 +50,7 @@ public class StartMenuActivity extends Activity {
 		lm = LevelManager.getInstance();
 		//lm = new LevelManager(new SaveSlot(3, "hej"));
 
-		lm.setSaveSlot(this, new SaveSlot(3, "hej"));
+		//lm.setSaveSlot(this, new SaveSlot(3, "hej"));
 		//lm.load();
 
 		gd = new GestureDetector(mgl);
@@ -187,8 +187,7 @@ public class StartMenuActivity extends Activity {
 		alert.setView(input);
 		alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {  
 		    public void onClick(DialogInterface dialog, int whichButton) {  
-		        String value = input.getText().toString();
-		        Log.d("B_INFO", "ITEM: " + item);
+		        String value = input.getText().toString().replace("\n", "");
 		        lm.setSaveSlot(getApplicationContext(), new SaveSlot(item+1, value));
 		        lm.save();
 		        Intent newGame = new Intent(getApplicationContext(), LevelMenuActivity.class);
