@@ -117,6 +117,7 @@ public class StartMenuActivity extends Activity {
 			builder.setItems(items, new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int item) {
 			    	_lm.setSaveSlot(getApplicationContext(), slots[item]);
+			    	
 			    	_lm.load();
 			    	Intent loadGame = new Intent(getApplicationContext(), LevelMenuActivity.class);
 			    	startActivity(loadGame);
