@@ -185,6 +185,8 @@ public class Game extends Activity
             	Log.d("B_INFO", "Exception " + e.toString() + ": " + e.getLocalizedMessage());
             }
         }
+        
+        finish();
 	}
 	
 	/**
