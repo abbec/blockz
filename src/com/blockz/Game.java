@@ -39,7 +39,7 @@ public class Game extends Activity
 
 		//TODO: Set correct numbers in assert
 		//_levelID = getIntent().getExtras().getInt("level");
-		_levelID = LevelManager.getInstance().getCurrentLevel().getLevel();
+		_levelID = 2;//LevelManager.getInstance().getCurrentLevel().getLevel();
 		Log.d("B_INFO", "id: " + _levelID);
 		//Assert.assertTrue(_levelID > 0 && _levelID < 11);		
 		

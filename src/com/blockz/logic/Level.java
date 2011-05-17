@@ -286,6 +286,8 @@ public class Level
 					}
 					
 					_grid.setGround(drawableValue);
+					WallBlock b = new WallBlock(R.drawable.hud);
+					_grid.setFixed(row,col,b);
 					_scene.addSprite(drawableValue, Scene.STATIC_SPRITE);
 				}
 				else
@@ -324,7 +326,7 @@ public class Level
 							isPlayer = true;
 							break;
 						case HUD:
-							drawableValue =  R.drawable.grass2;
+							drawableValue =  R.drawable.hud;
 							staticInt =	Scene.STATIC_SPRITE;
 							isBlockMovable = false;
 							break;
