@@ -541,6 +541,33 @@ public class LevelManager
 		}
 	}
 	
+	public LevelNode getLevel(int levelId)
+	{
+		
+		Node<LevelNode> root = _levelTree.getRoot();
+		
+		Node<LevelNode> res = new Node<LevelNode>(new LevelNode(-1, false, 0, 0));
+		findLevelById(root, levelId, res);
+		
+		if (res.getData().getLevel() != -1)
+			return res.getData();
+		else
+			return null;
+	}
+	
+	private void findLevelById(Node<LevelNode> element, int levelId, Node<LevelNode> res)
+	{
+		if (element.getData().getLevel() == levelId)
+		{
+			res.setData(element.getData());
+		}
+		else
+		{
+			for (Node<LevelNode> data : element.getChildren())
+				findLevelById(data, levelId, res);
+		}
+	}
+	
 	private class Result
 	{
 		public boolean res = false;
