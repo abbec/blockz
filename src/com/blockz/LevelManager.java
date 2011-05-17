@@ -293,7 +293,7 @@ public class LevelManager
 				if (level != 0)
 					_saveSlot.addClearedLevel(level);
 			}
-			sc.nextLine();
+			intScanner.close();
 			
 			_saveSlot.setLastClearedLevel(sc.nextInt());
 			
