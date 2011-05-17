@@ -23,6 +23,7 @@ import com.blockz.logic.Cell;
 import com.blockz.logic.Coordinate;
 import com.blockz.logic.Grid;
 import com.blockz.logic.GroundBlock;
+import com.blockz.logic.Item;
 import com.blockz.logic.MovableItem;
 
 /**
@@ -124,9 +125,7 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		if (cell.hasArrow())
 	    		{
 	    			Arrow arrow = cell.getArrow();
-	    			
-	    			s = _spriteTable.get(arrow.getSpriteID());
-	    			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime, 0);
+	    			overDraw.add(new OverDraw(arrow,pixelCoord));
 	    		}
 	    		
 	    		// Render the movable block
@@ -161,6 +160,10 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		}
 	    			
 	    	}
+	    	
+	    	_game.getHud().setPoints(_game.getLevel().getPoints());
+		    _game.getHud().draw(canvas);
+	    	
 	    	Iterator<OverDraw> it2 = overDraw.iterator();
 	    	OverDraw od;
 	    	while(it2.hasNext())
@@ -171,17 +174,6 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
 	    		pixelCoord.add(od._item.getOffset());
     			s = _spriteTable.get(od._item.getSpriteID());
     			s.draw(canvas, pixelCoord.x, pixelCoord.y, gameTime,od._dir);	    		
-	    	}
-	    	
-	    
-	    	
-	    	
-	    	if(_game.getPauseFlag())
-	    		drawPause(canvas);
-	    	else
-	    	{
-	    		_game.getHud().setPoints(_game.getLevel().getPoints());
-		    	_game.getHud().draw(canvas);
 	    	}
 	    		    	
 	    	// Unlock the canvas to show the screen
@@ -216,13 +208,18 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
     
     private class OverDraw
     {
-    	public MovableItem _item;
+    	public Item _item;
     	public Coordinate _pixelCoord;
     	public int _dir =0;
     	
     	public OverDraw(MovableItem item, Coordinate c, int dir)
     	{
     		_item = item; _pixelCoord = c; _dir = dir;
+    	}
+    	
+    	public OverDraw(Item a, Coordinate c)
+    	{
+    		_item = a; _pixelCoord = c;
     	}
     }
     

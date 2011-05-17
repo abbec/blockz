@@ -95,11 +95,13 @@ public class Level
 				row = (int) Math.floor(_currentEvent.getCoordinate().y/_grid.getCellHeight());
 				
 				Vector<Coordinate> tempPath = new Vector<Coordinate>();
-				
-				if(_player.getPosition().equals(_currentEvent.getPlayerDestination()))
-					 tempPath.add(_player.moveTo(_currentEvent.getPlayerDestination()).lastElement());
-				else
-					tempPath = _player.moveTo(_currentEvent.getPlayerDestination());
+				if (_currentEvent.getPlayerDestination() != null)
+				{
+					if(_player.getPosition().equals(_currentEvent.getPlayerDestination()))
+						 tempPath.add(_player.moveTo(_currentEvent.getPlayerDestination()).lastElement());
+					else
+						tempPath = _player.moveTo(_currentEvent.getPlayerDestination());
+				}
 
 				_player.setLookDirection(_currentEvent.getDirection());
 				if(tempPath.size() > 0 && !_player.getMoving())
@@ -257,8 +259,10 @@ public class Level
 	 */
 	private void readLevel(int resourceNumber)
 	{
-		_scene.addSprite(R.drawable.arrow, Scene.ANIMATED_SPRITE);
-		
+		_scene.addSprite(R.drawable.arrows_up, Scene.ANIMATED_SPRITE);
+		_scene.addSprite(R.drawable.arrows_right, Scene.ANIMATED_SPRITE);
+		_scene.addSprite(R.drawable.arrows_down, Scene.ANIMATED_SPRITE);
+		_scene.addSprite(R.drawable.arrows_left, Scene.ANIMATED_SPRITE);
 		
 		_levelImage = BitmapFactory.decodeResource(_context.getResources(), resourceNumber);
 		for(int col = 0; col < 12; col++)

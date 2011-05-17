@@ -64,4 +64,6 @@ public abstract class Item
 	}
 	
 	public abstract int getType();
+	
+	public abstract Coordinate getOffset();
 }

@@ -38,15 +38,15 @@ public class MyGestureListener extends SimpleOnGestureListener
 			//hämta grannar som inte har fixed.
 			
 		//Log.d("E_INFO", "Press!");
-		_availableCoord = null;
 		_event.setCoordinate(new Coordinate((int)e.getRawX(), (int)e.getRawY()));
 		_event.setDirection(Constant.UNKNOWN);
 		_event.setTap(true);
-		//removeArrows();
+		Log.d("ARROW_INFO", "REMOVE ARROWS");
+		removeArrows();
+		_availableCoord = null;
 		_event.setTap(true);
 		return true;
 	}
-	
 	
 	@Override
 	public boolean onDown(MotionEvent e)
@@ -84,24 +84,29 @@ public class MyGestureListener extends SimpleOnGestureListener
 					_availableCoord.set(i, null);
 				else
 				{
-					int arrowDir = R.drawable.arrow;
+					int arrowDir = R.drawable.arrows_up;
+					Coordinate arrowOffset = new Coordinate(0, 0);
 					switch(i)
 					{
 						case 0: 
-							arrowDir = R.drawable.arrows_down;
+							arrowDir = R.drawable.arrows_up;
+							arrowOffset = new Coordinate(0,-40);
 							break;
 						case 1:
-							arrowDir = R.drawable.arrows_up;
+							arrowDir = R.drawable.arrows_down;
+							arrowOffset = new Coordinate(0,40);
 							break;
 						case 2:
-							arrowDir = R.drawable.arrows_right;
+							arrowDir = R.drawable.arrows_left;
+							arrowOffset = new Coordinate(-40,0);
 							break;
 						case 3: 
-							arrowDir = R.drawable.arrows_left;
+							arrowDir = R.drawable.arrows_right;
+							arrowOffset = new Coordinate(40,0);
 							break;
 					}	
 					
-					Arrow newArrow = new Arrow(arrowDir);
+					Arrow newArrow = new Arrow(arrowDir,arrowOffset);
 					_grid.getCell(_availableCoord.get(i).x, _availableCoord.get(i).y).setArrow(newArrow);
 				}	
 			}
@@ -183,11 +188,15 @@ public class MyGestureListener extends SimpleOnGestureListener
 	}
 	public void removeArrows()
 	{
-		for(int i =0; i < _availableCoord.size(); i++)
+		if(_availableCoord != null)
 		{
-			if(_availableCoord.get(i) != null)
+			for(int i =0; i < _availableCoord.size(); i++)
 			{
-				_grid.getCell(_availableCoord.get(i).x, _availableCoord.get(i).y).setArrow(null);
+				if(_availableCoord.get(i) != null)
+				{
+					Log.d("ARROW_INFO", "Removes arrow from: " + _availableCoord.toString());
+					_grid.getCell(_availableCoord.get(i).x, _availableCoord.get(i).y).setArrow(null);
+				}	
 			}
 		}
 	}
