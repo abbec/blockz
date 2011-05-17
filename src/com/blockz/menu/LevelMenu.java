@@ -23,7 +23,8 @@ public class LevelMenu extends Menu
 	{
 		super(context, screenWidth, screenHeight, typeID);
     	_context = context;
-    	_player = BitmapFactory.decodeResource(_context.getResources(), R.drawable.gubbe);
+    	_player = Bitmap.createBitmap(BitmapFactory.decodeResource(_context.getResources(), R.drawable.indianaslowlori), 0, 0, 
+    			(int) Math.ceil(screenWidth/12.0), (int) Math.ceil(screenHeight/8.0));
     	_levelMenu = menu;
 	}
 

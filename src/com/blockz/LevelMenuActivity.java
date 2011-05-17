@@ -1,6 +1,5 @@
 package com.blockz;
 
-import com.blockz.LevelManager.SaveSlot;
 import com.blockz.logic.Grid;
 import com.blockz.menu.LevelMenu;
 
@@ -29,6 +28,18 @@ public class LevelMenuActivity extends Activity {
 		init();
 		super.onCreate(savedInstanceState);
 	}
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+	}
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		finish();
+	}
+	
 
 	private void init()
 	{
@@ -41,14 +52,20 @@ public class LevelMenuActivity extends Activity {
 		_grid = new Grid(_width, _height);
 
 		_levelMenu = new LevelMenu(this, this, _width, _height, R.drawable.level_select);
+		
+		
+		if(LevelManager.getInstance().getCurrentLevel() != null)
+		{
+			_levelMenu.updatePosition(LevelManager.getInstance().getCurrentLevel().getRow(), LevelManager.getInstance().getCurrentLevel().getCol());
+		}
+		else
+		{
+			_levelMenu.updatePosition(7,0);
+		}
 		_event = new MyEvent();
 		MyGestureListener mgl = new MyGestureListener(_event, _grid); 
 
 		lm = LevelManager.getInstance();
-		//lm = new LevelManager(new SaveSlot(3, "hej"));
-
-		lm.setSaveSlot(this, new SaveSlot(3, "hej"));
-		//lm.load();
 
 		gd = new GestureDetector(mgl);
 		setContentView(_levelMenu);
@@ -71,11 +88,8 @@ public class LevelMenuActivity extends Activity {
 			{
 				_levelMenu.updatePosition(row, col);
 				_levelMenu.drawBackground();
-				Log.d("B_INFO", "Level: " + level);
 				lm.setLevel(level); 
-				Log.d("B_INFO", "set level to: " + lm.getCurrentLevel());
 				Intent intent = new Intent(this, Game.class);
-				//TODO:put the level that is choosen
 				startActivity(intent);
 			}
 
@@ -90,7 +104,6 @@ public class LevelMenuActivity extends Activity {
 	public void start()
 	{
 		//TODO : Set default startposition for choosen level
-		_levelMenu.updatePosition(2, 4);
 		_levelMenu.drawBackground();
 	}
 }
