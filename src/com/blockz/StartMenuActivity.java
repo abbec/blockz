@@ -49,6 +49,8 @@ public class StartMenuActivity extends Activity {
 
 		_lm = LevelManager.getInstance();
 		
+		SoundManager.getInstance().setContext(this);
+		//SoundManager.getInstance().playMusic();
 		gd = new GestureDetector(mgl);
 		setContentView(_startMenu);
 

@@ -59,9 +59,8 @@ public class Level
 		readLevel(resourceNumber);
 		_moveList = new LinkedList<Move>();
 		_levelResourceNumber = resourceNumber;
-		
-		SoundManager.getInstance().setContext(_context);
-		SoundManager.getInstance().playMusic();
+		SoundManager.getInstance().loadSounds();
+		//SoundManager.getInstance().playMusic();
 	}
 	
 	public int getPlayedTime() {
@@ -205,9 +204,9 @@ public class Level
 		lm.clearLevel();
 		lm.save();
 		Intent levelMenu = new Intent(_context, LevelMenuActivity.class);
+		SoundManager.getInstance().stopAll();
 		_context.startActivity(levelMenu);
 	}
-	
 	public boolean isLevelComplete()
 	{
 		if(onTheMove())

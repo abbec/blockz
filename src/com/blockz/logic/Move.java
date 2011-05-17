@@ -169,6 +169,7 @@ public class Move {
 						_grid.getMovable(_start.x, _start.y).setOffset(new Coordinate(0,0));
 						_grid.getMovable(_start.x, _start.y).setMoving(false);
 						_isMoving = false;
+						SoundManager.getInstance().playWallhit();
 					}
 					else
 					{
@@ -185,8 +186,7 @@ public class Move {
 				else
 					_grid.getMovable(_start.x, _start.y).setOffset(nextOffset);
 			}
-			else
-				SoundManager.getInstance().playWallhit();
+				
 		}
 	}
 	

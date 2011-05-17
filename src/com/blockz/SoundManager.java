@@ -17,13 +17,17 @@ import android.util.Log;
 public class SoundManager 
 {
 	private static SoundManager INSTANCE = null;
-	private MediaPlayer _musicPlayer,_effectsPlayer;
+	private MediaPlayer _musicPlayer,_arrow, _wallHit, _punch1, _punch2, _punch3, _click, _win;
 	private Context _context;
+
 	
 	public static SoundManager getInstance() 
 	{
 		if(INSTANCE == null)
+		{
 			INSTANCE = new SoundManager();
+			Log.d("S_INFO","Skapar ny SoundManager");
+		}
 	
 		return INSTANCE;
 	}
@@ -31,21 +35,43 @@ public class SoundManager
 	{
 		_context = c;
 	}
-	
+	public boolean hasContext()
+	{
+		return _context != null;
+	}
 	//To stop playback, call stop(). If you wish to later replay the media, then you must reset()  and prepare()  the MediaPlayer object before calling start()  again. (create() calls prepare() the first time.)
 	//To pause playback, call pause(). Resume playback from where you paused with start().
-	
+	public void loadSounds()
+	{
+		_musicPlayer.setLooping(true);
+
+		_arrow = MediaPlayer.create(_context, R.raw.arrow);
+		_arrow.setVolume(.1f, .1f);
+		_click = MediaPlayer.create(_context, R.raw.click);
+		_click.setVolume(1f, 1f);
+		_punch1 = MediaPlayer.create(_context, R.raw.jab1);		
+		_punch1.setVolume(.6f, .6f);
+		_punch2 = MediaPlayer.create(_context, R.raw.punch1);
+		_punch2.setVolume(.6f, .6f);
+		_punch3 = MediaPlayer.create(_context, R.raw.upper1);
+		_punch3.setVolume(.6f, .6f);
+		_wallHit = MediaPlayer.create(_context, R.raw.wallhit);
+		_wallHit.setVolume(1f, 1f);
+		_win = MediaPlayer.create(_context, R.raw.win);
+		_win.setVolume(.3f, .3f);
+		
+		Log.d("S_INFO","Sounds Loaded");
+	}
 	public void playMusic()
 	{
+		stopMusic();
 		_musicPlayer = MediaPlayer.create(_context,shuffle());
-		_musicPlayer.setLooping(true);
 		_musicPlayer.start();
 	}
-	public void stopMusic() throws IllegalStateException, IOException
+
+	public void stopMusic() 
 	{
-		_musicPlayer.stop();
-		_musicPlayer.reset();
-		_musicPlayer.prepare();
+		_musicPlayer.release();
 	}
 	public void pausMusic()
 	{
@@ -55,26 +81,10 @@ public class SoundManager
 	{
 		_musicPlayer.start();
 	}
-	
-	public void playWalk()
-	{
-		_effectsPlayer.setLooping(true);
-		if(!_effectsPlayer.isPlaying())
-		{
-			_effectsPlayer = MediaPlayer.create(_context, R.raw.walk);
-			_effectsPlayer.start();
-		}
-		
-		_effectsPlayer.setLooping(false);
-	}
-	public void stopWalk()
-	{
-		_effectsPlayer.stop();
-	}
+
 	public void playWin()
 	{
-		_effectsPlayer = MediaPlayer.create(_context, R.raw.win);
-		_effectsPlayer.start();		
+		_win.start();		
 	}
 	public void playPunch()
 	{
@@ -84,62 +94,70 @@ public class SoundManager
 		switch(rand)
 		{
 		case 0:
-			p = R.raw.punch1;
+			_punch1.start();
 			break;
 		case 1:
-			p = R.raw.jab1;
+			_punch2.start();
 			break;
 		case 2:
-			p = R.raw.upper1;
+			_punch3.start();
 			break;
 		default:
-			p = R.raw.upper1;
+			_punch1.start();
 			break;
 		}
-
-		_effectsPlayer = MediaPlayer.create(_context, p);
-		_effectsPlayer.start();
 	}
 	public void playWallhit()
 	{
-		_effectsPlayer = MediaPlayer.create(_context, R.raw.wallhit);
-		_effectsPlayer.start();
+		_wallHit.start();
 	}
 	public void playArrows()
 	{
-		_effectsPlayer = MediaPlayer.create(_context, R.raw.arrow);
-		_effectsPlayer.start();	
+		_arrow.start();	
 	}
 	public void playClick()
 	{
-		_effectsPlayer = MediaPlayer.create(_context, R.raw.click);
-		_effectsPlayer.start();	
+		_click.start();	
 	}
 	private int shuffle()
 	{
-		int rand = (int) Math.round(Math.random()*3);
+		int rand = (int) Math.round(Math.random()*4);
 		switch(rand)
 		{
 		case 0:
-			return R.raw.bg_music;
+			return R.raw.bach;
 		case 1:
-			return R.raw.bg_music;
+			return R.raw.spacedream;
 		case 2:
-			return R.raw.bg_music;
+			return R.raw.spanisha;
 		case 3:
-			return R.raw.bg_music;
+			return R.raw.sumblue;
+		case 4:
+			return R.raw.willow;
 		default:
-			return R.raw.bg_music;
+			return R.raw.willow;
 		}
 	}
 	public void stopAll()
 	{
-		_effectsPlayer.stop();
-		_musicPlayer.stop();
+		_arrow.release();
+		_click.release();
+		_punch1.release();
+		_punch2.release();
+		_punch3.release();
+		_wallHit.release();
+		_win.release();
 	}
 	private SoundManager()
 	{
+		_context = null;
 		_musicPlayer = new MediaPlayer();
-		_effectsPlayer = new MediaPlayer();
+		_arrow = new MediaPlayer();
+		_click = new MediaPlayer();
+		_punch1 = new MediaPlayer();
+		_punch2 = new MediaPlayer();
+		_punch3 = new MediaPlayer();
+		_wallHit = new MediaPlayer();
+		_win = new MediaPlayer();
 	}
 }
