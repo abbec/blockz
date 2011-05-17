@@ -164,7 +164,14 @@ public class StartMenuActivity extends Activity {
 		    }
 		});
 		
+	
+		
 		AlertDialog alert = builder.create();
+		alert.setButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				return;
+			}
+		});
 		alert.show();
 	}
 	
