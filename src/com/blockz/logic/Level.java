@@ -15,12 +15,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.blockz.GameSoundManager;
 import com.blockz.LevelManager;
 import com.blockz.LevelMenuActivity;
 import com.blockz.MyEvent;
 import com.blockz.Preferences;
 import com.blockz.R;
-import com.blockz.SoundManager;
 import com.blockz.graphics.Scene;
 
 /**
@@ -43,7 +43,8 @@ public class Level
 	private Context _context;
 	private MyEvent _currentEvent;
 	private Player _player;
-	private Grid _grid;	private double _points = Preferences.POINTS;
+	private Grid _grid;
+	private double _points = Preferences.POINTS;
 	private LinkedList<Move> _moveList;
 	private boolean _levelComplete = false;
 	private int _playedTime = 0;
@@ -57,9 +58,7 @@ public class Level
 		readLevel(resourceNumber);
 		_moveList = new LinkedList<Move>();
 		_levelResourceNumber = resourceNumber;
-		
-		SoundManager.getInstance().setContext(_context);
-		SoundManager.getInstance().playMusic();
+		GameSoundManager.getInstance().loadSounds();
 	}
 	
 	public int getPlayedTime() {
@@ -195,7 +194,7 @@ public class Level
 	
 	public void levelComplete()
 	{
-		SoundManager.getInstance().playWin();
+		GameSoundManager.getInstance().playWin();
 		LevelManager lm = LevelManager.getInstance(); 
 		lm.updateScore((int)_points);
 		lm.clearLevel();
