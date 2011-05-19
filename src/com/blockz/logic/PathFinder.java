@@ -102,7 +102,7 @@ public class PathFinder{
 		if(Preferences.DEBUG)
 			Log.d("B_INFO","Done with closedListsize = " + closedList.size());
 
-		while(endCell.getPosition().x != startPos.x || endCell.getPosition().y != startPos.y)
+		while((endCell.getPosition().x != startPos.x || endCell.getPosition().y != startPos.y) && openList.size() != 0)
 		{
 			if (!blockedEndCell)
 			{
