@@ -102,22 +102,25 @@ public class GameThread extends Thread
             	// Render each frame so that we get cool FPS
            		_game.getLevel().render(_game.gameTime());
            		
-           		//Dev Tools, sends FPS and Memory Usage to the HUD
-           		if (fpsCounter == 100)
+           		if (Preferences.DEBUG)
            		{
-           			Debug.getMemoryInfo(_devInfo);
-           			long privateMemory = _devInfo.getTotalPrivateDirty();
-           			long currentGameTime = _game.gameTime();
-           			
-           			_game.getHud().clearDevString();
-           			_game.getHud().appendDevString("FPS: " + Math.floor(((float)fpsCounter/((float)currentGameTime - (float)renderTime))*1000));
-           			_game.getHud().appendDevString("Memory: " + privateMemory + "kB");
-
-           			fpsCounter = 0;
-           			renderTime = currentGameTime;
+           			//Dev Tools, sends FPS and Memory Usage to the HUD
+           			if (fpsCounter == 100)
+           			{
+	           			Debug.getMemoryInfo(_devInfo);
+	           			long privateMemory = _devInfo.getTotalPrivateDirty();
+	           			long currentGameTime = _game.gameTime();
+	           			
+	           			_game.getHud().clearDevString();
+	           			_game.getHud().appendDevString("FPS: " + Math.floor(((float)fpsCounter/((float)currentGameTime - (float)renderTime))*1000));
+	           			_game.getHud().appendDevString("Memory: " + privateMemory + "kB");
+	
+	           			fpsCounter = 0;
+	           			renderTime = currentGameTime;
+	           		}
+	           		else
+	           			fpsCounter++;
            		}
-           		else
-           			fpsCounter++;
         	}
         }
     }
