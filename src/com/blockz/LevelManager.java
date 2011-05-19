@@ -600,12 +600,13 @@ public class LevelManager
 			res.res = true;
 		else if (element.getData() == ln)
 		{
-			res.res = parent.getData().isCleared();
-			return;
+			res.res = true;
 		}
-		
-		for (Node<LevelNode> data : element.getChildren())
-			findIsPlayable(data, element, ln, res);
+		else if (element.getData().isCleared())
+		{
+			for (Node<LevelNode> data : element.getChildren())
+				findIsPlayable(data, element, ln, res);
+		}
 	}
 	
 	/**
