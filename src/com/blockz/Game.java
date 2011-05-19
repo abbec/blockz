@@ -94,6 +94,8 @@ public class Game extends Activity
 				_levelID = R.drawable.level10;
 				break;
 		}
+		GameSoundManager.getInstance().setContext(this);
+		GameSoundManager.getInstance().playMusic();
 		
 		_level = new Level(this, _scene, _grid, _levelID);
 		_mainThread = new GameThread(this);
@@ -178,6 +180,7 @@ public class Game extends Activity
             }
         }
         
+        GameSoundManager.getInstance().stopAll();
         finish();
 	}
 	
@@ -190,7 +193,6 @@ public class Game extends Activity
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("playedTime", _level.getPlayedTime()).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("points", (int) _level.getPoints()).commit();
 		setPauseFlag(true);
-		SoundManager.getInstance().pausMusic();
 		super.onPause();
 	}
 	
@@ -198,11 +200,13 @@ public class Game extends Activity
 	{
 		if(!_pauseFlag)
 		{
-		_mainThread.pause();
-		_pauseFlag = true;
+			GameSoundManager.getInstance().stopAll();
+			_mainThread.pause();
+			_pauseFlag = true;
 		}
 		else 
 		{
+			GameSoundManager.getInstance().playMusic();
 			_mainThread.unPause();
 			_pauseFlag = false;
 		}
@@ -243,6 +247,7 @@ public class Game extends Activity
 	@Override 
 	protected void onStop()
 	{
+		GameSoundManager.getInstance().stopMusic();
 		super.onStop();
 	}
 	
@@ -270,8 +275,6 @@ public class Game extends Activity
 			_gameStart = System.currentTimeMillis();
 			_level.setPoints(999.0);
 		}
-		
-		SoundManager.getInstance().resumeMusic();
 		super.onResume();
 	}
 

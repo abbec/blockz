@@ -58,15 +58,20 @@ public final class R {
     }
     public static final class raw {
         public static final int arrow=0x7f050000;
-        public static final int bg_music=0x7f050001;
+        public static final int bach=0x7f050001;
         public static final int click=0x7f050002;
         public static final int jab1=0x7f050003;
         public static final int karate=0x7f050004;
-        public static final int punch1=0x7f050005;
-        public static final int upper1=0x7f050006;
-        public static final int walk=0x7f050007;
-        public static final int wallhit=0x7f050008;
-        public static final int win=0x7f050009;
+        public static final int nature=0x7f050005;
+        public static final int punch1=0x7f050006;
+        public static final int spacedream=0x7f050007;
+        public static final int spanisha=0x7f050008;
+        public static final int sumblue=0x7f050009;
+        public static final int upper1=0x7f05000a;
+        public static final int walk=0x7f05000b;
+        public static final int wallhit=0x7f05000c;
+        public static final int willow=0x7f05000d;
+        public static final int win=0x7f05000e;
     }
     public static final class string {
         public static final int app_name=0x7f060000;
