@@ -74,8 +74,6 @@ public class LevelMenuActivity extends Activity {
 
 		lm = LevelManager.getInstance();
 
-		SoundManager.getInstance().setContext(this);
-		//SoundManager.getInstance().playMusic();
 		gd = new GestureDetector(mgl);
 		setContentView(_levelMenu);
 

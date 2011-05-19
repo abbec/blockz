@@ -8,9 +8,6 @@ import java.util.*;
 import junit.framework.Assert;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,7 +19,6 @@ import com.blockz.logic.Block;
 import com.blockz.logic.Cell;
 import com.blockz.logic.Coordinate;
 import com.blockz.logic.Grid;
-import com.blockz.logic.GroundBlock;
 import com.blockz.logic.Item;
 import com.blockz.logic.MovableItem;
 

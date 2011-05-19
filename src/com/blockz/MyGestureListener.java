@@ -57,7 +57,7 @@ public class MyGestureListener extends SimpleOnGestureListener
 		_availableCoord = new Vector<Coordinate>();
 		if(_grid.hasMovable(row,col))
 		{
-			SoundManager.getInstance().playArrows();
+			GameSoundManager.getInstance().playArrows();
 			_availableCoord.add(new Coordinate(row-1, col));
 			_availableCoord.add(new Coordinate(row+1, col));
 			_availableCoord.add(new Coordinate(row, col-1));
