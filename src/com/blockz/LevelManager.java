@@ -6,7 +6,6 @@ package com.blockz;
 import java.io.*;
 import java.util.*;
 
-import com.blockz.graphics.Sprite;
 import com.blockz.util.*;
 
 import org.xmlpull.v1.*;
@@ -600,12 +599,13 @@ public class LevelManager
 		if (parent.getData() == ln)
 			res.res = true;
 		else if (element.getData() == ln)
-			res.res = parent.getData().isCleared();
-		else
 		{
-			for (Node<LevelNode> data : element.getChildren())
-					findIsPlayable(data, element, ln, res);
+			res.res = parent.getData().isCleared();
+			return;
 		}
+		
+		for (Node<LevelNode> data : element.getChildren())
+			findIsPlayable(data, element, ln, res);
 	}
 	
 	/**

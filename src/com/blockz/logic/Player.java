@@ -1,5 +1,4 @@
 package com.blockz.logic;
-import java.util.LinkedList;
 import java.util.Vector;
 
 import android.util.Log;

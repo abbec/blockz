@@ -3,8 +3,6 @@ package com.blockz.logic;
 import com.blockz.R;
 import java.util.Iterator;
 
-import com.blockz.graphics.StaticSprite;
-
 import junit.framework.Assert;
 
 /**

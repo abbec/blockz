@@ -1,8 +1,5 @@
 package com.blockz.logic;
 import java.util.Iterator;
-import java.util.LinkedList;
-
-import android.util.Log;
 
 public class CollisionHandler
 {
@@ -48,7 +45,6 @@ public class CollisionHandler
 			{			
 				if(!c.fixedIsWall())
 				{
-					boolean koll = c.hasMovable();
 					if(!c.hasMovable()){
 						coord = tempCoord;
 					}

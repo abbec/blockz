@@ -5,9 +5,7 @@ import com.blockz.logic.Arrow;
 import com.blockz.logic.Constant;
 import com.blockz.logic.Coordinate;
 import com.blockz.logic.Grid;
-import com.blockz.logic.PathFinder;
 
-import android.provider.SyncStateContract.Constants;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;

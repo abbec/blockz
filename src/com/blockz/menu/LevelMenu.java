@@ -2,7 +2,6 @@ package com.blockz.menu;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,11 +13,7 @@ import com.blockz.graphics.StaticSprite;
 import com.blockz.util.Node;
 
 import android.content.Context;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.util.Log;
 
 
 public class LevelMenu extends Menu
