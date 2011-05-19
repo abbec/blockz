@@ -3,12 +3,8 @@ package com.blockz.graphics;
 import com.blockz.Preferences;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Rect;
-import android.util.Log;
 
 public class PlayerSprite extends Sprite
 {
@@ -20,7 +16,6 @@ public class PlayerSprite extends Sprite
     private int _noFrames;
     private int _currentFrame;
     private long _frameTimer;
-    private int _spriteHeight;
     private int _spriteWidth;
     private int _singleWidth;
     private int _singleHeight;
@@ -43,7 +38,6 @@ public class PlayerSprite extends Sprite
         _currentFrame = 0;
         
         _spriteWidth = _sprite.getWidth();
-        _spriteHeight = _sprite.getHeight();
         
         _sRectangle = new Rect(0,0,0,0);
         _sRectangle.top = 0;

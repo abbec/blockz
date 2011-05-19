@@ -1,5 +1,4 @@
 package com.blockz.logic;
-import java.util.LinkedList;
 /**
  * Items that can move, such as Players and movable blocks.
  * 

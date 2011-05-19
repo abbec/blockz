@@ -1,9 +1,5 @@
 package com.blockz.logic;
 
-import java.util.LinkedList;
-
-import android.util.Log;
-
 public class MovableBlock extends MovableItem
 {
 	private int _direction;

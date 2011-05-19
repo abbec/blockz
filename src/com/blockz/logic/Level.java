@@ -43,9 +43,7 @@ public class Level
 	private Context _context;
 	private MyEvent _currentEvent;
 	private Player _player;
-	private long playingTime = 0;
-	private Grid _grid;
-	private double _points = Preferences.POINTS;
+	private Grid _grid;	private double _points = Preferences.POINTS;
 	private LinkedList<Move> _moveList;
 	private boolean _levelComplete = false;
 	private int _playedTime = 0;
@@ -86,7 +84,6 @@ public class Level
 			return;
 		
 		int col,row;
-		Move move;
 		_levelComplete = isLevelComplete();
 		
 		updatePlayingTime(gameTime);

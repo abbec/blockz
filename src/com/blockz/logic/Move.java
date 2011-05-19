@@ -5,8 +5,6 @@ import android.util.Log;
 import com.blockz.Preferences;
 import com.blockz.SoundManager;
 
-import android.R;
-
 public class Move {
 	
 	private Coordinate _start, _end, _currentGridCoordinate, _currentPixelCoordinate;
