@@ -3,6 +3,8 @@ package com.blockz.logic;
 import java.util.Iterator;
 import java.util.Vector;
 
+import com.blockz.Preferences;
+
 import android.util.Log;
 
 /**
@@ -13,8 +15,8 @@ import android.util.Log;
  * 
  */
 public class PathFinder{
-	
-	
+
+
 	//Closed list is the final path, and the openList is just to get there.
 	private Vector<Cell> openList,closedList;
 	private Vector<Coordinate> _path;
@@ -26,86 +28,90 @@ public class PathFinder{
 		closedList = new Vector<Cell>();
 		_path = new Vector<Coordinate>();
 	}
-	
+
 	public Vector<Coordinate> calculatePath(Coordinate startPos,Coordinate endPos)
 	{
 		//Clear any old shit left.
 		closedList.clear();
 		openList.clear();
 		_path.clear();
+		
+		if(Preferences.DEBUG)
 			Log.d("B_INFO","StartPos x:" + startPos.x + " y:" +startPos.y);
-	
-			setAllH(endPos);
-			
-	
-			Cell currentCell = _grid.getCell(startPos.x,startPos.y);
-			Cell endCell = _grid.getCell(endPos.x,endPos.y);
-	
-			Vector<Cell> neighbors = new Vector<Cell>();
-	
-			//Kolla om neighbors går att gå på.
-			
-			endCell = checkNeighbors(endCell);
-			setAllH(endCell.getPosition());
+
+		setAllH(endPos);
+
+
+		Cell currentCell = _grid.getCell(startPos.x,startPos.y);
+		Cell endCell = _grid.getCell(endPos.x,endPos.y);
+
+		Vector<Cell> neighbors = new Vector<Cell>();
+
+		//Kolla om neighbors går att gå på.
+
+		endCell = checkNeighbors(endCell);
+		setAllH(endCell.getPosition());
+		if(Preferences.DEBUG)
 			Log.d("B_INFO", "Endcell_Changed:" + endCell.toString());
-			//Semi-ful fix för att fixa blockerad endCell-path
-			boolean blockedEndCell = false;
-			if (endCell.getG() != 10)
-			{
-				blockedEndCell = true;
-			}
-			
-			
-			//Add start position to the openList.
-			openList.addElement(currentCell);
+		//Semi-ful fix för att fixa blockerad endCell-path
+		boolean blockedEndCell = false;
+		if (endCell.getG() != 10)
+		{
+			blockedEndCell = true;
+		}
+
+
+		//Add start position to the openList.
+		openList.addElement(currentCell);
+		if(Preferences.DEBUG)
 			Log.d("B_INFO","EndCellPos: " + endCell.getPosition().toString());
-			while( (currentCell.getPosition().x != endCell.getPosition().x  || currentCell.getPosition().y != endCell.getPosition().y) && openList.size() > 0)
+		while( (currentCell.getPosition().x != endCell.getPosition().x  || currentCell.getPosition().y != endCell.getPosition().y) && openList.size() > 0)
+		{
+			// Get the cell with smallest F cost and add it to the closed list and remove it from the openList.
+			closedList.addElement(currentCell);
+			openList.remove(getSmallestCost(openList));
+
+			// Check the in this case the four adjacency cells for smallest F.
+			neighbors = getNeighbors(_grid, currentCell.getPosition());
+
+			Iterator<Cell> itr = neighbors.iterator();
+			Cell c = new Cell();
+			while(itr.hasNext())
 			{
-				// Get the cell with smallest F cost and add it to the closed list and remove it from the openList.
-				closedList.addElement(currentCell);
-				//Log.d("B_INFO","Current Cell: " + currentCell.getPosition().toString());
-				openList.remove(getSmallestCost(openList));
-				
-				// Check the in this case the four adjacency cells for smallest F.
-				neighbors = getNeighbors(_grid, currentCell.getPosition());
-				
-				Iterator<Cell> itr = neighbors.iterator();
-				Cell c = new Cell();
-				while(itr.hasNext())
+				c = itr.next();
+				if ( c.getH() == 10 && blockedEndCell && c.getG() == 10)
 				{
-					c = itr.next();
-					if ( c.getH() == 10 && blockedEndCell && c.getG() == 10)
-					{
-						endCell = c;
-						openList.addElement(endCell);
-						endCell.setParent(currentCell);
-						blockedEndCell = false;
-						break;
-					}
-					else if( c.getG() == 10 && !inClosedList(c) && !inOpenList(c))
-					{
-						openList.addElement(c);
-						c.setParent(currentCell);
-					}
+					endCell = c;
+					openList.addElement(endCell);
+					endCell.setParent(currentCell);
+					blockedEndCell = false;
+					break;
 				}
-				if ( openList.size()>0)
+				else if( c.getG() == 10 && !inClosedList(c) && !inOpenList(c))
 				{
-					currentCell = openList.get(getSmallestCost(openList));
+					openList.addElement(c);
+					c.setParent(currentCell);
 				}
-				neighbors.clear();
 			}
+			if ( openList.size()>0)
+			{
+				currentCell = openList.get(getSmallestCost(openList));
+			}
+			neighbors.clear();
+		}
+		if(Preferences.DEBUG)
 			Log.d("B_INFO","Done with closedListsize = " + closedList.size());
-			
-			while(endCell.getPosition().x != startPos.x || endCell.getPosition().y != startPos.y)
+
+		while(endCell.getPosition().x != startPos.x || endCell.getPosition().y != startPos.y)
+		{
+			if (!blockedEndCell)
 			{
-				if (!blockedEndCell)
-				{
-					_path.insertElementAt(endCell.getPosition(), 0);
-				}
-				endCell = endCell.getParent();
+				_path.insertElementAt(endCell.getPosition(), 0);
 			}
-			
-			return _path;	
+			endCell = endCell.getParent();
+		}
+
+		return _path;	
 	}
 	public void setAllH(Coordinate endPos)
 	{
@@ -117,7 +123,7 @@ public class PathFinder{
 		{
 			Coordinate c = _grid.getGridCoords(it);
 			H = Math.abs(endPos.x-c.x) + Math.abs(endPos.y-c.y);
-			
+
 			// update costs according to endPoints position.
 			itCell = it.next();
 			itCell.setPosition(c);
@@ -128,10 +134,10 @@ public class PathFinder{
 	{
 		Vector<Cell> neighbors = new Vector<Cell>();
 		neighbors = getNeighbors(_grid, endCell.getPosition());
-		
+
 		Iterator<Cell> itr = neighbors.iterator();
 		Cell c = new Cell();
-		
+
 		while(itr.hasNext())
 		{
 			c = itr.next();
@@ -152,26 +158,26 @@ public class PathFinder{
 	}
 	public Vector<Cell> getNeighbors(Grid grid, Coordinate startPos)
 	{
-		
+
 		int r = startPos.x, c = startPos.y;
-		
+
 		Cell N = null,W =null,S = null,E = null;
-			if(r>0)
+		if(r>0)
 			N = grid.getCell(r-1,c);
-			if(c<11)
+		if(c<11)
 			E = grid.getCell(r,c+1);
-			if(r<7)
+		if(r<7)
 			S = grid.getCell(r+1,c);
-			if(c>0)
+		if(c>0)
 			W = grid.getCell(r,c-1);
-		
+
 		Vector<Cell> neighbors = new Vector<Cell>();
-		
+
 		neighbors.addElement(N);
 		neighbors.addElement(E);
 		neighbors.addElement(S);
 		neighbors.addElement(W);
-		
+
 		return neighbors;
 	}
 
@@ -190,7 +196,7 @@ public class PathFinder{
 		}
 		return cellPos;
 	}
-	
+
 	public boolean inOpenList(Cell c)
 	{
 		Iterator<Cell> it = openList.iterator();
@@ -203,7 +209,7 @@ public class PathFinder{
 		}
 		return false;
 	}
-	
+
 	public boolean inClosedList(Cell c)
 	{
 		Iterator<Cell> it = closedList.iterator();

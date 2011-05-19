@@ -195,7 +195,6 @@ public class Level
 	
 	public void levelComplete()
 	{
-		Log.d("B_INFO", "Victory! You got points: " + _points);
 		SoundManager.getInstance().playWin();
 		LevelManager lm = LevelManager.getInstance(); 
 		lm.updateScore((int)_points);
@@ -366,12 +365,10 @@ public class Level
 						{
 							if(isPlayer)
 							{
-								Log.d("B_INFO","Player created..");
 								_player = new Player(_grid,drawableValue);
 								Coordinate pos  = new Coordinate(row,col);
 								_player.setPosition(pos);
 								_grid.setPlayer(row,col,_player);
-								Log.d("B_INFO","Player pos: "+ _player.getPosition().x+" "+_player.getPosition().y);
 								_grid.setCostG(row,col,10);
 							}
 							else

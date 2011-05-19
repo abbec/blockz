@@ -114,7 +114,6 @@ public class Game extends Activity
 			
 			if(col == 0 && row == 0)
 			{
-					Log.d("B_INFO","Pause!");
 					pause();
 					PauseDialog myDialog = new PauseDialog(this, this);
 			        myDialog.show();
@@ -175,7 +174,7 @@ public class Game extends Activity
                 break;
             } 
             catch(Exception e){
-            	Log.d("B_INFO", "Exception " + e.toString() + ": " + e.getLocalizedMessage());
+           		Log.d("B_INFO", "Exception " + e.toString() + ": " + e.getLocalizedMessage());
             }
         }
         
@@ -188,12 +187,9 @@ public class Game extends Activity
 	@Override
 	protected void onPause()
 	{
-		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("time", System.currentTimeMillis()).commit();
-		//PreferenceManager.getDefaultSharedPreferences(this).edit().putFloat("gamestart", _gameStart).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("playedTime", _level.getPlayedTime()).commit();
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("points", (int) _level.getPoints()).commit();
 		setPauseFlag(true);
-		//_mainThread.pause();
 		SoundManager.getInstance().pausMusic();
 		super.onPause();
 	}
@@ -213,7 +209,6 @@ public class Game extends Activity
 	}
 	protected void reset()
 	{
-		Log.d("B_INFO","Reset!");
 		_grid = new Grid(_width, _height);
 		_level.setGrid(_grid);
 		_level.reset();

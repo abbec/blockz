@@ -20,7 +20,6 @@ public class StartMenu extends Menu{
 
 	@Override
 	public void draw(Canvas c) {
-		Log.d("B_INFO", "draw");
 		c.drawBitmap(_menu, 0, 0,null);
 	}
 

@@ -90,9 +90,10 @@ public class Move {
 	{
 		if (currentTime - _lastUpdate > (1000/_fps))
 		{	
-			
-			Log.d("M_INFO", "Start: " + _start.toString());
-			Log.d("M_INFO", "End: " + _end.toString());
+			if(Preferences.DEBUG){
+				Log.d("M_INFO", "Start: " + _start.toString());
+				Log.d("M_INFO", "End: " + _end.toString());
+			}
 			
 			Coordinate offset = _grid.getPlayer(_start.x, _start.y).getOffset();
 			Coordinate nextOffset = new Coordinate(offset.x,offset.y);
@@ -149,8 +150,10 @@ public class Move {
 	{
 		if (currentTime - _lastUpdate > (1000/_fps))
 		{
-			Log.d("M_INFO","Start: " + _start.toString());
-			Log.d("M_INFO","End: " + _end.toString());
+			if(Preferences.DEBUG){
+				Log.d("M_INFO","Start: " + _start.toString());
+				Log.d("M_INFO","End: " + _end.toString());
+			}
 			
 			Coordinate offset = _grid.getMovable(_start.x, _start.y).getOffset();
 			Coordinate nextOffset = new Coordinate(offset.x,offset.y);
@@ -159,9 +162,8 @@ public class Move {
 			{
 				if(nextOffset.x >= _grid.getCellHeight() || nextOffset.x <= -1*_grid.getCellHeight() || nextOffset.y >= _grid.getCellWidth() || nextOffset.y <= -1*_grid.getCellWidth() )
 				{
-					//Log.d("M_INFO","Next offset: " + nextOffset.toString());
 					Coordinate next = new Coordinate(_start.x+_offsetY,_start.y+_offsetX);
-					//Log.d("M_INFO","Next cell: " + next.toString());
+					
 					if(_end.equals(next))
 					{
 						_grid.getMovable(_start.x, _start.y).setOffset(new Coordinate(0,0));

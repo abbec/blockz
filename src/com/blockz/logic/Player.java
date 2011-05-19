@@ -30,7 +30,6 @@ public class Player extends Actor
 	 */
 	public Vector<Coordinate> moveTo(Coordinate endPos)
 	{
-		Log.d("B_INFO","MoveTO!");
 		if(endPos.equals(_position))
 			_path.add(_position);
 		else

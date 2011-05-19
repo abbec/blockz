@@ -216,7 +216,8 @@ public class LevelManager
 				sc.close();
 				
 				// Write buffer to file
-				Log.d("B_FILE", "File contents: \n\n" + buffer);
+				if(Preferences.DEBUG)
+					Log.d("B_FILE", "File contents: \n\n" + buffer);
 				
 			}
 			catch (FileNotFoundException fe)
@@ -232,7 +233,8 @@ public class LevelManager
 		else
 		{
 			buffer = cleanFile();
-			Log.d("B_FILE", "File contents: \n\n" + buffer);
+			if(Preferences.DEBUG)
+				Log.d("B_FILE", "File contents: \n\n" + buffer);
 		}
 		
 		try
@@ -510,7 +512,8 @@ public class LevelManager
 			Log.e("B_INFO", "Xml parser exception: " + xe.getMessage());
 		}
 		
-		Log.d("B_XML", "Tree in preorder: " + _levelTree.preOrderString());
+		if(Preferences.DEBUG)
+			Log.d("B_XML", "Tree in preorder: " + _levelTree.preOrderString());
 	}
 
 	/**
@@ -526,10 +529,11 @@ public class LevelManager
 		Node<LevelNode> res = new Node<LevelNode>(new LevelNode(-1, false, 0, 0));
 		findLevel(root, row, col, res);
 		
-		if (res.getData().getLevel() != -1)
-			Log.d("B_XML", "Found node at "+ row + ", " + col + " : " + res.toString());
-		else
-			Log.d("B_XML", "Node is null at "+ row + ", " + col);
+		if(Preferences.DEBUG)
+			if (res.getData().getLevel() != -1)
+				Log.d("B_XML", "Found node at "+ row + ", " + col + " : " + res.toString());
+			else
+				Log.d("B_XML", "Node is null at "+ row + ", " + col);
 		
 		if (res.getData().getLevel() != -1)
 			return res.getData();
