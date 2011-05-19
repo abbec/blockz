@@ -93,6 +93,11 @@ public class Game extends Activity
 			case 10:
 				_levelID = R.drawable.level10;
 				break;
+			case 11:
+				_levelID = R.drawable.level11;
+				break;
+			default:
+				_levelID = R.drawable.level1;
 		}
 		GameSoundManager.getInstance().setContext(this);
 		GameSoundManager.getInstance().playMusic();
@@ -116,6 +121,7 @@ public class Game extends Activity
 			
 			if(col == 0 && row == 0)
 			{
+					Log.d("B_INFO","Pause!");
 					pause();
 					PauseDialog myDialog = new PauseDialog(this, this);
 			        myDialog.show();
@@ -176,7 +182,7 @@ public class Game extends Activity
                 break;
             } 
             catch(Exception e){
-           		Log.d("B_INFO", "Exception " + e.toString() + ": " + e.getLocalizedMessage());
+            	Log.d("B_INFO", "Exception " + e.toString() + ": " + e.getLocalizedMessage());
             }
         }
         
