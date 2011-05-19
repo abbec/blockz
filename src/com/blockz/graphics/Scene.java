@@ -55,8 +55,6 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
     	
     	_spriteTable = new TreeMap<Integer, Sprite>();
     	_game = g;
-    	
-    	Log.d("B_INFO", "Scene constructor done.");
     }
     
     /**
@@ -192,7 +190,6 @@ public class Scene extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) 
     {
-    	Log.d("B_INFO", "Surface Created completely. Starting thread.");
     	_game.startThread();
     }
  

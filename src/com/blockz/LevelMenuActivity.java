@@ -88,7 +88,6 @@ public class LevelMenuActivity extends Activity {
 		{
 			int col = (int) Math.floor(_event.getCoordinate().x/_grid.getCellWidth());
 			int row = (int) Math.floor(_event.getCoordinate().y/_grid.getCellHeight());
-			Log.d("B_INFO", "col: " + col + "row: " + row);
 
 			LevelNode level = lm.getLevel(row, col);
 			if(level != null && lm.isPlayable(level))

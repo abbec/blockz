@@ -32,14 +32,10 @@ public class MyGestureListener extends SimpleOnGestureListener
 	@Override
 	public boolean onSingleTapUp(MotionEvent e)
 	{
-		//kolla att det är ett movable.
-			//hämta grannar som inte har fixed.
-			
-		//Log.d("E_INFO", "Press!");
-		_event.setCoordinate(new Coordinate((int)e.getRawX(), (int)e.getRawY()));
 		_event.setDirection(Constant.UNKNOWN);
 		_event.setTap(true);
-		Log.d("ARROW_INFO", "REMOVE ARROWS");
+		if(Preferences.DEBUG)
+			Log.d("ARROW_INFO", "REMOVE ARROWS");
 		removeArrows();
 		_availableCoord = null;
 		_event.setTap(true);
@@ -127,7 +123,8 @@ public class MyGestureListener extends SimpleOnGestureListener
 			_event.setCoordinate(new Coordinate((int)e1.getRawX(), (int)e1.getRawY()));
 			System.out.println("Offset : " + Math.abs(e1.getY() - e2.getY()));
 			
-			Log.d("E_INFO", "First: " + _availableCoord.size());
+			if(Preferences.DEBUG)
+				Log.d("E_INFO", "First: " + _availableCoord.size());
 			
 			float offPathX = Math.abs(e1.getX() - e2.getX());
 			float offPathY = Math.abs(e1.getY() - e2.getY());
@@ -136,7 +133,8 @@ public class MyGestureListener extends SimpleOnGestureListener
 			{
 				if(_availableCoord.get(3) != null)
 				{
-					Log.d("E_INFO","Fling Left!");
+					if(Preferences.DEBUG)
+						Log.d("E_INFO","Fling Left!");
 					_event.setDirection(Constant.LEFT);
 					_event.setPlayerDestination(_availableCoord.get(3));
 					return true;
@@ -148,7 +146,8 @@ public class MyGestureListener extends SimpleOnGestureListener
 			{
 				if(_availableCoord.get(2) != null)
 				{
-					Log.d("E_INFO","Fling right!");
+					if(Preferences.DEBUG)
+						Log.d("E_INFO","Fling right!");
 					_event.setDirection(Constant.RIGHT);
 					_event.setPlayerDestination(_availableCoord.get(2));
 					return true;
@@ -160,7 +159,8 @@ public class MyGestureListener extends SimpleOnGestureListener
 			{
 				if(_availableCoord.get(0) != null)
 				{
-					Log.d("E_INFO","Fling Down!");
+					if(Preferences.DEBUG)
+						Log.d("E_INFO","Fling Down!");
 					_event.setDirection(Constant.DOWN);
 					_event.setPlayerDestination(_availableCoord.get(0));
 					return true;
@@ -172,7 +172,8 @@ public class MyGestureListener extends SimpleOnGestureListener
 			{
 				if(_availableCoord.get(1) != null)
 				{
-					Log.d("E_INFO","Fling Up!");
+					if(Preferences.DEBUG)
+						Log.d("E_INFO","Fling Up!");
 					_event.setDirection(Constant.UP);
 					_event.setPlayerDestination(_availableCoord.get(1));
 					return true;
@@ -192,7 +193,8 @@ public class MyGestureListener extends SimpleOnGestureListener
 			{
 				if(_availableCoord.get(i) != null)
 				{
-					Log.d("ARROW_INFO", "Removes arrow from: " + _availableCoord.toString());
+					if(Preferences.DEBUG)
+						Log.d("ARROW_INFO", "Removes arrow from: " + _availableCoord.toString());
 					_grid.getCell(_availableCoord.get(i).x, _availableCoord.get(i).y).setArrow(null);
 				}	
 			}

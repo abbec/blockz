@@ -78,7 +78,6 @@ public class SoundManager
 	{
 		int p;
 		int rand = (int) Math.round(Math.random()*2);
-		Log.d("S_INFO", "Rand: " + rand);
 		switch(rand)
 		{
 		case 0:

@@ -63,7 +63,6 @@ public class StartMenuActivity extends Activity {
 		{
 			int col = (int) Math.floor(_event.getCoordinate().x/_grid.getCellWidth());
 			int row = (int) Math.floor(_event.getCoordinate().y/_grid.getCellHeight());
-			Log.d("B_INFO", "col: " + col + "row: " + row);
 
 			_startMenu.drawBackground();
 			if(col >= 0 && col <= 3 && row >= 2 && row <= 3){
