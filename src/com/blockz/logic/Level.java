@@ -15,12 +15,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.blockz.GameSoundManager;
 import com.blockz.LevelManager;
 import com.blockz.LevelMenuActivity;
 import com.blockz.MyEvent;
 import com.blockz.Preferences;
 import com.blockz.R;
-import com.blockz.SoundManager;
 import com.blockz.graphics.Scene;
 
 /**
@@ -59,7 +59,7 @@ public class Level
 		readLevel(resourceNumber);
 		_moveList = new LinkedList<Move>();
 		_levelResourceNumber = resourceNumber;
-		SoundManager.getInstance().loadSounds();
+		GameSoundManager.getInstance().loadSounds();
 		//SoundManager.getInstance().playMusic();
 	}
 	
@@ -198,13 +198,12 @@ public class Level
 	public void levelComplete()
 	{
 		Log.d("B_INFO", "Victory! You got points: " + _points);
-		SoundManager.getInstance().playWin();
+		GameSoundManager.getInstance().playWin();
 		LevelManager lm = LevelManager.getInstance(); 
 		lm.updateScore((int)_points);
 		lm.clearLevel();
 		lm.save();
 		Intent levelMenu = new Intent(_context, LevelMenuActivity.class);
-		SoundManager.getInstance().stopAll();
 		_context.startActivity(levelMenu);
 	}
 	public boolean isLevelComplete()

@@ -6,7 +6,6 @@ package com.blockz;
 import java.io.*;
 import java.util.*;
 
-import com.blockz.graphics.Sprite;
 import com.blockz.util.*;
 
 import org.xmlpull.v1.*;
@@ -283,12 +282,17 @@ public class LevelManager
 			_saveSlot.setScore(sc.nextInt());
 			sc.nextLine();
 			
+			Scanner intScanner = new Scanner(sc.nextLine());
+			
 			// Read cleared levels
-			while (sc.hasNextInt())
+			while (intScanner.hasNextInt())
 			{
-				_saveSlot.addClearedLevel(sc.nextInt());
+				int level = intScanner.nextInt();
+				
+				if (level != 0)
+					_saveSlot.addClearedLevel(level);
 			}
-			sc.nextLine();
+			intScanner.close();
 			
 			_saveSlot.setLastClearedLevel(sc.nextInt());
 			
@@ -417,7 +421,7 @@ public class LevelManager
 			{
 				buffer += _saveSlot.getName() + "\n";
 				buffer += _saveSlot.getScore() + "\n";
-				buffer += "dummy data" + "\n";
+				buffer += "0" + "\n";
 				buffer += _saveSlot.getLastClearedLevel() + "\n";
 			}
 			else
@@ -595,11 +599,13 @@ public class LevelManager
 		if (parent.getData() == ln)
 			res.res = true;
 		else if (element.getData() == ln)
-			res.res = parent.getData().isCleared();
-		else
+		{
+			res.res = true;
+		}
+		else if (element.getData().isCleared())
 		{
 			for (Node<LevelNode> data : element.getChildren())
-					findIsPlayable(data, element, ln, res);
+				findIsPlayable(data, element, ln, res);
 		}
 	}
 	

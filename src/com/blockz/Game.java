@@ -97,12 +97,14 @@ public class Game extends Activity
 				_levelID = R.drawable.level10;
 				break;
 		}
+		GameSoundManager.getInstance().setContext(this);
+		GameSoundManager.getInstance().playMusic();
 		
 		_level = new Level(this, _scene, _grid, _levelID);
 		_mainThread = new GameThread(this);
 		setPauseFlag(false);
 		
-		SoundManager.getInstance().setContext(this);
+
 		_hud = new Hud(this, _width, _height, _grid.getCellWidth(), _grid.getCellHeight());
 	}
 	
@@ -183,6 +185,7 @@ public class Game extends Activity
             }
         }
         
+        GameSoundManager.getInstance().stopAll();
         finish();
 	}
 	
@@ -198,7 +201,6 @@ public class Game extends Activity
 		PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("points", (int) _level.getPoints()).commit();
 		setPauseFlag(true);
 		//_mainThread.pause();
-		SoundManager.getInstance().pausMusic();
 		super.onPause();
 	}
 	
@@ -206,11 +208,13 @@ public class Game extends Activity
 	{
 		if(!_pauseFlag)
 		{
-		_mainThread.pause();
-		_pauseFlag = true;
+			GameSoundManager.getInstance().stopMusic();
+			_mainThread.pause();
+			_pauseFlag = true;
 		}
 		else 
 		{
+			GameSoundManager.getInstance().playMusic();
 			_mainThread.unPause();
 			_pauseFlag = false;
 		}
@@ -252,6 +256,7 @@ public class Game extends Activity
 	@Override 
 	protected void onStop()
 	{
+		GameSoundManager.getInstance().stopMusic();
 		super.onStop();
 	}
 	
@@ -279,8 +284,6 @@ public class Game extends Activity
 			_gameStart = System.currentTimeMillis();
 			_level.setPoints(999.0);
 		}
-		
-		SoundManager.getInstance().resumeMusic();
 		super.onResume();
 	}
 
