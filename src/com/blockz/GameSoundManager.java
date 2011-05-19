@@ -63,15 +63,24 @@ public class GameSoundManager
 	}
 	public void playMusic()
 	{
-		stopMusic();
-		_musicPlayer = MediaPlayer.create(_context,shuffle());
+		if (_musicPlayer != null)
+			_musicPlayer.reset();
+		 
+		while(_musicPlayer == null)
+		{ 
+			_musicPlayer = MediaPlayer.create(_context,shuffle());
+		}
+		
 		_musicPlayer.setLooping(true);
 		_musicPlayer.start();
 	}
 
 	public void stopMusic() 
 	{
-		_musicPlayer.release();
+		if (_musicPlayer != null)
+			_musicPlayer.release();
+		
+		_musicPlayer = null;
 	}
 	public void pausMusic()
 	{
@@ -152,7 +161,7 @@ public class GameSoundManager
 	private GameSoundManager()
 	{
 		_context = null;
-		_musicPlayer = new MediaPlayer();
+		_musicPlayer = null;
 		_arrow = new MediaPlayer();
 		_click = new MediaPlayer();
 		_punch1 = new MediaPlayer();
