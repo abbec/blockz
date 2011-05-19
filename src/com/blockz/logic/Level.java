@@ -60,7 +60,6 @@ public class Level
 		_moveList = new LinkedList<Move>();
 		_levelResourceNumber = resourceNumber;
 		GameSoundManager.getInstance().loadSounds();
-		//SoundManager.getInstance().playMusic();
 	}
 	
 	public int getPlayedTime() {

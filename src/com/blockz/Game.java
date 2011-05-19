@@ -208,7 +208,7 @@ public class Game extends Activity
 	{
 		if(!_pauseFlag)
 		{
-			GameSoundManager.getInstance().stopMusic();
+			GameSoundManager.getInstance().stopAll();
 			_mainThread.pause();
 			_pauseFlag = true;
 		}
