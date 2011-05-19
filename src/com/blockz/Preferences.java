@@ -15,5 +15,5 @@ public final class Preferences
 	public static final int SWIPE_MAX_OFF_PATH = 100;
 	public static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 }

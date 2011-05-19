@@ -111,6 +111,9 @@ public class PathFinder{
 			endCell = endCell.getParent();
 		}
 
+		if (openList.size() == 0)
+			_path.insertElementAt(startPos, 0);
+		
 		return _path;	
 	}
 	public void setAllH(Coordinate endPos)
